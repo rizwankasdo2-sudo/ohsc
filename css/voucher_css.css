@@ -1,0 +1,119 @@
+@charset "utf-8";
+/* CSS Document */
+body{
+    background-image: url(images/voucher_background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+	}
+.btn-link{
+    color: #fff;
+    padding: 6px 20px;
+    background-color: #ff5722;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.btn-link:hover{
+	color: #fff;
+    padding: 11px;
+    background-color:#ff5722;
+    border-radius: 4px;
+	text-decoration:none;
+}
+.edu-heading{
+    color: #FFF;
+    text-align: center;
+    font-family: oswald;
+    font-size: 32px;
+}
+.awd-para{
+    font-size: 22px;
+    text-align: center;
+    color: #FFF;
+    font-family: oswald;
+}
+.p-click{
+	color:#FFF;
+	/*text-align:center;*/
+    font-size: 16px;
+}
+.link-c{
+	text-decoration:none;
+	color:#F60;
+}
+.link-c:hover{
+	text-decoration:none;
+	color:#F60;
+}
+.header-clr{
+	background:#000;
+}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 1em;
+    line-height: 1.42857143;
+    color:#fff;
+    background-image: none;
+	border-radius: 0px;
+    font-weight: bold;
+    /*border: 1px solid #ccc; 
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;*/
+    background: none;
+    border: none;
+    border-bottom: 1px solid white;
+    transition: border .3s ease;
+}
+select.form-control option{
+    background: #777;
+}
+.form-control:focus {
+    border-bottom: 1px solid #F60;
+    outline: 0;
+    -webkit-box-shadow:none;
+     box-shadow: none; 
+}
+.form-control::-moz-placeholder {
+    color: #fff;
+    opacity: 1;
+    font-size: 1em;
+}
+.form-control:-ms-input-placeholder {
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+}
+.form-control::-webkit-input-placeholder {
+    color: #fff;
+    font-size: 1em;
+    font-weight: bold;
+}
+
+
+
+
+/* #form-section #input-div {
+    display: block;
+    padding-top: 1.5em;
+}
+#form-section #input-div .new-input-field {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 22em;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+    border-bottom: 1px rgba(255, 255, 255, 0.4) solid;
+    transition: 0.4s ease all;
+    -moz-transition: 0.4s ease all;
+    -webkit-transition: 0.4s ease all;
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5em 0;
+} */

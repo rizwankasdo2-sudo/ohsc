@@ -1,0 +1,188 @@
+
+
+/* CSS of Right Content */
+
+#rightContent
+{
+ width:674px;
+ margin:5px 10px;
+ float:left;
+}
+
+#rightContent #invoiceheader
+{
+	width:674px;
+	border-bottom:solid 1px #703838;
+}
+
+
+
+#rightContent #invoiceheader #invoiceleft
+{
+	width:450px;
+	float:left;
+	margin-top:25px;
+}
+
+#rightContent #invoiceheader #invoiceleft img
+{
+	float:left;
+	border:0;
+	outline:0;
+	margin-right:30px;
+}
+
+#rightContent #invoiceheader #invoiceleft h3
+{
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:14px;
+	color:#333;
+	float:left;
+	margin-top:50px;
+}
+
+
+
+#rightContent #invoiceheader #invoiceright
+{
+	width:224px;
+	float:left;
+}
+
+#rightContent #invoiceheader #invoiceright h3
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:30px;
+	color:#999;
+	text-align:right;
+}
+
+#rightContent #invoiceheader #invoiceright p
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#333;
+	text-align:right;
+}
+
+
+
+
+
+
+
+#rightContent #invoiccompany
+{
+	width:674px;
+	clear:both;
+	margin-top:15px;
+}
+
+
+
+#rightContent #invoiccompany #companyleft
+{
+	width:330px;
+	float:left;
+	margin-right:14px;
+}
+
+#rightContent #invoiccompany #companyleft h4
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:16px;
+	color:#333;
+}
+
+#rightContent #invoiccompany #companyleft .heading
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#333;
+	width:100px;
+	vertical-align:text-top;
+	padding:5px;
+}
+
+#rightContent #invoiccompany #companyleft .description
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#333;
+	width:210px;
+}
+
+
+
+
+#rightContent #invoiccompany #companyright
+{
+	width:330px;
+	float:left;	
+}
+
+#rightContent #invoiccompany #companyright h4
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:16px;
+	color:#333;
+}
+
+#rightContent #invoiccompany #companyright .heading
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#333;
+	width:100px;
+	vertical-align:text-top;
+	padding:5px;
+}
+
+#rightContent #invoiccompany #companyright .description
+{
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color:#333;
+	width:210px;
+}
+
+
+
+#rightContent #invoictable
+{
+	width:674px;
+	clear:both;
+}
+
+#rightContent #invoictable .orderheading
+{
+	border:solid 1px #804000;
+	padding:5px;
+	color:#FFF;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+}
+
+#rightContent #invoictable .orderdetaili
+{
+	border:solid 1px #804000;
+	padding:5px;
+	color:#000;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:11px;
+}
+
+#rightContent #bottom
+{
+	width:674px;
+	clear:both;
+}
+
+#rightContent #bottom p
+{
+	color: #333333;
+    font-family: Verdana,Geneva,sans-serif;
+    font-size: 11px;
+    margin-top: 5px;
+}

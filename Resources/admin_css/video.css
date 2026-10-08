@@ -1,0 +1,31 @@
+#adddel {
+	width:250px;
+	margin-top:10px;
+	float:right;
+}
+
+#adddel ul {
+	list-style-type:none;
+}
+
+#adddel ul li {
+	display:inline;
+	float:left;
+	margin-right:10px;
+}
+
+#adddel ul li a {
+	background-image:url(../admin_images/button.jpg);
+	background-repeat:no-repeat;
+	width:71px;
+	height:28px;
+	display:block;
+	text-decoration:none;
+	text-align:center;
+	color:#FFF;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:13px;
+	border:0;
+	padding-top:5px;
+	font-weight:normal;
+}

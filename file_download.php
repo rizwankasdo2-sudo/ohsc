@@ -1,0 +1,137 @@
+<?php
+include("admin/classes/connection.php");
+header("X-Robots-Tag: noindex, nofollow", true);
+define('ALLOWED_REFERRER', '');
+define('BASE_DIR','images/broucher/');
+define('LOG_DOWNLOADS',true);
+define('LOG_FILE','downloads.log');
+$allowed_ext = array (
+  'zip' => 'application/zip',
+   'pdf' => 'application/pdf',
+  'doc' => 'application/msword',
+  'docx'=>'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'xls' => 'application/vnd.ms-excel',
+  'xlsx'=>'apliication/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'ppt' => 'application/vnd.ms-powerpoint',
+  'rtf'=>'text/richtext',
+  
+ 
+  'exe' => 'application/octet-stream',
+  'gif' => 'image/gif',
+  'png' => 'image/png',
+  'jpg' => 'image/jpeg',
+  'jpeg' => 'image/jpeg',
+  'mp3' => 'audio/mpeg',
+  'wav' => 'audio/x-wav',
+ 
+  'mpeg' => 'video/mpeg',
+  'mpg' => 'video/mpeg',
+  'mpe' => 'video/mpeg',
+  'mov' => 'video/quicktime',
+  'avi' => 'video/x-msvideo'
+);
+if (ALLOWED_REFERRER !== ''
+&& (!isset($_SERVER['HTTP_REFERER']) || strpos(strtoupper($_SERVER['HTTP_REFERER']),strtoupper(ALLOWED_REFERRER)) === false)
+) {
+  die("Internal server error. Please contact system administrator.");
+}
+set_time_limit(0);
+$f = trim(mysqli_real_escape_string($db, filter_var($_GET['f'], FILTER_SANITIZE_STRING)));
+if (empty($f)) {
+  die("Please specify file name for download.");
+}
+if (strpos($f, "\0") !== FALSE) die('');
+$fname = basename($f);
+function find_file ($dirname, $fname, &$file_path) {
+  $dir = opendir($dirname);
+  while ($file = readdir($dir)) {
+    if (empty($file_path) && $file != '.' && $file != '..') {
+      if (is_dir($dirname.'/'.$file)) {
+        find_file($dirname.'/'.$file, $fname, $file_path);
+      }
+      else {
+        if (file_exists($dirname.'/'.$fname)) {
+          $file_path = $dirname.'/'.$fname;
+          return;
+        }
+      }
+    }
+  }
+} // find_file
+// get full file path (including subfolders)
+$file_path = '';
+find_file(BASE_DIR, $fname, $file_path);
+if (!is_file($file_path)) {
+  die("File does not exist. Make sure you specified correct file name."); 
+}
+// file size in bytes
+$fsize = filesize($file_path); 
+// file extension
+$fext = strtolower(substr(strrchr($fname,"."),1));
+// check if allowed extension
+if (!array_key_exists($fext, $allowed_ext)) {
+  die("Not allowed file type."); 
+}
+// get mime type
+if ($allowed_ext[$fext] == '') {
+  $mtype = '';
+  // mime type is not set, get from server settings
+  if (function_exists('mime_content_type')) {
+    $mtype = mime_content_type($file_path);
+  }
+  else if (function_exists('finfo_file')) {
+    $finfo = finfo_open(FILEINFO_MIME); // return mime type
+    $mtype = finfo_file($finfo, $file_path);
+    finfo_close($finfo);  
+  }
+  if ($mtype == '') {
+    $mtype = "application/force-download";
+  }
+}
+else {
+  // get mime type defined by admin
+  $mtype = $allowed_ext[$fext];
+}
+// Browser will try to save file with this filename, regardless original filename.
+// You can override it if needed.
+$fc = trim(mysqli_real_escape_string($db, filter_var($_GET['fc'], FILTER_SANITIZE_STRING)));
+if (empty($fc)) {
+  $asfname = $fname;
+}
+else {
+  // remove some bad chars
+  $asfname = str_replace(array('"',"'",'\\','/'), '', $fc);
+  if ($asfname === '') $asfname = 'NoName';
+}
+// set headers
+header("Pragma: public");
+header("Expires: 0");
+header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+header("Cache-Control: public");
+header("Content-Description: File Transfer");
+header("Content-Type: $mtype");
+header("Content-Disposition: attachment; filename=\"$asfname\"");
+header("Content-Transfer-Encoding: binary");
+header("Content-Length: " . $fsize);
+// download
+// @readfile($file_path);
+$file = @fopen($file_path,"rb");
+if ($file) {
+  while(!feof($file)) {
+    print(fread($file, 1024*8));
+    flush();
+    if (connection_status()!=0) {
+      @fclose($file);
+      die();
+    }
+  }
+  @fclose($file);
+}
+// log downloads
+if (!LOG_DOWNLOADS) die();
+$fz = @fopen(LOG_FILE, 'a+');
+if ($fz) {
+  @fputs($fz, date("m.d.Y g:ia")."  ".$_SERVER['REMOTE_ADDR']."  ".$fname."\n");
+  @fclose($fz);
+}
+?>

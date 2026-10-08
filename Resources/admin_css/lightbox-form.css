@@ -1,0 +1,661 @@
+
+#shadowing
+{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: #CCA;
+	z-index:150;
+	opacity:0.10;
+	filter: alpha(opacity=50);
+}
+
+
+#box 
+{
+	display: none;
+	position: absolute;
+	top: 22%;
+	left: 30%;
+	width: 50%px;
+	height: 320px;
+	padding: 48px;
+	margin:0;
+	border: 1px solid black;
+	background-color: white;
+	z-index:200;
+	overflow: auto;
+}
+
+ 
+#box #infocomplete #info h3 {
+	font:20px  Arial;
+	color:#5b5a5a;
+}
+
+
+#box #infocomplete #info .fields
+{
+	 width:100%; height:35px;
+}
+#box #infocomplete #info .fields .label
+{
+	width:40%; float:left; font:14px  Arial; 
+	color:#323232;  height:22px; font-weight:500;
+}
+#box #infocomplete #info .fields .inputfield
+{
+	width:50%; float:left 
+}
+#box #infocomplete #info .fields .inputfield input.txtbox
+{
+	height:20px; float:left; width:180px;
+}
+
+
+#boxtitle
+{
+	position:absolute;
+	float:center;
+	top:0;
+	left:0;
+	width:496px;
+	height:24px;
+	padding:0;
+	padding-top:4px;
+	left-padding:8px;
+	margin:0;
+	border-bottom:4px solid #3CF;
+	background-color: #09c;
+	color:white;
+	text-align:center;
+}
+
+#shadowing1
+{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: #CCA;
+	z-index:10;
+	opacity:0.5;
+	filter: alpha(opacity=50);
+}
+
+
+#box1
+{
+	display: none;
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	width: 400px;
+	height: 200px;
+	padding: 48px;
+	margin:0;
+	border: 1px solid black;
+	background-color: white;
+	z-index:101;
+	overflow: auto;
+}
+
+#boxtitle1
+{
+	position:absolute;
+	float:center;
+	top:0;
+	left:0;
+	width:496px;
+	height:24px;
+	padding:0;
+	padding-top:4px;
+	left-padding:8px;
+	margin:0;
+	border-bottom:4px solid #3CF;
+	background-color: #09c;
+	color:white;
+	text-align:center;
+}
+
+
+
+
+
+#shadowing2
+{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: #CCA;
+	z-index:10;
+	opacity:0.5;
+	filter: alpha(opacity=50);
+}
+
+
+#box2
+{
+	display: none;
+	position: absolute;
+	top: 10%;
+	left: 5%;
+	right:5%;
+	width: 90%;
+	height: 650px;
+	padding-top:48px;
+	border: 1px solid black;
+	background-color: white;
+	z-index:101;
+	overflow: hidden;
+}
+
+.round	
+{ 
+-moz-border-radius:8px; -webkit-border-radius:8px;  
+
+}
+
+#box2 #infocomplete {
+	width:90%;
+	padding:0 5%;
+	margin-top:20px;
+}
+
+#box2 #infocomplete #info {
+	width:90%;
+	float:left;
+	margin-top:20px;
+}
+
+#box2 #infocomplete #info h3 {
+	font:20px  Arial;
+	color:#5b5a5a;
+}
+
+
+#box2 #infocomplete #info .fields
+{
+	 width:100%; height:35px;
+}
+#box2 #infocomplete #info .fields .label
+{
+	width:40%; float:left; font:14px  Arial; 
+	color:#323232;  height:22px; font-weight:500;
+}
+#box2 #infocomplete #info .fields .inputfield
+{
+	width:50%; float:left 
+}
+#box2 #infocomplete #info .fields .inputfield input.txtbox
+{
+	height:20px; float:left; width:180px;
+}
+
+
+
+#box2 #infocomplete #info2 {
+	width:50%;
+	float:right;
+	
+	height:450px; 
+	
+}
+
+#box2 #infocomplete #info2 h3 {
+	font:20px  Arial;
+	color:#5b5a5a;
+}
+
+#box2 #infocomplete #info2 .fields
+{
+	 width:100%; height:35px;
+}
+#box2 #infocomplete #info2 .fields .label
+{
+	width:30%; float:left; font:14px  Arial; 
+	color:#323232;  
+	height:22px;
+}
+#box2 #infocomplete #info2 .fields .inputfield
+{
+	width:70%; float:left 
+}
+#box2 #infocomplete #info2 .fields .inputfield input,select.txtbox
+{
+	height:20px; float:left; width:200px;
+}
+
+#boxtitle2
+{
+	position:absolute;
+	top:0;
+	left:0;
+	width:760px;
+	height:24px;
+	padding:0;
+	padding-top:14px;
+	padding-bottom:10px;
+	padding-left:8px;
+	margin:0;
+	border-bottom:1px solid #000;
+	color:#333;
+	margin-left:20px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:22px;
+}
+
+#boxtitle2 a
+{
+	float:right;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#666;
+}
+#title
+{
+	position:absolute;
+	top:0;
+	left:0;
+	width:820px;
+	height:18px;
+	padding:0;
+	padding-top:20px;
+	padding-bottom:10px;
+	padding-left:8px;
+	margin:0;
+	margin-left:15px;
+	border-bottom:1px solid #e9e5e5;
+	color:#323232;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:24px;
+}
+
+#title a
+{
+	float:right;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#666;
+}
+/* for updation of field*/
+#shadowing5
+{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: #CCA;
+	z-index:10;
+	opacity:0.5;
+	filter: alpha(opacity=50);
+}
+
+
+#box5
+{
+	display: none;
+	position: absolute;
+	top: 10%;
+	left: 5%;
+	right:5%;
+	width: 90%;
+	height: 600px;
+	padding-top:48px;
+	border: 1px solid black;
+	background-color: white;
+	z-index:101;
+	overflow: hidden;
+}
+
+.round	
+{ 
+-moz-border-radius:8px; -webkit-border-radius:8px;  
+
+}
+
+#box5 #infocomplete {
+	width:90%;
+	padding:0 5%;
+	margin-top:20px;
+}
+
+#box5 #infocomplete #info {
+	width:50%;
+	float:left;
+	margin-top:20px;
+}
+
+#box5 #infocomplete #info h3 {
+	font:18px "Gill Sans MT", Tahoma, "Times New Roman", Arial;
+	color:#5b5a5a;
+}
+
+
+#box5 #infocomplete #info .fields
+{
+	 width:100%; height:35px;
+}
+#box5 #infocomplete #info .fields .label
+{
+	width:40%; float:left;  font:14px "Gill Sans MT", Tahoma, "Times New Roman", Arial; color:#323232; height:22px;
+}
+#box5 #infocomplete #info .fields .inputfield
+{
+	width:50%; float:left 
+}
+#box5 #infocomplete #info .fields .inputfield input.txtbox
+{
+	height:20px; float:left; width:180px;
+}
+
+
+
+#box5 #infocomplete #info2 {
+	width:50%;
+	float:right;
+	margin-top:20px;
+	height:450px; 
+	
+}
+
+#box5 #infocomplete #info2 h3 {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:16px;
+	color:#333;
+}
+
+#box5 #infocomplete #info2 .fields
+{
+	 width:100%; height:35px;
+}
+#box5 #infocomplete #info2 .fields .label
+{
+	width:30%; float:left; font-size:12px; color:#333;  font-weight:bold;
+	height:22px;
+}
+#box5 #infocomplete #info2 .fields .inputfield
+{
+	width:70%; float:left 
+}
+#box5 #infocomplete #info2 .fields .inputfield input,select.txtbox
+{
+	height:20px; float:left; width:200px;
+}
+
+#boxtitle5
+{
+	position:absolute;
+	top:0;
+	left:0;
+	width:760px;
+	height:24px;
+	padding:0;
+	padding-top:14px;
+	padding-bottom:10px;
+	padding-left:8px;
+	margin:0;
+	border-bottom:1px solid #000;
+	color:#333;
+	margin-left:20px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:22px;
+}
+
+#boxtitle5 a
+{
+	float:right;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#666;
+}
+
+
+
+
+
+#shadowingcompany
+{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: #CCA;
+	z-index:10;
+	opacity:0.5;
+	filter: alpha(opacity=50);
+}
+
+
+#boxcompnay
+{
+	display: none;
+	position: absolute;
+	top: 10%;
+	left: 5%;
+	right:5%;
+	width: 90%;
+	height: 650px;
+	padding-top:48px;
+	border: 1px solid black;
+	background-color: white;
+	z-index:101;
+	overflow: hidden;
+}
+
+
+
+#boxcompnay #infocomplete {
+	width:90%;
+	padding:0 5%;
+	margin-top:20px;
+}
+
+#boxcompnay #infocomplete #info {
+	width:90%;
+	float:left;
+	margin-top:20px;
+}
+
+#boxcompnay #infocomplete #info h3 {
+	font:20px  Arial;
+	color:#5b5a5a;
+}
+
+
+#boxcompnay #infocomplete #info .fields
+{
+	 width:100%; height:35px;
+}
+#boxcompnay #infocomplete #info .fields .label
+{
+	width:40%; float:left; font:14px  Arial; 
+	color:#323232;  height:22px; font-weight:500;
+}
+#boxcompnay #infocomplete #info .fields .inputfield
+{
+	width:50%; float:left 
+}
+#boxcompnay #infocomplete #info .fields .inputfield input.txtbox
+{
+	height:20px; float:left; width:180px;
+}
+
+
+
+#boxcompnay #infocomplete #info2 {
+	width:50%;
+	float:right;
+	
+	height:450px; 
+	
+}
+
+#boxcompnay #infocomplete #info2 h3 {
+	font:20px  Arial;
+	color:#5b5a5a;
+}
+
+#boxcompnay #infocomplete #info2 .fields
+{
+	 width:100%; height:35px;
+}
+#boxcompnay #infocomplete #info2 .fields .label
+{
+	width:30%; float:left; font:14px  Arial; 
+	color:#323232;  
+	height:22px;
+}
+#boxcompnay #infocomplete #info2 .fields .inputfield
+{
+	width:70%; float:left 
+}
+#boxcompnay #infocomplete #info2 .fields .inputfield input,select.txtbox
+{
+	height:20px; float:left; width:184px;
+}
+
+#boxtitlecompany
+{
+	position:absolute;
+	top:0;
+	left:0;
+	width:760px;
+	height:24px;
+	padding:0;
+	padding-top:14px;
+	padding-bottom:10px;
+	padding-left:8px;
+	margin:0;
+	border-bottom:1px solid #000;
+	color:#333;
+	margin-left:20px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:22px;
+}
+
+#boxtitlecompany a
+{
+	float:right;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#666;
+}
+#titlecompany
+{
+	position:absolute;
+	top:0;
+	left:0;
+	width:820px;
+	height:18px;
+	padding:0;
+	padding-top:20px;
+	padding-bottom:10px;
+	padding-left:8px;
+	margin:0;
+	margin-left:15px;
+	border-bottom:1px solid #e9e5e5;
+	color:#323232;
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:24px;
+}
+
+#titlecompany a
+{
+	float:right;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#666;
+}
+
+
+#shadowingcategory
+{
+	display: none;
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100%;
+	background-color: #CCA;
+	z-index:150;
+	opacity:0.10;
+	filter: alpha(opacity=50);
+}
+
+
+#boxcategory 
+{
+	display: none;
+	position: absolute;
+	top: 15%;
+	left: 15%;
+	width: 70%px;
+	height: 400px;
+	padding: 20px 0px 20px 20px;;
+	margin:0;
+	border: 1px solid black;
+	background-color: white;
+	z-index:200;
+	overflow: auto;
+}
+
+ 
+#boxcategory #infocomplete #info h3 {
+	font:20px  Arial;
+	color:#5b5a5a;
+}
+
+
+#boxcategory #infocomplete #info .fields
+{
+	 width:100%; height:35px;
+}
+#boxcategory #infocomplete #info .fields .label
+{
+	width:40%; float:left; font:14px  Arial; 
+	color:#323232;  height:22px; font-weight:500;
+}
+#boxcategory #infocomplete #info .fields .inputfield
+{
+	width:50%; float:left 
+}
+#boxcategory #infocomplete #info .fields .inputfield input.txtbox
+{
+	height:20px; float:left; width:180px;
+}
+
+
+#boxtitlecategory
+{
+		
+	
+	
+	border-bottom: 1px solid #E9E5E5;
+    color: #323232;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 24px;
+    height: 18px;
+    left: 0;
+    margin: 0 0 0 15px;
+    padding: 20px 0 10px 8px;
+    position: absolute;
+    top: 0;
+	width:450px;
+	
+}
+
+
+

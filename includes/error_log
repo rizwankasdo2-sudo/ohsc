@@ -1,0 +1,28 @@
+[06-Jan-2024 18:42:04 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 12
+[06-Jan-2024 18:42:04 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 47
+[06-Jan-2024 18:42:04 UTC] PHP Warning:  Undefined variable $db in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 56
+[06-Jan-2024 18:42:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/oxfordhomestudy/public_html/includes/course_sidebar.php:56
+Stack trace:
+#0 {main}
+  thrown in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 56
+[06-Jan-2024 18:42:04 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 12
+[06-Jan-2024 18:42:04 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 47
+[06-Jan-2024 18:42:04 UTC] PHP Warning:  Undefined variable $db in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 56
+[06-Jan-2024 18:42:04 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/oxfordhomestudy/public_html/includes/course_sidebar.php:56
+Stack trace:
+#0 {main}
+  thrown in /home/oxfordhomestudy/public_html/includes/course_sidebar.php on line 56
+[06-Jan-2024 20:33:02 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 11
+[06-Jan-2024 20:33:02 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 43
+[06-Jan-2024 20:33:02 UTC] PHP Warning:  Undefined variable $db in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 50
+[06-Jan-2024 20:33:02 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 50
+[06-Jan-2024 20:33:02 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 11
+[06-Jan-2024 20:33:02 UTC] PHP Warning:  Undefined variable $base_url in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 43
+[06-Jan-2024 20:33:02 UTC] PHP Warning:  Undefined variable $db in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 50
+[06-Jan-2024 20:33:02 UTC] PHP Fatal error:  Uncaught Error: Call to a member function query() on null in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php:50
+Stack trace:
+#0 {main}
+  thrown in /home/oxfordhomestudy/public_html/includes/sidebar_freecourse - Copy.php on line 50

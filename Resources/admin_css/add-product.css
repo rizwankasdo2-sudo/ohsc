@@ -1,0 +1,154 @@
+@charset "utf-8";
+/* CSS Document */
+
+.add_cancel_button {
+	background-image:url(../admin_images/submit.jpg);
+	background-repeat:no-repeat;
+	width:82px;
+	height:31px;
+	display:block;
+	text-decoration:none;
+	text-align:center;
+	color:#00F;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:16px;
+	border:0;
+	font-weight:bold;
+	cursor:pointer;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #tit {
+	width:200px;
+	margin-top:10px;
+	float:left;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #tit h3 {
+	font-family:Arial, Helvetica, sans-serif;
+	color:#C60;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #buttons {
+	width:250px;
+	margin-top:10px;
+	float:right;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #buttons ul {
+	list-style-type:none;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #buttons ul li {
+	display:inline;
+	float:left;
+	margin-right:10px;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #buttons ul li a {
+	background-image:url(../admin_images/submit.jpg);
+	background-repeat:no-repeat;
+	width:82px;
+	height:26px;
+	display:block;
+	text-decoration:none;
+	text-align:center;
+	color:#00F;
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+	font-size:16px;
+	border:0;
+	padding-top:5px;
+	font-weight:bold;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addproducts {
+	width:1158px;
+	margin:10px auto auto 21px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addproducts #uper {
+	width:1138px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addproducts #uper #upertop {
+	width:1126px;
+	padding:5px;
+	border:1px solid #D2D0D1;
+	background-color:#F60;
+	margin:0px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addproducts #uper #upertop h4 {
+	font-family:Verdana, Geneva, sans-serif;
+	color:#FFF;
+	font-size:14px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addproducts #uper #uperdetail {
+	width:1116px;
+	padding:10px;
+	border:1px solid #D2D0D1;
+	border-top:none;
+	margin:0px;
+}
+
+#general {
+	width:1080px;
+	margin-top:20px;
+}
+
+#general .fieldrepeat {
+	width:100%;
+	margin-top:20px;
+	display:inline-block;
+}
+
+#general .fieldrepeat p {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:13px;
+	color:#595959;
+	width:170px;
+	float:left;
+	margin-top:5px;
+	font-weight:bold;
+	margin-right:15px;
+}
+
+#general .fieldrepeat .productfield {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#595959;
+	width:300px;
+	float:left;
+	height:25px;
+	border:solid 1px #e4e4e4;
+}
+
+#general .fieldrepeat .productfieldlarge {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#595959;
+	width:400px;
+	float:left;
+	height:25px;
+	border:solid 1px #e4e4e4;
+}
+
+#general .fieldrepeat .textareasmall {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#595959;
+	width:270px;
+	float:left;
+	height:120px;
+	border:solid 1px #e4e4e4;
+}
+
+#general .fieldrepeat .textarealarge {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:12px;
+	color:#595959;
+	width:400px;
+	float:left;
+	height:200px;
+	border:solid 1px #e4e4e4;
+}

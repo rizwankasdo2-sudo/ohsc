@@ -1,0 +1,259 @@
+<script src="<?php echo $pdots; ?>js/nd/jquery-3.2.1.min.js"></script>
+<!-- Begin footer section -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="footer-boxs">
+                <div class="footer-box logo-box">
+                    <div class="head">
+                        <h4>Popular Links</h4>
+                    </div>
+                    <div class="footer_column_content">
+                        <ul>
+                            <?php getFooterLinksSimple(1); ?>
+                            <li><a href="<?php echo $base_url; ?>/faq">FAQ</a></li>
+                            <li><a href="<?php echo $base_url; ?>/voucher-redemption.php">Voucher Redemption</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-box menu">
+                    <div class="head">
+                        <h4>Menu</h4>
+                    </div>
+                    <div class="footer-links">
+                        <ul>
+                            <?php getFooterLinksSimple(2); ?>
+                            <li><a href="https://www.trustpilot.com/review/oxfordhomestudy.com?stars=5">OHSC Reviews</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-box links">
+                    <div class="head">
+                        <h4>Useful Links</h4>
+                    </div>
+                    <div class="footer-links">
+                        <ul>
+                            <?php getFooterLinksSimple(3); ?>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-box links">
+                    <div class="head">
+                        <h4>More Links</h4>
+                    </div>
+                    <div class="footer-links">
+                        <ul>
+                            <?php getFooterLinksSimple(4); ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="copyright">
+                        <p>&copy; 2024 Oxford Home Study. All rights reserved. </p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="footer-social-icons">
+                        <ul>
+                            <li>
+                                <a href="<?php echo $social_row['facebook']; ?>" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $social_row['twitter']; ?>" target="_blank"><i class="fa-brands fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $social_row['linkedin']; ?>" target="_blank"><i class="fa-brands fa-linkedin-in"></i></a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $social_row['youtube']; ?>" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+                            </li>
+                            <!-- <li>
+                                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- Bootstrap JS -->
+<script src="<?php echo $baseurl; ?>/assets/js/bootstrap.bundle.min.js"></script>
+<!-- jQuery -->
+<script src="<?php echo $baseurl; ?>/assets/js/jquery.min.js"></script>
+<script src="<?php echo $baseurl; ?>/assets/js/owl.carousel.js"></script>
+<script src="<?php echo $baseurl; ?>/assets/js/app.js?v=2"></script>
+<script src="https://cdn.jsdelivr.net/npm/owlcarousel-row-plugin@1.0.0/dist/owlcarousel-row-plugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/11.0.5/swiper-bundle.min.js"
+    integrity="sha512-Ysw1DcK1P+uYLqprEAzNQJP+J4hTx4t/3X2nbVwszao8wD+9afLjBQYjz7Uk4ADP+Er++mJoScI42ueGtQOzEA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</body>
+<div id="GASec"></div>
+<script src="<?php echo $pdots; ?>js/nd/functions.js?v=24"></script>
+<script async="async" type="text/javascript" src="<?php echo $pdots; ?>js/custom.js?v=4" defer></script>
+<?php if (strtolower(basename($_SERVER['PHP_SELF'])) != 'index.php' && strtolower(basename($_SERVER['PHP_SELF'])) != 'classification.php' && strtolower(basename($_SERVER['PHP_SELF'])) != 'post.php') { ?>
+    <script>
+        var coll = document.getElementsByClassName("collapsible");
+        var i;
+        for (i = 0; i < coll.length; i++) {
+            coll[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var content = this.nextElementSibling;
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    content.style.borderBottom = 'none';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    content.style.borderBottom = '1px #000 solid';
+                }
+            });
+        }
+    </script>
+<?php } else { ?>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<?php } ?>
+<script>
+    $(".text_expand_link").click(function() {
+        $(this).hide();
+        $(".less_text, .less_text p").css('display', 'inline-block');
+        $(".all_text").slideDown('slow');
+        $(".all_text").css('display', 'inline-block');
+        return false;
+    });
+    $("#text_shrink_link").click(function() {
+        $(".all_text").slideUp('fast');
+        $(".text_expand_link").show();
+    });
+</script>
+<?php if (strtolower(basename($_SERVER['PHP_SELF'])) != 'index.php' && strtolower(basename($_SERVER['PHP_SELF'])) != 'classification.php') { ?>
+    <script type="text/javascript" src="<?php echo $pdots; ?>js/bootstrap.min.js?v=4"></script>
+<?php } ?>
+<script src="<?php echo $pdots; ?>jquery-modal-master/jquery.modal.min.js?v=4"></script>
+<?php if (strtolower(basename($_SERVER['PHP_SELF'])) == 'index.php' || strtolower(basename($_SERVER['PHP_SELF'])) == 'classification.php') { ?>
+    <script src="./OwlCarousel2-2.3.4/docs/assets/owlcarousel/owl.carousel.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            <?php for ($i = 1; $i <= $_SESSION['total_classifications']; $i++) { ?>
+                var carousel<?php echo $i; ?> = $('#clslider<?php echo $i; ?>');
+                carousel<?php echo $i; ?>.owlCarousel({
+                    loop: false,
+                    margin: 10,
+                    nav: true,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        768: {
+                            items: 2
+                        },
+                        1200: {
+                            items: 3
+                        },
+                        1300: {
+                            items: 4
+                        }
+                    }
+                });
+            <?php } ?>
+            // Begin student reviews owlcarousel
+            var stdrevcarousel = $('#stdrevslider');
+            stdrevcarousel.owlCarousel({
+                loop: false,
+                margin: 10,
+                nav: true,
+                responsive: {
+                    0: {
+                        items: 1
+                    },
+                    805: {
+                        items: 2
+                    },
+                    1205: {
+                        items: 2
+                    },
+                    1300: {
+                        items: 3
+                    }
+                }
+            });
+            // End student reviews owlcarousel
+        });
+    </script>
+<?php } ?>
+<script>
+// Begin loading content
+<?php if (strtolower(basename($_SERVER['PHP_SELF'])) == 'index.php') { ?>
+    $("#homefaqsec").load("<?php echo $base_url ?>/ajax/general.php?task=show_new_home_faqs");
+    $("#homeadsec1").load("<?php echo $base_url ?>/ajax/general.php?task=show_ads");
+    $("#homeadsec2").load("<?php echo $base_url ?>/ajax/general.php?task=show_ads");
+    $("#homeadsec3").load("<?php echo $base_url ?>/ajax/general.php?task=show_ads");
+<?php } ?>
+let front_content_loaded = false;
+    
+function loadFrontContent() {
+    if (front_content_loaded) return;
+    front_content_loaded = true;
+    // Defer DOM changes to next frame → avoids forced reflow
+    requestAnimationFrame(() => {
+        // Load ads
+        fetch("<?php echo $base_url ?>/ajax/general.php?task=show_ads")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector("#mainadsdiv").innerHTML = html;
+            })
+            .catch(err => console.error("Failed to load ads:", err));
+        // Load GA
+        fetch("<?php echo $base_url ?>/ajax/general.php?task=addGA")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector("#GASec").innerHTML = html;
+            })
+            .catch(err => console.error("Failed to load GA:", err));
+        <?php if (strtolower(basename($_SERVER['PHP_SELF'])) == 'index.php') { ?>
+        fetch("<?php echo $base_url ?>/ajax/general.php?task=show_home_faqs")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector("#homefaqsec").innerHTML = html;
+            })
+            .catch(err => console.error("Failed to load FAQs:", err));
+        fetch("<?php echo $base_url ?>/ajax/general.php?task=show_ads")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector("#homeadsec1").innerHTML = html;
+            })
+            .catch(err => console.error("Failed to load ads:", err));
+        fetch("<?php echo $base_url ?>/ajax/general.php?task=show_ads")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector("#homeadsec2").innerHTML = html;
+            })
+            .catch(err => console.error("Failed to load ads:", err));
+        fetch("<?php echo $base_url ?>/ajax/general.php?task=show_ads")
+            .then(res => res.text())
+            .then(html => {
+                document.querySelector("#homeadsec3").innerHTML = html;
+            })
+            .catch(err => console.error("Failed to load ads:", err));
+        <?php } ?>
+    });
+}
+function handleInteraction() {
+    loadFrontContent();
+    // Remove listeners after first trigger → no extra layout checks
+    window.removeEventListener("scroll", handleInteraction);
+    window.removeEventListener("mousemove", handleInteraction);
+}
+// Initial check: if page is already scrolled
+if (window.scrollY > 0) {
+    loadFrontContent();
+} else {
+    // Listen for first interaction only
+    window.addEventListener("scroll", handleInteraction, { once: true });
+    window.addEventListener("mousemove", handleInteraction, { once: true });
+}
+// End loading content
+</script>

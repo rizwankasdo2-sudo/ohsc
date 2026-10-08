@@ -1,0 +1,58 @@
+
+
+/* CSS of Right Content */
+
+#rightContent
+{
+ width:674px;
+}
+ 
+/* CSS of RightContent AboutMe   */ 
+
+.RContHeader
+{
+ background:url(../admin_images/topHeadBg.jpg) top left repeat-x;
+ height:51px;
+}
+.RCheading
+{
+ font:24px "Trebuchet MS", Arial, Tahoma;
+ color:#FFFFFF;
+ padding:15px 0 0 18px;
+}
+.clear
+{
+ clear:both;
+}
+.grediantBg
+{
+ background:url(../admin_images/grediantBg.jpg) top left repeat-x;
+ background-color:#DF8C00;
+}
+.RContBg
+{
+ width:640px;
+ margin:0 15px 0px 15px;
+ background:#FFFFFF;
+}
+.RContBg p
+{
+ padding:10px 5px 5px;
+ font:12px Arial, Helvetica, sans-serif;
+ color:#043f61;
+ line-height:15px;
+}
+
+.RContFooter
+{
+ height:13px;
+ background:url(../admin_images/contentBg.jpg) top left repeat-x;
+}
+
+
+
+
+#PersonalInformation
+{
+ margin-top:0px;
+}

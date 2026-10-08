@@ -1,0 +1,64 @@
+table {
+	border:1px solid #D2D0D1;
+	margin:0px;
+}
+
+table tr.heading {
+	background-color:#EFEFEF;
+	height:30px;
+}
+
+table tr th.headingborder {
+	border-right:solid 1px #D2D0D1;
+	border-bottom:solid 1px #D2D0D1;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:13px;
+	color:#333;
+}
+
+table tr th.headingborder_last {
+	border-bottom:solid 1px #D2D0D1;
+	border-bottom:solid 1px #D2D0D1;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:13px;
+	color:#333;
+}
+
+table tr.rowdescriptioncolor {
+	background-color:#F9F9F9;
+	height:30px;
+}
+
+table tr.rowdescription {
+	height:30px;
+}
+
+table tr td.bord {
+	border-right:solid 1px #D2D0D1;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:11px;
+	color:#333;
+	text-align:center;
+}
+
+table tr td.imagess {
+	text-align:center;
+}
+
+table tr td.imagess a.tick {
+	margin-right:15px;
+	display:inline-block;
+	background-image:url(../admin_images/tick.png);
+	width:18px;
+	height:15px;
+	cursor:pointer;
+}
+
+table tr td.imagess a.cross {
+	margin-right:15px;
+	background-image:url(../admin_images/cross.png);
+	width:13px;
+	height:13px;
+	display:inline-block;
+	cursor:pointer;
+}

@@ -1,0 +1,393 @@
+
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #bannerheading {
+	width:200px;
+	margin-top:10px;
+	float:left;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #bannerheading h3 {
+	font-family:Arial, Helvetica, sans-serif;
+	color:#C60;
+	font-weight:normal;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #addsave {
+	width:180px;
+	margin-top:10px;
+	float:right;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #addsave ul {
+	list-style-type:none;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #addsave ul li {
+	display:inline;
+	float:left;
+	margin-right:10px;
+}
+
+#wrap_dashboard #outer_contanier #board #midle_repeat #addsave ul li a {
+	background-image:url(../admin_images/button.jpg);
+	background-repeat:no-repeat;
+	width:71px;
+	height:28px;
+	display:block;
+	text-decoration:none;
+	text-align:center;
+	color:#FFF;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:13px;
+	border:0;
+	padding-top:5px;
+	font-weight:normal;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners {
+	width:1158px;
+	margin:10px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead {
+	width:1138px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banertop {
+	width:1138px;
+	padding:5px;
+	border:1px solid #D2D0D1;
+	background-color:#F60;
+	margin:0px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banertop h4 {
+	font-family:Verdana, Geneva, sans-serif;
+	color:#FFF;
+	font-size:14px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail {
+	width:1148px;
+	border:1px solid #D2D0D1;
+	border-top:none;
+	margin:0px;
+	background-color:#fafafa;
+}
+.gallery_insert{
+	
+	width:1148px;
+	border:1px solid #D2D0D1;
+	border-top:none;
+	margin:0px;
+	height:45px;
+	background-color:#fafafa;
+	}
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner {
+	width:1148px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner #uploadfield {
+
+}
+.gallery_upload{
+	width:420px;
+	float:left;
+	height:35px;
+	border-right:solid 1px #d6d6d6;
+	margin-top:10px;
+	}
+	.gallery_upload p{
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#333333;
+	float:left;
+	padding-right:6px;
+	
+	}
+#download_div{
+	width:485px;
+	float:left;
+	height:45px;
+	border-right:solid 1px #d6d6d6;
+	
+	}
+	#download_div2{
+	width:660px;
+	float:left;
+	height:45px;
+	border-right:solid 1px #d6d6d6;
+	
+	}
+	#download_div2 p {
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#333333;
+	float:left;
+	padding-top:13px;
+}
+	.gallery_name{
+	width:200px;
+	float:left;
+	height:45px;
+	border-right:solid 1px #d6d6d6;
+	
+		}
+		.gallery_name p {
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#333333;
+	float:left;
+	padding-top:10px;
+}
+
+	#download_div p {
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#333333;
+	float:left;
+	padding-top:13px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner #uploadfield p {
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	color:#333333;
+	float:left;
+	padding:15px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner #uploadfield .banernamefield {
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:16px;
+	color:#595959;
+	width:281px;
+	float:left;
+	height:25px;
+	border:solid 1px #e4e4e4;
+	margin:10px;
+}
+.download{
+font-family:Verdana, Geneva, sans-serif;
+	font-size:16px;
+	color:#595959;
+	width:195px;
+	float:left;
+	height:25px;
+	border:solid 1px #e4e4e4;
+	margin:10px;
+}
+.download2{
+font-family:Verdana, Geneva, sans-serif;
+	font-size:16px;
+	color:#595959;
+	width:130px;
+	float:left;
+	height:25px;
+	border:solid 1px #e4e4e4;
+	margin:10px;
+}
+.download3{
+font-family:Verdana, Geneva, sans-serif;
+	font-size:16px;
+	color:#595959;
+	width:280px;
+	float:left;
+	height:25px;
+	border:solid 1px #e4e4e4;
+	margin:10px;
+}
+.download4{
+font-family:Verdana, Geneva, sans-serif;
+	font-size:16px;
+	color:#595959;
+	width:210px;
+	float:left;
+	height:25px;
+	border:solid 1px #e4e4e4;
+	margin:10px;
+}
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner #uploadfield .banerimgfield {
+	width:320px;
+	height:25px;
+	background-color:#FFF;
+	border:0;
+	margin:10px;
+	margin-bottom:0px;
+	margin-right:25px;
+}
+#banerdetail label{
+    width: 116px;
+    display: inline-block;
+    margin-left: 12px;
+}
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner #uploadfield .browse {
+	background-image:url(../admin_images/search.jpg);
+	background-repeat:no-repeat;
+	width:85px;
+	height:32px;
+	border:0;
+	color:#717171;
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:16px;
+	cursor:pointer;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner .status {
+	width:250px;
+	height:35px;
+	color:#333333;
+	text-align:center;
+	padding-top:10px;
+}
+.gallery_status{
+	width:186px;
+	height:35px;
+	color:#333333;
+	border-right:solid 1px #d6d6d6;
+	float:left;
+	text-align:center;
+	padding-top:10px;
+	
+	}
+	.gallery_status p {
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:18px;
+	color:#333333;
+	float:left;
+	margin-right:15px;
+	padding:0px 0 0 10px;
+}
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner .status p {
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:15px;
+	color:#333333;
+	float:left;
+	margin-right:15px;
+	padding:3px 0 0 10px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail #uploadbanner .status .stat {
+	float:left;
+	width:150px;
+	margin-top:3px;
+}
+.gallery_state{
+	float:left;
+	width:99px;
+	margin-top:3px;}
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 {
+	width:1148px;
+	border:1px solid #D2D0D1;
+	border-top:none;
+	margin:0px;
+	background-color:#fafafa;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners {
+	width:1128px;
+	padding:10px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners table {
+	border:solid 1px #dcdcdc;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #top_row {
+	width:1126px;
+	padding:5px 10px;
+	background-color:#eeeeee;
+	margin:0px;
+	height:30px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #top_row .bbtitle {
+	width:230px;
+	border-right:solid 1px #d5d5d5;
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:17px;
+	font-weight:normal;
+	color:#363535;
+	padding-left:20px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #top_row .thumbnailshow {
+	width:530px;
+	border-right:solid 1px #D2D0D1;
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:17px;
+	font-weight:normal;
+	color:#363535;
+	padding-left:20px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #top_row .lasttwo {
+	width:180px;
+	border-right:solid 1px #D2D0D1;
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:17px;
+	font-weight:normal;
+	color:#363535;
+	text-align:center;
+	padding-left:20px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #rowdownrepeat {
+	width:1128px;
+	background-color:#ffffff;
+	margin:0px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #rowdownrepeat .bbtitd {
+	width:225px;
+	border-right:solid 1px #d5d5d5;
+	border-bottom:solid 1px #d5d5d5;
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	color:#363535;
+	text-align:center;
+	padding-left:25px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #rowdownrepeat .bigimg {
+	width:550px;
+	border-right:solid 1px #D2D0D1;
+	border-bottom:solid 1px #d5d5d5;
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	color:#363535;
+	text-align:center;
+	padding:15px 0;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #rowdownrepeat .last2 {
+	width:175px;
+	border-right:solid 1px #D2D0D1;
+	border-bottom:solid 1px #d5d5d5;
+	font-family:"Myriad Pro", Arial, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:normal;
+	color:#363535;
+	text-align:center;
+	padding-left:25px;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #rowdownrepeat a.et {
+	margin-right:15px;
+	display:inline-block;
+	background-image:url(../admin_images/edit.jpg);
+	width:23px;
+	height:27px;
+	cursor:pointer;
+}
+
+#wrap_dashboard #outer_contanier #board #main_content #addbaners #banerhead #banerdetail22 #listofbanners #rowdownrepeat a.dl {
+	margin-right:15px;
+	background-image:url(../admin_images/cross.png);
+	width:13px;
+	height:13px;
+	display:inline-block;
+	cursor:pointer;
+}
