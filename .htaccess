@@ -4,7 +4,13 @@
 
 RewriteEngine On
 
-# Force HTTPS and www
+# ORIGINAL production rule: force every request to https://www.oxfordhomestudy.com
+# RewriteCond %{HTTPS} off [OR]
+# RewriteCond %{HTTP_HOST} !^www\. [NC]
+# RewriteRule ^(.*)$ https://www.oxfordhomestudy.com/$1 [R=301,L]
+# LOCAL CHANGE: localhost and 127.0.0.1 stay on this machine (http://localhost:300) instead of redirecting to the live site.
+RewriteCond %{HTTP_HOST} !^localhost(:\d+)?$ [NC]
+RewriteCond %{HTTP_HOST} !^127\.0\.0\.1(:\d+)?$ [NC]
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteRule ^(.*)$ https://www.oxfordhomestudy.com/$1 [R=301,L]
@@ -51,6 +57,8 @@ RewriteCond %{REQUEST_URI} !^/design-three/assets/ [NC]
 RewriteCond %{REQUEST_URI} !^/js/ [NC]
 RewriteCond %{REQUEST_URI} !^/jquery-modal-master/ [NC]
 RewriteCond %{REQUEST_URI} !^/lms/ [NC]
+# TOOLS: /tools is a separate module. Its admin screens use the same ?id= links as the rest of the admin panel.
+RewriteCond %{REQUEST_URI} !^/tools/ [NC]
 RewriteCond %{REQUEST_URI} !^/Resources/admin_css/ [NC]
 RewriteCond %{REQUEST_URI} !^/ajax/general\.php$ [NC]
 RewriteCond %{REQUEST_URI} !^/ajax/blog-category-posts\.php$ [NC]
@@ -229,6 +237,12 @@ RewriteRule ^faq(?:/(.*))?$ faq.php?slug=$1 [L,QSA]
 RewriteRule ^contact$ contact.php [L]
 RewriteRule ^applyonline$ apply.php [L]
 RewriteRule ^apply_target$ apply_target.php [L]
+# TOOLS: public pages live in /tools. "tools" must be claimed before the one-segment page router. Admin addresses open the tools folder inside the existing admin panel.
+RewriteRule ^tools/?$ tools/index.php [END]
+RewriteRule ^admin/tools-manager/?$ tools/admin/index.php [QSA,END]
+RewriteRule ^admin/tool-edit/?$ tools/admin/tool-form.php [QSA,END]
+RewriteRule ^admin/typing-passages/?$ tools/admin/passages.php [QSA,END]
+RewriteRule ^admin/typing-passage/?$ tools/admin/passage-form.php [QSA,END]
 RewriteRule ^voucher-redemption$ voucher-redemption.php [L]
 RewriteRule ^start-your-course-now$ apply_now.php [L]
 RewriteRule ^free-online-courses-with-certificates$ free-courses.php [L]

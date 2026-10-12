@@ -1,9 +1,15 @@
 <?php
 require_once(dirname(__FILE__) . '/constants.php');
 $discount_row = $db->query("SELECT amount FROM tbl_discount WHERE id = '1' ")->fetch_array();
-if ($uri_array['2']) {
-    $head_catrow = $db->query("SELECT special_discount FROM tbl_courses WHERE slug = '" . $uri_array['2'] . "' ")->fetch_array();
-    $special_discount = $head_catrow['special_discount'];
+// ORIGINAL: read a category slug from URL segment 2. Short URLs such as the homepage have no segment 2, so PHP 8 warned.
+// if ($uri_array['2']) {
+//     $head_catrow = $db->query("SELECT special_discount FROM tbl_courses WHERE slug = '" . $uri_array['2'] . "' ")->fetch_array();
+//     $special_discount = $head_catrow['special_discount'];
+// }
+// LOCAL CHANGE: only look up the category when segment 2 exists, and skip the discount if that category row is missing.
+if (!empty($uri_array[2])) {
+    $head_catrow = $db->query("SELECT special_discount FROM tbl_courses WHERE slug = '" . $uri_array[2] . "' ")->fetch_array();
+    $special_discount = is_array($head_catrow) ? $head_catrow['special_discount'] : '';
 }
 ?>
 <?php include dirname(__FILE__) . '/favicon.php'; ?>
@@ -84,6 +90,7 @@ $social_row = $db->query("SELECT * FROM social_links")->fetch_array();
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo $base_url . '/contact' ?>">Contact us</a>
                         </li>
+                        <?php include dirname(__FILE__) . '/../tools/includes/nav-item.php'; ?>
                     </ul>
                     <div class="login-btns">
                         <div class="login">

@@ -250,6 +250,16 @@ if ($_GET['task'] == 'show_main_menu') {?>
                     <hr />
                     <li><a href="<?php echo $base_url ?>/contact">Contact Us</a></li>
                     <hr />
+                    <?php
+                    // TOOLS: mobile menu lists published tools. The module lives in /tools.
+                    require_once dirname(__FILE__) . '/../tools/includes/registry.php';
+                    $ohscMobileTools = (isset($db) && $db instanceof mysqli) ? ohsc_tools_active($db) : array();
+                    ?>
+                    <li><a href="<?php echo $base_url ?>/tools/">Tools</a></li>
+                    <?php foreach ($ohscMobileTools as $ohscMobileTool) { ?>
+                    <li><a href="<?php echo $base_url . '/tools/' . $ohscMobileTool['slug'] . '/'; ?>"><?php echo ohsc_h($ohscMobileTool['title']); ?></a></li>
+                    <?php } ?>
+                    <hr />
                     <li><a href="<?php echo $base_url ?>/lms/">Login</a></li>
                     <hr />
                     <li><a href="<?php echo $base_url ?>/applyonline">Sign Up</a></li>
@@ -291,7 +301,9 @@ if ($_GET['task'] == 'addGA') {
 // End adding Google Analytics
 
 // Begin displaying remaing free courses
-if ($_POST['task'] == 'loadRestOfFreeCourses') {
+// ORIGINAL: if ($_POST['task'] == 'loadRestOfFreeCourses') {
+// LOCAL CHANGE: the homepage calls this file without a POST task, which warned "Undefined array key task" on PHP 8.
+if (isset($_POST['task']) && $_POST['task'] == 'loadRestOfFreeCourses') {
     $cid = $_POST['cid'];
     $catdip_row = $db->query("SELECT td.cid, td.slug, tc.slug AS catslug, tc.cname, tc.icon FROM tbl_diploma AS td, tbl_courses AS tc WHERE td.type = '3' AND tc.cid = $cid AND td.cid = tc.cid ORDER BY tc.ordernumber ASC ")->fetch_array();
     $diploma_result = $db->query("SELECT name, slug, square_icon, admin_rating, admin_total_enrolled FROM tbl_diploma WHERE cid = '" . $catdip_row['cid'] . "' AND type = '2' LIMIT 3, 999999999999 ");

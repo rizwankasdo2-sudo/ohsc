@@ -76,6 +76,7 @@ require_once(dirname(__FILE__) . '/../css/nd/developer.css');
                         <li class="nav-item">
                             <a class="nav-link" href="<?php echo $base_url . '/contact' ?>">Contact us</a>
                         </li>
+                        <?php include dirname(__FILE__) . '/../tools/includes/nav-item.php'; ?>
                     </ul>
                     <div class="login-btns">
                         <div class="login">

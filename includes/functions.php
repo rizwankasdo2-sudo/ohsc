@@ -216,21 +216,50 @@ function echoCanonicalTag($path = null) {
     echo '<link rel="canonical" href="' . htmlspecialchars(getCanonicalURL($path), ENT_QUOTES, 'UTF-8') . '">' . "\n";
 }
 
+// ORIGINAL: price lookup assumed diploma, category, payment, and discount rows always exist.
+// function getCoursePrice($diplomaid) {
+//     global $db;
+//     $diploma_row = $db->query("SELECT cid, free_course FROM tbl_diploma WHERE diplomaid = $diplomaid")->fetch_array();
+//     $category_row = $db->query("SELECT special_discount FROM `tbl_courses` WHERE cid = " . $diploma_row['cid'])->fetch_array();
+//     $payment_row = $db->query("SELECT payment, discount FROM tbl_payment WHERE diplomaid = $diplomaid")->fetch_array();
+//     $discount_row = $db->query("SELECT amount FROM tbl_discount WHERE id = 1")->fetch_array();
+//     $total = floatval($payment_row['payment']);
+//     if ($diploma_row['free_course'] == 1) {
+//         return 'Free';
+//     } else if (is_numeric($payment_row['discount']) && $payment_row['discount'] != 0.00) {
+//         return $total - $payment_row['discount'];
+//     } else if ($category_row['special_discount']) {
+//         $discount_amount = number_format(($total * $category_row['special_discount']) / 100, 2, '.', '');
+//         return ($total - $discount_amount);
+//     } else if ($discount_row['amount'] != 0) {
+//         $discount_amount = number_format(($total * $discount_row['amount']) / 100, 2, '.', '');
+//         return ($total - $discount_amount);
+//     } else {
+//         return $total;
+//     }
+// }
+// LOCAL CHANGE: free courses often have no payment row. Missing rows no longer print a warning. The price is unchanged when the rows exist.
 function getCoursePrice($diplomaid) {
     global $db;
+    $diplomaid = (int) $diplomaid;
     $diploma_row = $db->query("SELECT cid, free_course FROM tbl_diploma WHERE diplomaid = $diplomaid")->fetch_array();
-    $category_row = $db->query("SELECT special_discount FROM `tbl_courses` WHERE cid = " . $diploma_row['cid'])->fetch_array();
-    $payment_row = $db->query("SELECT payment, discount FROM tbl_payment WHERE diplomaid = $diplomaid")->fetch_array();
-    $discount_row = $db->query("SELECT amount FROM tbl_discount WHERE id = 1")->fetch_array();
-    $total = floatval($payment_row['payment']);
+    if (!is_array($diploma_row)) {
+        return 0;
+    }
     if ($diploma_row['free_course'] == 1) {
         return 'Free';
-    } else if (is_numeric($payment_row['discount']) && $payment_row['discount'] != 0.00) {
-        return $total - $payment_row['discount'];
-    } else if ($category_row['special_discount']) {
+    }
+    $category_row = $db->query("SELECT special_discount FROM `tbl_courses` WHERE cid = " . (int) $diploma_row['cid'])->fetch_array();
+    $payment_row = $db->query("SELECT payment, discount FROM tbl_payment WHERE diplomaid = $diplomaid")->fetch_array();
+    $discount_row = $db->query("SELECT amount FROM tbl_discount WHERE id = 1")->fetch_array();
+    $total = is_array($payment_row) ? floatval($payment_row['payment']) : 0;
+    $payment_discount = is_array($payment_row) ? $payment_row['discount'] : 0;
+    if (is_numeric($payment_discount) && $payment_discount != 0.00) {
+        return $total - $payment_discount;
+    } else if (is_array($category_row) && $category_row['special_discount']) {
         $discount_amount = number_format(($total * $category_row['special_discount']) / 100, 2, '.', '');
         return ($total - $discount_amount);
-    } else if ($discount_row['amount'] != 0) {
+    } else if (is_array($discount_row) && $discount_row['amount'] != 0) {
         $discount_amount = number_format(($total * $discount_row['amount']) / 100, 2, '.', '');
         return ($total - $discount_amount);
     } else {
@@ -238,10 +267,17 @@ function getCoursePrice($diplomaid) {
     }
 }
 
+// ORIGINAL: function getCoursePricePrev($diplomaid) {
+//     global $db;
+//     $payment_row = $db->query("SELECT payment FROM tbl_payment WHERE diplomaid = $diplomaid")->fetch_array();
+//     return $payment_row['payment'];
+// }
+// LOCAL CHANGE: return null when a course has no payment row, instead of warning on a null result.
 function getCoursePricePrev($diplomaid) {
     global $db;
+    $diplomaid = (int) $diplomaid;
     $payment_row = $db->query("SELECT payment FROM tbl_payment WHERE diplomaid = $diplomaid")->fetch_array();
-    return $payment_row['payment'];
+    return is_array($payment_row) ? $payment_row['payment'] : null;
 }
 
 function getFaqsForRelatedDiploma($db, $diploma_id) {

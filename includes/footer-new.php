@@ -110,7 +110,10 @@
                     document.querySelector("#GASec").innerHTML = html;
                 })
                 .catch(err => console.error("Failed to load GA:", err));*/ ?>
-            <?php if (strtolower(basename($_SERVER['PHP_SELF'])) == 'index.php') { ?>
+            <?php
+            // ORIGINAL: if (strtolower(basename($_SERVER['PHP_SELF'])) == 'index.php') {
+            // TOOLS: pages inside /tools also use index.php. Homepage scripts stay on the site root only.
+            if (strtolower(basename($_SERVER['PHP_SELF'])) == 'index.php' && strpos($_SERVER['PHP_SELF'], '/tools/') === false) { ?>
             fetch("<?php echo $base_url ?>/ajax/general.php?task=Youtube_homepage")
                 .then(res => res.text())
                 .then(html => {

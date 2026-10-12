@@ -1,9 +1,15 @@
 <?php
 require_once(dirname(__FILE__) . '/constants.php');
 $discount_row = $db->query("SELECT amount FROM tbl_discount WHERE id = '1' ")->fetch_array();
-if ($uri_array['2']) {
-    $head_catrow = $db->query("SELECT special_discount FROM tbl_courses WHERE slug = '" . $uri_array['2'] . "' ")->fetch_array();
-    $special_discount = $head_catrow['special_discount'];
+// ORIGINAL: read a category slug from URL segment 2. Short URLs such as the homepage have no segment 2, so PHP 8 warned.
+// if ($uri_array['2']) {
+//     $head_catrow = $db->query("SELECT special_discount FROM tbl_courses WHERE slug = '" . $uri_array['2'] . "' ")->fetch_array();
+//     $special_discount = $head_catrow['special_discount'];
+// }
+// LOCAL CHANGE: only look up the category when segment 2 exists, and skip the discount if that category row is missing.
+if (!empty($uri_array[2])) {
+    $head_catrow = $db->query("SELECT special_discount FROM tbl_courses WHERE slug = '" . $uri_array[2] . "' ")->fetch_array();
+    $special_discount = is_array($head_catrow) ? $head_catrow['special_discount'] : '';
 }
 ?>
 <?php include dirname(__FILE__) . '/favicon.php'; ?>
@@ -62,7 +68,12 @@ $social_row = $db->query("SELECT * FROM social_links")->fetch_array();
                         </form>
                     </div> -->
                 <div class="vamiddle mrl40 menutxt bmoption"><a href="<?php echo $base_url . '/OHSC-Blog' ?>">Blog</a></div>
+                <!-- ORIGINAL: Contact Us carried a large right margin so Log in stayed on the right.
                 <div class="vamiddle mrl40 menutxt bmoption" style="margin-right:220px"><a href="<?php echo $base_url . '/contact' ?>">Contact Us</a></div>
+                -->
+                <!-- TOOLS: Contact Us stays. Tools lists active tools from the separate tools folder. Log in still uses margin-left:auto. -->
+                <div class="vamiddle mrl40 menutxt bmoption"><a href="<?php echo $base_url . '/contact' ?>">Contact Us</a></div>
+                <?php $ohsc_tools_nav_style = 'legacy'; include dirname(__FILE__) . '/../tools/includes/nav-item.php'; ?>
                 <div class="vamiddle mrl40 bmoption" style="margin-left:auto;">
                     <a href="<?php echo $base_url . '/lms' ?>" class="clbtn">Log in</a>
                 </div>
