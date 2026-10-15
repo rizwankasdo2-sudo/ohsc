@@ -4,7 +4,7 @@ require_once('includes/functions.php');
 $classification_row = $db->query("SELECT * FROM classification WHERE show_at_frontend = 1 AND id = " . $_GET['id'])->fetch_array();
                     
 if (!$classification_row) {
-    header('location:https://www.oxfordhomestudy.com');
+    header('location:/');
     exit;
 }
 ?>
@@ -210,7 +210,7 @@ if (!$classification_row) {
                                         <?php
                                         $diploma_result = $db->query("SELECT td.*, tc.slug AS tc_slug, tc.special_discount FROM tbl_diploma AS td, tbl_courses AS tc WHERE td.IStatus = 1 AND td.show_in_category = 1 AND td.classification = " . $classification_row['id'] . " AND (td.type = 1 OR td.type = 2) AND td.cid = tc.cid AND tc.IStatus = 1 AND td.famous_course = 1 ");
                                         while ($diploma_row = $diploma_result->fetch_array()) {
-                                            $course_url = "https://www.oxfordhomestudy.com/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
+                                            $course_url = "/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
                                             $image_url = "images/subject/" . $diploma_row['thumbnail'];
                                             $payment_row = $db->query("SELECT payment AS fullpayment, discount FROM tbl_payment WHERE diplomaid = " . $diploma_row['diplomaid'])->fetch_array();
                                             if ($diploma_row['free_course'] == 1) {
@@ -282,7 +282,7 @@ if (!$classification_row) {
                                         <?php
                                         $diploma_result = $db->query("SELECT td.*, tc.slug AS tc_slug, tc.special_discount FROM tbl_diploma AS td, tbl_courses AS tc WHERE td.IStatus = 1 AND td.show_in_category = 1 AND td.classification = " . $classification_row['id'] . " AND (td.type = 1 OR td.type = 2) AND td.cid = tc.cid AND tc.IStatus = 1 AND td.top_diploma = 1 ");
                                         while ($diploma_row = $diploma_result->fetch_array()) {
-                                            $course_url = "https://www.oxfordhomestudy.com/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
+                                            $course_url = "/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
                                             $image_url = "images/subject/" . $diploma_row['thumbnail'];
                                             $payment_row = $db->query("SELECT payment AS fullpayment, discount FROM tbl_payment WHERE diplomaid = " . $diploma_row['diplomaid'])->fetch_array();
                                             if ($diploma_row['free_course'] == 1) {
@@ -354,7 +354,7 @@ if (!$classification_row) {
                                         <?php
                                         $diploma_result = $db->query("SELECT td.*, tc.slug AS tc_slug, tc.special_discount FROM tbl_diploma AS td, tbl_courses AS tc WHERE td.IStatus = 1 AND td.show_in_category = 1 AND td.classification = " . $classification_row['id'] . " AND (td.type = 1 OR td.type = 2) AND td.cid = tc.cid AND tc.IStatus = 1 AND td.top_certification = 1 ");
                                         while ($diploma_row = $diploma_result->fetch_array()) {
-                                            $course_url = "https://www.oxfordhomestudy.com/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
+                                            $course_url = "/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
                                             $image_url = "images/subject/" . $diploma_row['thumbnail'];
                                             $payment_row = $db->query("SELECT payment AS fullpayment, discount FROM tbl_payment WHERE diplomaid = " . $diploma_row['diplomaid'])->fetch_array();
                                             if ($diploma_row['free_course'] == 1) {
@@ -425,7 +425,7 @@ if (!$classification_row) {
                                         <?php
                                         $diploma_result = $db->query("SELECT td.*, tc.slug AS tc_slug, tc.special_discount FROM tbl_diploma AS td, tbl_courses AS tc WHERE td.IStatus = 1 AND td.show_in_category = 1 AND td.classification = " . $classification_row['id'] . " AND (td.type = 1 OR td.type = 2) AND td.cid = tc.cid AND tc.IStatus = 1 AND td.new_course = 1 ");
                                         while ($diploma_row = $diploma_result->fetch_array()) {
-                                            $course_url = "https://www.oxfordhomestudy.com/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
+                                            $course_url = "/" . $classification_row['slug'] . '/' . $diploma_row['tc_slug'] . '/' . $diploma_row['slug'];
                                             $image_url = "images/subject/" . $diploma_row['thumbnail'];
                                             $payment_row = $db->query("SELECT payment AS fullpayment, discount FROM tbl_payment WHERE diplomaid = " . $diploma_row['diplomaid'])->fetch_array();
                                             if ($diploma_row['free_course'] == 1) {
@@ -684,7 +684,7 @@ if (!$classification_row) {
                 <div class="owl-carousel owl-theme categories-slider" id="carousel1">
                     <?php foreach ($first_half as $category) { ?>
                         <div class="category-item">
-                            <a href="https://www.oxfordhomestudy.com/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
+                            <a href="/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
                                 <span><?php echo $category['cname']; ?></span>
                             </a>
                         </div>
@@ -694,7 +694,7 @@ if (!$classification_row) {
                 <div class="owl-carousel owl-theme categories-slider" id="carousel2">
                     <?php foreach ($second_half as $category) { ?>
                         <div class="category-item">
-                            <a href="https://www.oxfordhomestudy.com/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
+                            <a href="/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
                                 <span><?php echo $category['cname']; ?></span>
                             </a>
                         </div>

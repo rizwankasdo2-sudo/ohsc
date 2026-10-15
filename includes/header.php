@@ -58,7 +58,7 @@ $social_row = $db->query("SELECT * FROM social_links")->fetch_array();
                     <!-- end new menu -->
                 </div>
                 <!-- <div class="vamiddle mrl40 bmoption">
-                        <form method="post" action="https://www.oxfordhomestudy.com/search.php" name="searchfrm">
+                        <form method="post" action="/search.php" name="searchfrm">
                             <div class="mfouter">
                                 <div style="color:rgb(45, 47, 49) !important;margin-top:3px;">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="feather feather-search curp" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20" onclick="searchfrm.submit();"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>

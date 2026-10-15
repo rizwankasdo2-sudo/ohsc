@@ -42,7 +42,7 @@ data-ad-slot="1209776678"></ins>
     <meta property="og:title" content="<?php echo strip_tags($blog['meta_title']); ?>" />
     <meta name="description" content="<?php echo strip_tags($blog['meta_description']); ?>" />
     <meta property="og:description" content="<?php echo strip_tags($blog['meta_description']); ?>" />
-    <meta property="og:url" content="https://www.oxfordhomestudy.com/" />
+    <meta property="og:url" content="/" />
     <meta property="og:site_name" content="Oxford Home Study College" />
     <meta name="keywords" content="<?php echo strip_tags($blog['meta_keywords']); ?>" />
     <meta name="robots" content="<?php echo $blog['robots']; ?>" />

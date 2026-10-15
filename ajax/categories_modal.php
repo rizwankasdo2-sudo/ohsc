@@ -13,7 +13,7 @@ include("../admin/classes/connection.php");
             <div class="modal-header" style="background-color:#E8E8E8;">
                 <div style="position: relative; width: 100%;">
                     <div style="display:table-row">
-                        <div style="display:table-cell;vertical-align:middle;"><img id="popheadicon" width="70" height="70" alt="View Categories" src="https://www.oxfordhomestudy.com/images/nd/Forensic Accounting5581568807054.png" /></div>
+                        <div style="display:table-cell;vertical-align:middle;"><img id="popheadicon" width="70" height="70" alt="View Categories" src="/images/nd/Forensic Accounting5581568807054.png" /></div>
                         <div style="display:table-cell;vertical-align:middle;">
                             <h1 class="modal-title" style="display:inline-block;" id="popheadname">Popular Categories</h1>
                         </div>

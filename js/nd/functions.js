@@ -37,7 +37,7 @@ function setWhyCertifiedHeight(id1, id2) {
 
 function showRemainingCoursesFree() {
     $.ajax({
-        url: "https://www.oxfordhomestudy.com/ajax/general.php?task=show_free_courses"
+        url: "/ajax/general.php?task=show_free_courses"
     }).done(function( msg ) {
         $("#showfree").append(msg);
         $("#showfreebtn").hide();

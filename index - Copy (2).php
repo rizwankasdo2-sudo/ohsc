@@ -11,11 +11,11 @@ $seo_row = $seo_result->fetch_array();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://www.oxfordhomestudy.com/images/OpenGraphLogo.PNG" />
+    <meta property="og:image" content="/images/OpenGraphLogo.PNG" />
     <meta property="og:title" content="<?php echo strip_tags($seo_row['pagetitle']); ?>" />
     <meta name="description" content="<?php echo strip_tags($seo_row['metadiscription']); ?>" />
     <meta property="og:description" content="<?php echo strip_tags($seo_row['metadiscription']); ?>" />
-    <meta property="og:url" content="https://www.oxfordhomestudy.com/" />
+    <meta property="og:url" content="/" />
     <meta property="og:site_name" content="Oxford Home Study College" />
     <meta name="keywords" content="<?php echo $seo_row['metatitle']; ?>" />
     <meta name="robots" content="<?php echo $seo_row['robots']; ?>" />
@@ -28,7 +28,7 @@ $seo_row = $seo_result->fetch_array();
             "@context": "http://schema.org",
             "@type": "Organization",
             "name": "Oxford Home Study Centre",
-            "url": "https://www.oxfordhomestudy.com/",
+            "url": "/",
             "address": "Business Box, Oswin Road, UK",
             "sameAs": [
                 "https://www.facebook.com/oxfordhomestudy/",

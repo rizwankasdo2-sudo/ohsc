@@ -117,14 +117,14 @@ $masg="Thank you we will contact you soon";
       <input type='hidden' name='zc_gad' id='zc_gad' value=''></input>
       <input type='hidden' name='xmIwtLD' value='c7f29aa966771fb36cef697b5ba290aed055b2b8e7606a6471193aa3450910dc'></input>
       <input type='hidden' name='actionType' value='TGVhZHM='></input>
-      <input type='hidden' name='returnURL' value='https://www.oxfordhomestudy.com/thank-you.php' ></input>
+      <input type='hidden' name='returnURL' value='https://tools.kasdo.org/thank-you.php' ></input>
       <input type='hidden' name='First Name' value='$fname' />
       <input type='hidden' name='Last Name' value='$lname' />
       <input type='hidden' name='Phone' value='$mobile' />
       <input type='hidden' name='Email' value='$email' />
       <input type='hidden' name='Country' value='$country' />
       <input type='hidden' name='LEADCF1' value='$diplomad' />
-      <input type='hidden' name='Lead Source' value='https&#x3a;&#x2f;&#x2f;www.oxfordhomestudy.com&#x2f;' />
+      <input type='hidden' name='Lead Source' value='https://tools.kasdo.org/' />
       <input type='hidden' name='Lead Status' value='Query&#x20;Submitted' />
       <input type='hidden' name='LEADCF2' value='Enrollment&#x20;Application' />
       <input type='hidden' name='LEADCF3' value='$payment_method' />

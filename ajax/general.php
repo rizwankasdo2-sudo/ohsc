@@ -185,7 +185,7 @@ if ($_GET['task'] == 'show_registration') {
             <div class="register_section d-flex flex-column align-items-center justify-content-center">
                 <div class="register_content text-center">
                     <p class="register_title registerTitleHd gentxt_fbasic">Summer Mega Sale - Register now and get <span>' . $discount_row['amount'] . '%</span> discount on all Courses</p>
-                    <div class="button button_1 register_button mx-auto trans_200 gentxt_fbasic"><a href="https://www.oxfordhomestudy.com/applyonline">register now</a></div>
+                    <div class="button button_1 register_button mx-auto trans_200 gentxt_fbasic"><a href="/applyonline">register now</a></div>
                 </div>
             </div>
         </div>
@@ -194,7 +194,7 @@ if ($_GET['task'] == 'show_registration') {
                 <div class="search_background"></div>
                 <div class="search_content text-center">
                     <p class="search_title searchTitleHd gentxt_fbasic">Search for your course</p>
-                    <form id="search_form" class="search_form" action="https://www.oxfordhomestudy.com/search" method="post">
+                    <form id="search_form" class="search_form" action="/search" method="post">
                         <input id="course_name" name="course_name" class="input_field search_form_name gentxt" type="text" placeholder="Course Name" autocomplete="off">
                         <select id="cid" name="cid" class="input_field search_form_category gentxt">
                             <option value="">Select Category</option>';

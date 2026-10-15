@@ -4,7 +4,7 @@ require_once('includes/functions.php');
 $classification_row = $db->query("SELECT * FROM classification WHERE show_at_frontend = 1 AND id = " . $_GET['id'])->fetch_array();
                     
 if (!$classification_row) {
-    header('location:https://www.oxfordhomestudy.com');
+    header('location:/');
     exit;
 }
 
@@ -625,7 +625,7 @@ $total_pages = ceil($course_num / $items_count);
                 <div class="owl-carousel owl-theme categories-slider" id="carousel1">
                     <?php foreach ($first_half as $category) { ?>
                         <div class="category-item">
-                            <a href="https://www.oxfordhomestudy.com/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
+                            <a href="/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
                                 <span><?php echo $category['cname']; ?></span>
                             </a>
                         </div>
@@ -635,7 +635,7 @@ $total_pages = ceil($course_num / $items_count);
                 <div class="owl-carousel owl-theme categories-slider" id="carousel2">
                     <?php foreach ($second_half as $category) { ?>
                         <div class="category-item">
-                            <a href="https://www.oxfordhomestudy.com/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
+                            <a href="/<?php echo $classification_row['slug'] . '/' . $category['slug']; ?>">
                                 <span><?php echo $category['cname']; ?></span>
                             </a>
                         </div>

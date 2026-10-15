@@ -18,7 +18,7 @@ include_once("includes/functions.php");
     <meta property="og:title" content="<?php echo strip_tags($seo_row['pagetitle']); ?>" />
     <meta name="description" content="<?php echo strip_tags($seo_row['metadescription']); ?>" />
     <meta property="og:description" content="<?php echo strip_tags($seo_row['metadescription']); ?>" />
-    <meta property="og:url" content="https://www.oxfordhomestudy.com/" />
+    <meta property="og:url" content="/" />
     <meta property="og:site_name" content="Oxford Home Study College" />
     <meta name="keywords" content="<?php echo $seo_row['metatitle']; ?>" />
     <meta name="robots" content="<?php echo $seo_row['robots']; ?>" />

@@ -15,7 +15,7 @@ include_once("includes/functions.php");
     <meta property="og:title" content="<?php echo strip_tags($row['pagetitle']); ?>" />
     <meta name="description" content="<?php echo strip_tags($row['metadiscription']); ?>" />
     <meta property="og:description" content="<?php echo strip_tags($row['metadiscription']); ?>" />
-    <meta property="og:url" content="https://www.oxfordhomestudy.com/" />
+    <meta property="og:url" content="/" />
     <meta property="og:site_name" content="Oxford Home Study College" />
     <meta name="keywords" content="<?php echo $row['metatitle']; ?>" />
     <meta name="robots" content="<?php echo $row['robots']; ?>" />
@@ -26,7 +26,7 @@ include_once("includes/functions.php");
             "@context": "http://schema.org",
             "@type": "Organization",
             "name": "Oxford Home Study Centre",
-            "url": "https://www.oxfordhomestudy.com/",
+            "url": "/",
             "address": "Business Box, Oswin Road, UK",
             "sameAs": [
                 "https://www.facebook.com/oxfordhomestudy/",
@@ -138,7 +138,7 @@ include_once("includes/functions.php");
                                 <p>Everyone's different, and so are their questions. Speak to our team directly and they'll personally answer all your questions, no matter what they are.</p>
                             </div>
                             <div class="contact-btn">
-                                <a href="https://www.oxfordhomestudy.com/contact">Contact Us</a>
+                                <a href="/contact">Contact Us</a>
                             </div>
                         </div>
                     </div>

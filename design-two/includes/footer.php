@@ -17,7 +17,7 @@
         const modalBody = document.getElementById('modalBody');
 
         // URL of the external content
-        const url = 'https://www.oxfordhomestudy.com/ajax/general.php?task=show_main_menu&dontshowimg=1'; // Replace with your content URL
+        const url = '/ajax/general.php?task=show_main_menu&dontshowimg=1'; // Replace with your content URL
 
         // Show a loading state
         modalBody.innerHTML = 'Loading content...';

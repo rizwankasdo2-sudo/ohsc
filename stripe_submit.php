@@ -21,7 +21,7 @@ function sendEmail($from, $to, $subject, $message) {
     $subject = urlencode($subject);
     $message = urlencode($message);
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://www.oxfordhomestudy.com/lms/sendmail.php?from=$from&to=$to&subject=$subject&message=$message");
+    curl_setopt($ch, CURLOPT_URL, "/lms/sendmail.php?from=$from&to=$to&subject=$subject&message=$message");
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_exec($ch);
     curl_close($ch);
@@ -84,7 +84,7 @@ if (is_numeric($_POST['portal_course_id']) && $_POST['portal_course_id'] > 0 && 
             $message .= "Following are your login details for OHSC.<br /><br />";
             $message .= "<strong>PORTAL ACCESS USER NAME: </strong>" . $email . "<br />
                     <strong>PORTAL ACCESS PASSWORD: </strong>" . $m_number . "<br /><br />";
-            $message .= 'Please use the username and password supplied above.<br /><br />Go to https://www.oxfordhomestudy.com/lms/<br /><br />Log in using your username and password.<br /><br />If you have any difficulties logging in or with any other aspect of this procedure, please contact us at info@oxfordhomestudy.com';
+            $message .= 'Please use the username and password supplied above.<br /><br />Go to /lms/<br /><br />Log in using your username and password.<br /><br />If you have any difficulties logging in or with any other aspect of this procedure, please contact us at info@oxfordhomestudy.com';
             $message .= "<br /><br /><strong>Regards<br />Support Team</strong>";
             $headers = "Mime-version:1.0\r\n";
             $headers .= "content-type:text/html;charset=iso-8859-1\r\n";

@@ -18,7 +18,7 @@ $row= $qry->fetch_array();
     <meta property="og:title" content="<?php echo strip_tags($row['pagetitle']); ?>" />
     <meta name="description" content="<?php echo strip_tags($row['metadiscription']); ?>" />
     <meta property="og:description" content="<?php echo strip_tags($row['metadiscription']); ?>"/>
-    <meta property="og:url" content="https://www.oxfordhomestudy.com/" />
+    <meta property="og:url" content="/" />
     <meta property="og:site_name" content="Oxford Home Study College" />
     <meta name="keywords" content="<?php echo $row['metatitle']; ?>" />
     <meta name="robots" content="<?php echo $row['robots']; ?>" />

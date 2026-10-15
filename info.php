@@ -103,14 +103,14 @@ echo "<form action='https://crm.zoho.com/crm/WebToLeadForm' name=WebToLeads44536
   <input type='hidden' name='zc_gad' id='zc_gad' value=''></input>
   <input type='hidden' name='xmIwtLD' value='c7f29aa966771fb36cef697b5ba290aed055b2b8e7606a6471193aa3450910dc'></input>
   <input type='hidden' name='actionType' value='TGVhZHM='></input>
-  <input type='hidden' name='returnURL' value='https://www.oxfordhomestudy.com/thanks' ></input>
+  <input type='hidden' name='returnURL' value='https://tools.kasdo.org/thanks' ></input>
   <input type='hidden' name='First Name' value='$fname' />
   <input type='hidden' name='Last Name' value='$lname' />
   <input type='hidden' name='Phone' value='$phone' />
   <input type='hidden' name='Email' value='$email' />
   <input type='hidden' name='Country' value='' />
   <input type='hidden' name='LEADCF1' value='$diplomass' />
-  <input type='hidden' name='Lead Source' value='https&#x3a;&#x2f;&#x2f;www.oxfordhomestudy.com&#x2f;' />
+  <input type='hidden' name='Lead Source' value='https://tools.kasdo.org/' />
   <input type='hidden' name='Lead Status' value='Replied&#x20;to&#x20;Query' />
   <input type='hidden' name='LEADCF2' value='Info&#x20;Request' />
   <input type='hidden' name='LEADCF3' value='' />

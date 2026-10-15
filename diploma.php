@@ -80,7 +80,7 @@ $id = $meuresult['cid'];
       "provider": {
         "@type": "Organization",
         "name": "Oxford Home Study Centre",
-        "sameAs": "https://www.oxfordhomestudy.com"
+        "sameAs": "/"
       }
     }
     </script>

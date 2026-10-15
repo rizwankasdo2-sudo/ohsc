@@ -120,7 +120,7 @@ $masg="Thank you we will contact you soon";
       <input type='hidden' name='zc_gad' id='zc_gad' value=''></input>
       <input type='hidden' name='xmIwtLD' value='c7f29aa966771fb36cef697b5ba290aed055b2b8e7606a6471193aa3450910dc'></input>
       <input type='hidden' name='actionType' value='TGVhZHM='></input>
-      <input type='hidden' name='returnURL' value='https://www.oxfordhomestudy.com/enrolthanks.php' ></input>
+      <input type='hidden' name='returnURL' value='/enrolthanks.php' ></input>
       <input type='hidden' name='First Name' value='$fname' />
       <input type='hidden' name='Last Name' value='$lname' />
       <input type='hidden' name='Phone' value='$mobile' />

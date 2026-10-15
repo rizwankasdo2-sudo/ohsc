@@ -33,7 +33,7 @@ $seo_row = $seo_result->fetch_array();
 <meta property="og:title" content="<?php echo strip_tags($seo_row['page_title']); ?>" />
 <meta property="description" content="<?php echo strip_tags($seo_row['meta_desc']); ?>"/>
 <meta property="og:description" content="<?php echo strip_tags($seo_row['meta_desc']); ?>"/>
-<meta property="og:url" content="https://www.oxfordhomestudy.com/" />
+<meta property="og:url" content="/" />
 <meta property="og:site_name" content="Oxford Home Study College" />
 <meta name="robots" content="<?php echo $seo_row['robots']; ?>" />
 <?php include("includes/stylesheets.php");?>

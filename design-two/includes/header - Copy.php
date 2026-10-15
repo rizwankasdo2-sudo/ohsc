@@ -95,7 +95,7 @@ if ($uri_array['2']) {
     <div class="text-center topheadsec">
         <div class="main-menu">
             <div>
-                <a href="https://www.oxfordhomestudy.com"><img src="/images/thesitelogo.webp" alt="Logo" border="0" width="227" height="85"></a>
+                <a href="/"><img src="/images/thesitelogo.webp" alt="Logo" border="0" width="227" height="85"></a>
             </div>
             <div class="dropdown">
                 <div class="vamiddle mrl40 menutxt bmoption curp">Categories</div>
@@ -104,12 +104,12 @@ if ($uri_array['2']) {
                     <ul>
                         <li class="topmenu">
                             <div class="liarrow liarrow-right liarrow-pos"></div>
-                            <a href="https://www.oxfordhomestudy.com/courses">Courses</a>
+                            <a href="/courses">Courses</a>
                             <ul class="submenu" style="min-height:35px;">
                                 <?php
                                 $catgories_result = $db->query("SELECT cname, slug, icon FROM tbl_courses WHERE IStatus = 1 ORDER BY ordernumber ASC");
                                 while ($catgories_row = $catgories_result->fetch_array()) { ?>
-                                <li><a href="https://www.oxfordhomestudy.com/courses/<?php echo $catgories_row['slug']; ?>"><?php echo $catgories_row['cname']; ?></a></li>
+                                <li><a href="/courses/<?php echo $catgories_row['slug']; ?>"><?php echo $catgories_row['cname']; ?></a></li>
                                 <?php } ?>
                             </ul>
                         </li>
@@ -128,7 +128,7 @@ if ($uri_array['2']) {
                 <!-- end new menu -->
             </div>
             <div class="vamiddle mrl40 bmoption">
-                <form method="post" action="https://www.oxfordhomestudy.com/search" name="searchfrm">
+                <form method="post" action="/search" name="searchfrm">
                     <div class="mfouter">
                         <div style="color:rgb(45, 47, 49) !important;margin-top:3px;">
                             <svg xmlns="http://www.w3.org/2000/svg" class="feather feather-search curp" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20" onclick="searchfrm.submit();"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
@@ -137,13 +137,13 @@ if ($uri_array['2']) {
                     </div>
                 </form>
             </div>
-            <div class="vamiddle mrl40 menutxt bmoption"><a href="https://www.oxfordhomestudy.com/OHSC-Blog">Blog</a></div>
-            <div class="vamiddle mrl40 menutxt bmoption"><a href="https://www.oxfordhomestudy.com/contact">Contact Us</a></div>
+            <div class="vamiddle mrl40 menutxt bmoption"><a href="/OHSC-Blog">Blog</a></div>
+            <div class="vamiddle mrl40 menutxt bmoption"><a href="/contact">Contact Us</a></div>
             <div class="vamiddle mrl40 bmoption">
-                <a href="https://www.oxfordhomestudy.com/lms/" class="clbtn">Log in</a>
+                <a href="/lms/" class="clbtn">Log in</a>
             </div>
             <div class="vamiddle mrl5 bmoption">
-                <a href="https://www.oxfordhomestudy.com/apply.php" class="blbtn">Sign up</a>
+                <a href="/apply.php" class="blbtn">Sign up</a>
             </div>
             <div class="vamiddle smoption mrla fnt30">
                 <a class="curp" data-bs-toggle="modal" data-bs-target="#mainMenuModal" id="loadModalContent">

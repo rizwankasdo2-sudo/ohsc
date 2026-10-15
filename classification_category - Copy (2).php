@@ -4,7 +4,7 @@ require_once('includes/functions.php');
 $category_slug = $_GET['slug'];
 $classification_row = $db->query("SELECT * FROM classification WHERE show_at_frontend = 1 AND id = " . $_GET['id'])->fetch_array();
 if (!$classification_row) {
-    header('location:https://www.oxfordhomestudy.com');
+    header('location:/');
     exit;
 }
 $category_row_main = $db->query("SELECT * FROM tbl_courses WHERE slug = '" . $_GET['slug'] . "' AND IStatus = 1")->fetch_array();
@@ -89,7 +89,7 @@ $total_pages = ceil($course_num / $items_count);
                 "@context": "http://schema.org",
                 "@type": "Organization",
                 "name": "Oxford Home Study Centre",
-                "url": "https://www.oxfordhomestudy.com/",
+                "url": "/",
                 "address": "Business Box, Oswin Road, UK",
                 "sameAs": [
                     "https://www.facebook.com/oxfordhomestudy/",

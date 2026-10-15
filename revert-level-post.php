@@ -8,7 +8,7 @@ ini_set('display_errors', 1);
 
 
 
-$base = 'https://www.oxfordhomestudy.com/lms/';
+$base = '/lms/';
 
 
 

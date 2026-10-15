@@ -24,7 +24,7 @@
                             <li class="footer_list_item"><a href="<?php echo $base_url . '/free-online-courses-with-certificates' ?>" class="gentxt_fbasic">Free Courses</a></li>
                             <li class="footer_list_item"><a href="
                                 <?php echo $base_url . '/voucher-redemption.php'?>" class="gentxt_fbasic">Voucher Redemption</a></li>
-                            <!-- <li class="footer_list_item"><a href="https://www.oxfordhomestudy.com/distance-learning" class="gentxt_fbasic">How Distance Learning Works</a></li> -->
+                            <!-- <li class="footer_list_item"><a href="/distance-learning" class="gentxt_fbasic">How Distance Learning Works</a></li> -->
                             <li class="footer_list_item"><a href="<?php echo $base_url . '/how-to-pay' ?>" class="gentxt_fbasic">How to Pay</a></li>
                         </ul>
                     </div>

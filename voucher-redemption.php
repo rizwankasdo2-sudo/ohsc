@@ -108,7 +108,7 @@ $row= $qry->fetch_array(); ?>
     
      <div class="col-md-1"></div>
        <div class="col-md-10">
-         <div class="p-click gentxt_fbasic">By clicking Submit, you agree to our <a class="link-c gentxt_fbasic" href="https://www.oxfordhomestudy.com/terms-and-conditions">Terms and Conditions</a> and that you have read our <a class="link-c gentxt_fbasic" href="https://www.oxfordhomestudy.com/privacy-policy">Privacy Policy</a>.</div>  <br />
+         <div class="p-click gentxt_fbasic">By clicking Submit, you agree to our <a class="link-c gentxt_fbasic" href="/terms-and-conditions">Terms and Conditions</a> and that you have read our <a class="link-c gentxt_fbasic" href="/privacy-policy">Privacy Policy</a>.</div>  <br />
       
       <input type="submit" class="btn-link gentxt_fbasic" value="Submit">
      </div>

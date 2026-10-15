@@ -85,7 +85,7 @@ $total_ratings_one_percent = ($diplomaresult['total_ratings'] == 0) ? 0 : ($dipl
         "provider": {
             "@type": "Organization",
             "name": "Oxford Home Study Centre",
-            "sameAs": "https://www.oxfordhomestudy.com"
+            "sameAs": ""
         },
         "hasCourseInstance": [
             {
@@ -104,7 +104,7 @@ $total_ratings_one_percent = ($diplomaresult['total_ratings'] == 0) ? 0 : ($dipl
     <?php include("includes/header.php"); ?>
     <!-- Begin form to send couse name to the portal -->
     <form method="post" name="portal_form" id="portal_form"
-        action="<?php echo ($diplomaresult['added_on_portal'] == 2) ? 'https://www.oxfordhomestudy.com/lms/register' : 'https://www.elearningcollege.com/lms'; ?>">
+        action="<?php echo ($diplomaresult['added_on_portal'] == 2) ? '/lms/register' : 'https://www.elearningcollege.com/lms'; ?>">
         <?php if ($diplomaresult['added_on_portal'] == 2) { ?>
         <input type="hidden" name="portal_course_id" value="<?php echo $diplomaresult['portal_course_id']; ?>" />
         <?php } /*<input type="hidden" name="portal_course_name" value="<?php echo $diplomaresult['name']; ?>" />*/ ?>

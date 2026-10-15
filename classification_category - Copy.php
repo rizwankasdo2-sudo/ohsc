@@ -107,7 +107,7 @@ $total_pages = ceil($course_num / $items_count);
                 "@context": "http://schema.org",
                 "@type": "Organization",
                 "name": "Oxford Home Study Centre",
-                "url": "https://www.oxfordhomestudy.com/",
+                "url": "/",
                 "address": "Business Box, Oswin Road, UK",
                 "sameAs": [
                     "https://www.facebook.com/oxfordhomestudy/",
