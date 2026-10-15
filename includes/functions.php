@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) . '/../admin/classes/connection.php');
 // TOOLS HOST: pages that load this file keep links on tools.kasdo.org even if an older connection.php still points at the live site.
 $ohscRequestHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-if (preg_match('/^(www\.)?tools\.kasdo\.org$/i', $ohscRequestHost)) {
+if (stripos($ohscRequestHost, 'tools.kasdo.org') !== false) {
     $base_url = 'https://tools.kasdo.org';
 }
 function getRatingCSS($star_num, $rating) {
@@ -217,7 +217,7 @@ function getFooterLinks($sec_num)
 function getCanonicalURL($full_url) {
     $scheme = 'https';
     $requestHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-    if (preg_match('/^(www\.)?tools\.kasdo\.org$/i', $requestHost)) {
+    if (stripos($requestHost, 'tools.kasdo.org') !== false) {
         $host = 'tools.kasdo.org';
     } else {
         $host = 'www.oxfordhomestudy.com';
