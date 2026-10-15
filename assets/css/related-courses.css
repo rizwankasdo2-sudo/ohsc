@@ -1,0 +1,202 @@
+.course-related-courses.all-cources-slider {
+    padding: 70px 0 50px;
+}
+
+.course-related-courses.home-course {
+    padding-top: 0;
+}
+
+.course-related-courses .heading h3 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    color: #171420;
+    text-align: center;
+}
+
+.course-related-courses .cource-box .data {
+    border: 0.5px solid #171420;
+    border-top: none;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.course-related-courses .cource-box {
+    width: 295px;
+    height: 490px;
+    border-radius: 10px;
+}
+
+.course-related-courses .cource-box .img img {
+    width: 295px;
+    height: 165px;
+    position: relative;
+}
+
+.course-related-courses .cource-box .data-text {
+    max-width: 265px;
+    margin: auto;
+    padding: 12px 0;
+}
+
+.course-related-courses .cource-box .data-text .head h2 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    color: #171420;
+    height: 50px;
+    overflow: hidden;
+}
+
+.course-related-courses .cource-box .data-text .stars {
+    margin-top: 15px;
+}
+
+.course-related-courses .cource-box .data-text .stars ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.course-related-courses .cource-box .data-text .stars ul li {
+    display: inline-block;
+    margin: 0 2px;
+}
+
+.course-related-courses .cource-box .data-text .stars ul li:first-child {
+    margin-left: 0;
+}
+
+.course-related-courses .cource-box .data-text .stars ul li img {
+    width: 20px;
+}
+
+.course-related-courses .cource-box .data-text .cource-data {
+    margin-top: 15px;
+}
+
+.course-related-courses .cource-box .data-text .cource-data .data-point {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0;
+}
+
+.course-related-courses .cource-box .data-text .cource-data .data-point .icon img {
+    width: 24px;
+}
+
+.course-related-courses .cource-box .data-text .cource-data .data-point .name strong {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    color: #171420B2;
+}
+
+.course-related-courses .cource-box .data-text .price {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0 15px;
+}
+
+.course-related-courses .cource-box .data-text .price .current-fee strong {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0.05em;
+    color: #171420;
+}
+
+.course-related-courses .cource-box .data-text .price .previous-fee strike {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    color: #171420B2;
+}
+
+.course-related-courses .cource-box .data-text .view-btn {
+    margin-top: 5px;
+}
+
+.course-related-courses .cource-box .data-text .view-btn a {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    color: #ad5295;
+}
+
+.course-related-courses .cource-box .data-text .view-btn a:hover {
+    border-bottom: 1px solid #ad5295;
+}
+
+.course-related-courses .slider {
+    margin-top: 50px;
+}
+
+.course-related-courses .slider .owl-nav button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #ad5295 !important;
+}
+
+.course-related-courses .slider .owl-nav button i {
+    color: #ad5295;
+    font-size: 20px;
+    line-height: 40px;
+}
+
+.course-related-courses .slider .owl-nav button.owl-prev {
+    position: absolute;
+    left: -40px;
+    top: 44%;
+}
+
+.course-related-courses .slider .owl-nav button.owl-next {
+    position: absolute;
+    right: -35px;
+    top: 44%;
+}
+
+@media (max-width: 767px) {
+    .course-related-courses.all-cources-slider {
+        padding: 50px 0;
+    }
+
+    .course-related-courses .heading h3 {
+        line-height: 30px;
+    }
+
+    .course-related-courses .cource-box .img img,
+    .course-related-courses .cource-box {
+        width: 100%;
+    }
+
+    .course-related-courses .slider .owl-nav {
+        text-align: center;
+        margin-top: 18px;
+    }
+
+    .course-related-courses .slider .owl-nav button.owl-prev {
+        left: -5px;
+        position: relative;
+    }
+
+    .course-related-courses .slider .owl-nav button.owl-next {
+        right: -5px;
+        position: relative;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 699px) {
+    .course-related-courses .cource-box .img img {
+        width: 100%;
+    }
+}

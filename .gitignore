@@ -6,7 +6,9 @@
 !/admin/classes/connection.php
 /air-datepicker-master
 /appleple-modal-video-810fe8f
-/assets
+# Keep uploaded pictures out of git. The CSS in assets/css is required by the homepage.
+/assets/*
+!/assets/css/
 /cgi-bin
 /cron
 /fonts

@@ -1,0 +1,154 @@
+.course-related-blogs.blogs {
+    padding: 25px 0 40px;
+    width: 100%;
+    overflow: hidden;
+}
+.course-related-blogs.blogs .blogs-carousel:not(.owl-loaded) {
+    display: block;
+}
+.course-related-blogs.blogs .blogs-carousel:not(.owl-loaded) .item {
+    display: none;
+}
+.course-related-blogs.blogs .blogs-carousel:not(.owl-loaded) .item:first-child {
+    display: block;
+    max-width: 320px;
+    margin: 0 auto;
+}
+.course-related-blogs.blogs .heading {
+    margin-bottom: 30px;
+}
+.course-related-blogs.blogs .heading h3 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 25px;
+    letter-spacing: 0.01em;
+    color: #171420;
+}
+.course-related-blogs.blogs .blogs-data .blog-box {
+    width: 100%;
+}
+.course-related-blogs.blogs .blogs-data .blog-box img {
+    width: 100%;
+    height: 203px;
+    border-radius: 3px;
+    object-fit: cover;
+}
+.course-related-blogs.blogs .blogs-data .blog-box .text {
+    padding-top: 10px;
+}
+.course-related-blogs.blogs .blogs-data .blog-box .blog-heading {
+    margin: 5px 0;
+}
+.course-related-blogs.blogs .blogs-data .blog-box .blog-heading h2 {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 27px;
+    letter-spacing: 0.01em;
+    color: #000;
+}
+.course-related-blogs.blogs .blogs-data .blog-box .read-btn a {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 30px;
+    letter-spacing: 0.01em;
+    color: #ad5295;
+    text-decoration: none;
+}
+.course-related-blogs.blogs .owl-dots {
+    text-align: center;
+    margin-top: 55px;
+}
+.course-related-blogs.blogs .owl-dots button {
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #ddd !important;
+    margin: 0 3px;
+}
+.course-related-blogs.blogs .owl-dots button.active {
+    background-color: #D7721E !important;
+}
+.course-related-blogs.pb-blogs {
+    padding-bottom: 4rem !important;
+}
+.course-related-blogs .blogs-single-item {
+    max-width: 320px;
+}
+.course-related-blogs.blogs .blogs-data {
+    position: relative;
+    padding: 0 56px;
+}
+.course-related-blogs.blogs .owl-nav {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    margin: 0;
+    pointer-events: none;
+}
+.course-related-blogs.blogs .owl-nav button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0 !important;
+    border-radius: 50%;
+    background: #fff !important;
+    border: 2px solid #ad5295 !important;
+    color: #ad5295 !important;
+    box-shadow: 0 4px 14px rgba(23, 20, 32, 0.18);
+    pointer-events: auto;
+    transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.course-related-blogs.blogs .owl-nav button i,
+.course-related-blogs.blogs .owl-nav button span {
+    display: block;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    line-height: 1;
+    width: 1em;
+    height: 1em;
+    text-align: center;
+}
+.course-related-blogs.blogs .owl-nav button i {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.course-related-blogs.blogs .owl-nav button.owl-prev {
+    left: 0;
+}
+.course-related-blogs.blogs .owl-nav button.owl-next {
+    right: 0;
+}
+.course-related-blogs.blogs .owl-nav button:hover,
+.course-related-blogs.blogs .owl-nav button:focus {
+    background: #ad5295 !important;
+    color: #fff !important;
+    box-shadow: 0 6px 18px rgba(173, 82, 149, 0.35);
+}
+.course-related-blogs.blogs .owl-nav button.disabled {
+    opacity: 0.35;
+    pointer-events: none;
+}
+@media screen and (max-width: 767px) {
+    .course-related-blogs.blogs .blogs-data {
+        padding: 0 44px;
+    }
+    .course-related-blogs.blogs .owl-nav button {
+        width: 40px;
+        height: 40px;
+    }
+    .course-related-blogs.blogs .owl-nav button i,
+    .course-related-blogs.blogs .owl-nav button span {
+        font-size: 18px;
+    }
+}

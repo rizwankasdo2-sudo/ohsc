@@ -7,9 +7,19 @@ $social_row = $db->query("SELECT * FROM social_links")->fetch_array();
 <link rel="preload" href="<?php echo $pdots; ?>fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 <?php
-require_once(dirname(__FILE__) . '/../assets/css/style.css');
-require_once(dirname(__FILE__) . '/../assets/css/bootstrap.min.css');
-require_once(dirname(__FILE__) . '/../css/nd/developer.css');
+// ORIGINAL: a missing stylesheet stopped the whole page with a fatal error.
+// require_once(dirname(__FILE__) . '/../assets/css/style.css');
+// require_once(dirname(__FILE__) . '/../assets/css/bootstrap.min.css');
+// require_once(dirname(__FILE__) . '/../css/nd/developer.css');
+foreach (array(
+    dirname(__FILE__) . '/../assets/css/style.css',
+    dirname(__FILE__) . '/../assets/css/bootstrap.min.css',
+    dirname(__FILE__) . '/../css/nd/developer.css',
+) as $ohscStylesheet) {
+    if (is_file($ohscStylesheet)) {
+        require $ohscStylesheet;
+    }
+}
 ?>
 @font-face {
   font-family: 'Inter';
