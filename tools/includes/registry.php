@@ -119,6 +119,69 @@ if (!function_exists('ohsc_tools_ensure')) {
             $insertExtra->close();
         }
 
+        $db->query("CREATE TABLE IF NOT EXISTS tbl_eq_questions (
+            question_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            prompt VARCHAR(400) NOT NULL,
+            area VARCHAR(40) NOT NULL,
+            sort_order INT NOT NULL DEFAULT 0,
+            is_active TINYINT(1) NOT NULL DEFAULT 1,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL,
+            PRIMARY KEY (question_id),
+            KEY area_sort (area, sort_order)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $db->query("CREATE TABLE IF NOT EXISTS tbl_eq_choices (
+            choice_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            question_id INT UNSIGNED NOT NULL,
+            choice_text VARCHAR(255) NOT NULL,
+            points TINYINT UNSIGNED NOT NULL DEFAULT 1,
+            sort_order INT NOT NULL DEFAULT 0,
+            PRIMARY KEY (choice_id),
+            KEY question_id (question_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $eqTool = $db->query("SELECT tool_id FROM tbl_site_tools WHERE slug = 'eq-test' LIMIT 1");
+        if ($eqTool && (int) $eqTool->num_rows === 0) {
+            $stmt = $db->prepare("INSERT INTO tbl_site_tools (title, slug, summary, sort_order, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $title = 'Emotional Intelligence Test';
+                $slug = 'eq-test';
+                $summary = 'Answer short questions and see how you notice, manage, and respond to emotions.';
+                $sort = 2;
+                $active = 1;
+                $stmt->bind_param('sssiss', $title, $slug, $summary, $sort, $active, $now);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+
+        $eqCount = $db->query("SELECT COUNT(*) AS total FROM tbl_eq_questions");
+        $eqTotal = ($eqCount) ? (int) $eqCount->fetch_assoc()['total'] : 0;
+        if ($eqTotal === 0) {
+            $seedQuestions = require dirname(__FILE__) . '/eq-seed.php';
+            $insertQuestion = $db->prepare("INSERT INTO tbl_eq_questions (prompt, area, sort_order, is_active, created_at, updated_at) VALUES (?, ?, ?, 1, ?, ?)");
+            $insertChoice = $db->prepare("INSERT INTO tbl_eq_choices (question_id, choice_text, points, sort_order) VALUES (?, ?, ?, ?)");
+            if ($insertQuestion && $insertChoice) {
+                $order = 1;
+                foreach ($seedQuestions as $seedQuestion) {
+                    $insertQuestion->bind_param('ssiss', $seedQuestion['prompt'], $seedQuestion['area'], $order, $now, $now);
+                    $insertQuestion->execute();
+                    $questionId = (int) $db->insert_id;
+                    $choiceOrder = 1;
+                    foreach ($seedQuestion['choices'] as $seedChoice) {
+                        $points = (int) $seedChoice[1];
+                        $insertChoice->bind_param('isii', $questionId, $seedChoice[0], $points, $choiceOrder);
+                        $insertChoice->execute();
+                        $choiceOrder++;
+                    }
+                    $order++;
+                }
+                $insertQuestion->close();
+                $insertChoice->close();
+            }
+        }
+
         $ready = true;
     }
 }
@@ -166,5 +229,56 @@ if (!function_exists('ohsc_typing_passages')) {
             }
         }
         return $passages;
+    }
+}
+
+if (!function_exists('ohsc_eq_areas')) {
+    function ohsc_eq_areas()
+    {
+        return array(
+            'self-awareness' => array('Self-Awareness', 'Understand your emotions, strengths and triggers.'),
+            'self-regulation' => array('Self-Regulation', 'Learn how you manage your emotions and handle challenges.'),
+            'motivation' => array('Motivation', 'Discover your drive, ambition and commitment to goals.'),
+            'empathy' => array('Empathy', 'Understand and connect with others.'),
+            'social-skills' => array('Social Skills', 'See how you communicate and build relationships.'),
+        );
+    }
+}
+
+if (!function_exists('ohsc_eq_questions')) {
+    function ohsc_eq_questions($db)
+    {
+        $questions = array();
+        if (!($db instanceof mysqli)) {
+            return $questions;
+        }
+        ohsc_tools_ensure($db);
+        $result = $db->query("SELECT question_id, prompt, area FROM tbl_eq_questions WHERE is_active = 1 ORDER BY sort_order ASC, question_id ASC");
+        if (!$result) {
+            return $questions;
+        }
+        $ids = array();
+        while ($row = $result->fetch_assoc()) {
+            $row['choices'] = array();
+            $questions[$row['question_id']] = $row;
+            $ids[] = (int) $row['question_id'];
+        }
+        if (!$ids) {
+            return array();
+        }
+        $choiceResult = $db->query("SELECT choice_id, question_id, choice_text, points FROM tbl_eq_choices WHERE question_id IN (" . implode(',', $ids) . ") ORDER BY sort_order ASC, choice_id ASC");
+        if ($choiceResult) {
+            while ($choice = $choiceResult->fetch_assoc()) {
+                $questionId = (int) $choice['question_id'];
+                if (isset($questions[$questionId])) {
+                    $questions[$questionId]['choices'][] = array(
+                        'id' => (int) $choice['choice_id'],
+                        'text' => $choice['choice_text'],
+                        'points' => (int) $choice['points'],
+                    );
+                }
+            }
+        }
+        return array_values($questions);
     }
 }

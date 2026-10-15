@@ -13,6 +13,8 @@ $prettyMap = array(
     'passages.php' => '/admin/typing-passages',
     'passage-form.php' => '/admin/typing-passage',
     'tool-form.php' => '/admin/tool-edit',
+    'eq-questions.php' => '/admin/eq-questions',
+    'eq-question-form.php' => '/admin/eq-question',
 );
 
 if (strpos($path, '/tools/admin') === 0 && isset($prettyMap[$script])) {
@@ -88,6 +90,7 @@ function ohsc_tools_admin_open($heading)
                 <p class="tools-actions">
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/tools-manager">Tools</a>
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/typing-passages">Typing texts</a>
+                    <a href="<?php echo ohsc_h($base_url); ?>/admin/eq-questions">EQ questions</a>
                 </p>
     <?php
 }

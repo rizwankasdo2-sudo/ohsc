@@ -1,5 +1,10 @@
 <?php
 require_once(dirname(__FILE__) . '/../admin/classes/connection.php');
+// TOOLS HOST: pages that load this file keep links on tools.kasdo.org even if an older connection.php still points at the live site.
+$ohscRequestHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+if (preg_match('/^(www\.)?tools\.kasdo\.org$/i', $ohscRequestHost)) {
+    $base_url = 'https://tools.kasdo.org';
+}
 function getRatingCSS($star_num, $rating) {
     switch($star_num) {
         case 1:
@@ -198,9 +203,25 @@ function getFooterLinks($sec_num)
     echo $send;
 }
 
+// ORIGINAL: every canonical URL pointed at the production domain.
+// function getCanonicalURL($full_url) {
+//     $scheme = 'https';
+//     $host   = 'www.oxfordhomestudy.com';
+//     $path   = strtok($full_url, '?'); // strip query params
+//     if ($path !== '/' && substr($path, -1) === '/') {
+//         $path = rtrim($path, '/');
+//     }
+//     return $scheme . '://' . $host . $path;
+// }
+// TOOLS HOST: a request on tools.kasdo.org keeps that domain. Every other host still uses www.oxfordhomestudy.com.
 function getCanonicalURL($full_url) {
     $scheme = 'https';
-    $host   = 'www.oxfordhomestudy.com';
+    $requestHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
+    if (preg_match('/^(www\.)?tools\.kasdo\.org$/i', $requestHost)) {
+        $host = 'tools.kasdo.org';
+    } else {
+        $host = 'www.oxfordhomestudy.com';
+    }
     $path   = strtok($full_url, '?'); // strip query params
     if ($path !== '/' && substr($path, -1) === '/') {
         $path = rtrim($path, '/');
