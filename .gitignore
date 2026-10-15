@@ -1,4 +1,9 @@
-/admin
+# The admin panel stays out of git. Only the database connection file is tracked,
+# so a pull on tools.kasdo.org creates admin/classes/connection.php.
+/admin/*
+!/admin/classes/
+/admin/classes/*
+!/admin/classes/connection.php
 /air-datepicker-master
 /appleple-modal-video-810fe8f
 /assets
