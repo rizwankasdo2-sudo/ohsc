@@ -7,17 +7,22 @@ if (is_file($ohscPostmark)) {
 }
 // ORIGINAL: session_start();
 // LOCAL CHANGE: some pages already call session_start() before this file, and PHP 8 then prints "Ignoring session_start() because a session is already active". Start a session only when one is not active.
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
     session_start();
 }
 error_reporting(E_ALL);
 // ORIGINAL: header('Cache-Control: max-age=31536000');
 // LOCAL CHANGE: a one-year cache kept the old signup page, so the browser still blocked Submit on the reCAPTCHA error. Local pages are not cached. Other hosts keep the original header.
 $cacheHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
-if (preg_match('/^(localhost|127\.0\.0\.1)(:\d+)?$/', $cacheHost)) {
-    header('Cache-Control: no-store');
-} else {
-    header('Cache-Control: max-age=31536000');
+if (stripos($cacheHost, 'tools.kasdo.org') !== false) {
+    ini_set('display_errors', '1');
+}
+if (!headers_sent()) {
+    if (preg_match('/^(localhost|127\.0\.0\.1)(:\d+)?$/', $cacheHost)) {
+        header('Cache-Control: no-store');
+    } else {
+        header('Cache-Control: max-age=31536000');
+    }
 }
 
 $dbhost = "localhost";
@@ -27,6 +32,14 @@ $dbname ="oxfordhomestudy_kasdo";
 
 //Connect to MySQL Server
 $db = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+if ($db->connect_errno) {
+    if (!headers_sent()) {
+        http_response_code(500);
+        header('Content-Type: text/plain; charset=UTF-8');
+    }
+    echo "Database connection failed. In admin/classes/connection.php set dbuser, dbpass and dbname to the cPanel MySQL account for this site.\n";
+    exit;
+}
 
 
 // ORIGINAL production URL:
