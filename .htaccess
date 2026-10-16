@@ -60,36 +60,23 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule .* - [G,L]
 # End code to return 410 instead for 404 for images
 
-# Block all query strings except allowed ones
+# ORIGINAL: a long exemption list with [OR]. On tools.kasdo.org every query string still returned 410, including style.css?v=, typing-test.css?v= and ajax/general.php, so stylesheets never loaded and the 410 message was written onto the homepage.
+# RewriteCond %{QUERY_STRING} .+
+# RewriteCond %{REQUEST_URI} !^/admin/ [NC]
+# RewriteCond %{REQUEST_URI} !^/assets/ [NC]
+# RewriteCond %{REQUEST_URI} !^/fonts/ [NC]
+# RewriteCond %{REQUEST_URI} !^/images/ [NC]
+# RewriteCond %{REQUEST_URI} !^/css/ [NC]
+# RewriteCond %{REQUEST_URI} !^/js/ [NC]
+# RewriteCond %{REQUEST_URI} !^/tools/ [NC]
+# RewriteCond %{REQUEST_URI} !^/ajax/general\.php$ [NC]
+# RewriteCond %{REQUEST_URI} !^/courses/[^/]+$ [NC,OR]
+# RewriteCond %{QUERY_STRING} !^type=(free|endorsed|regulated)$ [NC]
+# RewriteCond %{REQUEST_URI} !^/applyonline$ [NC,OR]
+# RewriteCond %{QUERY_STRING} !^msg=.*$ [NC]
+# RewriteRule ^ - [G,L]
 RewriteCond %{QUERY_STRING} .+
-RewriteCond %{REQUEST_URI} !^/admin/ [NC]
-RewriteCond %{REQUEST_URI} !^/assets/ [NC]
-RewriteCond %{REQUEST_URI} !^/fonts/ [NC]
-RewriteCond %{REQUEST_URI} !^/images/ [NC]
-RewriteCond %{REQUEST_URI} !^/css/ [NC]
-RewriteCond %{REQUEST_URI} !^/design-two/css/ [NC]
-RewriteCond %{REQUEST_URI} !^/design-three/assets/ [NC]
-RewriteCond %{REQUEST_URI} !^/js/ [NC]
-RewriteCond %{REQUEST_URI} !^/jquery-modal-master/ [NC]
-RewriteCond %{REQUEST_URI} !^/lms/ [NC]
-# TOOLS: /tools is a separate module. Its admin screens use the same ?id= links as the rest of the admin panel.
-RewriteCond %{REQUEST_URI} !^/tools/ [NC]
-RewriteCond %{REQUEST_URI} !^/Resources/admin_css/ [NC]
-RewriteCond %{REQUEST_URI} !^/ajax/general\.php$ [NC]
-RewriteCond %{REQUEST_URI} !^/ajax/blog-category-posts\.php$ [NC]
-# Allow internal pretty-URL routers (page.php, course/category/blog routers)
-RewriteCond %{REQUEST_URI} !^/page\.php$ [NC]
-RewriteCond %{REQUEST_URI} !^/classification_category\.php$ [NC]
-RewriteCond %{REQUEST_URI} !^/course\.php$ [NC]
-RewriteCond %{REQUEST_URI} !^/post\.php$ [NC]
-RewriteCond %{REQUEST_URI} !^/faq\.php$ [NC]
-RewriteCond %{REQUEST_URI} !^/footerlink\.php$ [NC]
-# Allow ONLY: /courses/<one-segment>?type=free|endorsed|regulated
-RewriteCond %{REQUEST_URI} !^/courses/[^/]+$ [NC,OR]
-RewriteCond %{QUERY_STRING} !^type=(free|endorsed|regulated)$ [NC]
-# Allow: /applyonline?msg=<anything>
-RewriteCond %{REQUEST_URI} !^/applyonline$ [NC,OR]
-RewriteCond %{QUERY_STRING} !^msg=.*$ [NC]
+RewriteCond %{THE_REQUEST} !\s/+(admin/|assets/|fonts/|images/|css/|js/|tools/|lms/|ajax/|jquery-modal-master/|design-two/|design-three/|Resources/|page\.php|classification_category\.php|course\.php|post\.php|faq\.php|footerlink\.php|applyonline|courses/|\S+\.(css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|eot|map)(\?|\s)) [NC]
 RewriteRule ^ - [G,L]
 
 # Essential site routing (must appear before large redirect blocks)
