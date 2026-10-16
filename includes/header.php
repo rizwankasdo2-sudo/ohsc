@@ -13,6 +13,9 @@ if (!empty($uri_array[2])) {
 }
 ?>
 <?php include dirname(__FILE__) . '/favicon.php'; ?>
+<?php if (isset($_SERVER['HTTP_HOST']) && stripos($_SERVER['HTTP_HOST'], 'tools.kasdo.org') !== false) { ?>
+<meta name="robots" content="noindex, nofollow">
+<?php } ?>
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <?php

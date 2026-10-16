@@ -29,6 +29,11 @@ RewriteRule ^(.*)$ https://tools.kasdo.org/$1 [R=301,L]
 # RewriteCond %{HTTP_HOST} !^www\. [NC]
 # RewriteRule ^(.*)$ https://www.oxfordhomestudy.com/$1 [R=301,L]
 # TOOLS HOST: this branch is served on tools.kasdo.org, so that redirect is off.
+# Every response on this host is noindex, nofollow. Homepage, courses, contact and tools are all covered.
+SetEnvIf Host "tools\.kasdo\.org" ohsc_noindex
+<IfModule mod_headers.c>
+Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex" env=ohsc_noindex
+</IfModule>
 
 RewriteCond %{QUERY_STRING} (^|&)category=industry-insights(&|$) [NC]
 RewriteRule ^OHSC-Blog/?$ /OHSC-Blog? [R=301,NC,L]
