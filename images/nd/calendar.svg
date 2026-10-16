@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="42px" height="43px" viewBox="0 0 42 43" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 58 (84663) - https://sketch.com -->
+    <title>Group 36</title>
+    <desc>Created with Sketch.</desc>
+    <g id="21-APR2020" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="HomePAGE_StepONE-15MAY2020" transform="translate(-1039.000000, -3864.000000)" stroke="#0F151A">
+            <g id="Group-36" transform="translate(1040.000000, 3865.000000)">
+                <path d="M35.1395349,3.72093023 C36.7963891,3.72093023 38.1395349,5.06407598 38.1395349,6.72093023 L38.139921,26.0461188 C36.4427749,23.7869065 33.74088,22.3255814 30.6976744,22.3255814 C25.5601419,22.3255814 21.3953488,26.4903744 21.3953488,31.627907 C21.3953488,33.3223914 21.8484127,34.9110571 22.6400104,36.2793741 L3,36.2790698 C1.34314575,36.2790698 5.49528186e-13,34.935924 5.47117907e-13,33.2790698 L5.47117907e-13,6.72093023 C5.46470911e-13,5.06407598 1.34314575,3.72093023 3,3.72093023 L35.1395349,3.72093023 Z" id="Combined-Shape" stroke-width="1.5"></path>
+                <path d="M0.465116279,11.627907 L37.6744186,11.627907" id="Line-30" stroke-width="1.5" stroke-linecap="square"></path>
+                <rect id="Rectangle" fill="#FFFFFF" x="7.44186047" y="0" width="1" height="7.44186047" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="6.51162791" y="15.8139535" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="6.51162791" y="21.3953488" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="6.51162791" y="26.0465116" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="6.51162791" y="30.6976744" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" transform="translate(30.697674, 28.837209) scale(-1, 1) translate(-30.697674, -28.837209) " x="30.2325581" y="26.0465116" width="1" height="5.58139535" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" transform="translate(33.023256, 31.162791) scale(-1, 1) translate(-33.023256, -31.162791) " x="30.2325581" y="30.6976744" width="5.58139535" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="26.9767442" y="15.8139535" width="3.72093023" height="1" rx="0.5"></rect>
+                <circle id="Oval" stroke-width="1.5" cx="30.6976744" cy="31.627907" r="9.30232558"></circle>
+                <rect id="Rectangle" fill="#FFFFFF" x="17.6744186" y="21.3953488" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="17.6744186" y="15.8139535" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="17.6744186" y="26.0465116" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="17.6744186" y="30.6976744" width="3.72093023" height="1" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="14.8837209" y="0" width="1" height="7.44186047" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="22.3255814" y="0" width="1" height="7.44186047" rx="0.5"></rect>
+                <rect id="Rectangle" fill="#FFFFFF" x="29.7674419" y="0" width="1" height="7.44186047" rx="0.5"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

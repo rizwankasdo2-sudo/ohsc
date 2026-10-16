@@ -1,12 +1,26 @@
 <style>
 <?php
-$bootstrap_css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/css/bootstrap.min.css');
-$bootstrap_css = str_replace("../fonts/glyphicons-halflings-regular.woff", $pdots . "fonts/glyphicons-halflings-regular.woff", $bootstrap_css);
-echo $bootstrap_css;
-//include_once($_SERVER['DOCUMENT_ROOT'] . '/css/custom.css');
-$custom_css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/css/custom.css');
-$custom_css = str_replace("images/sm-li.png", $pdots . "images/sm-li.png", $custom_css);
-echo $custom_css;
+// ORIGINAL: DOCUMENT_ROOT on tools.kasdo.org is the parent folder, so these files were not found and the warning printed before the stylesheet.
+// $bootstrap_css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/css/bootstrap.min.css');
+// $bootstrap_css = str_replace("../fonts/glyphicons-halflings-regular.woff", $pdots . "fonts/glyphicons-halflings-regular.woff", $bootstrap_css);
+// echo $bootstrap_css;
+// include_once($_SERVER['DOCUMENT_ROOT'] . '/css/custom.css');
+// $custom_css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/css/custom.css');
+// $custom_css = str_replace("images/sm-li.png", $pdots . "images/sm-li.png", $custom_css);
+// echo $custom_css;
+$ohscRoot = dirname(__FILE__) . '/..';
+$bootstrapFile = $ohscRoot . '/css/bootstrap.min.css';
+if (is_file($bootstrapFile)) {
+    $bootstrap_css = file_get_contents($bootstrapFile);
+    $bootstrap_css = str_replace("../fonts/glyphicons-halflings-regular.woff", $pdots . "fonts/glyphicons-halflings-regular.woff", $bootstrap_css);
+    echo $bootstrap_css;
+}
+$customFile = $ohscRoot . '/css/custom.css';
+if (is_file($customFile)) {
+    $custom_css = file_get_contents($customFile);
+    $custom_css = str_replace("images/sm-li.png", $pdots . "images/sm-li.png", $custom_css);
+    echo $custom_css;
+}
 ?>
 <!-- Begin content from css/fonts.googleapis.css -->
 @font-face {

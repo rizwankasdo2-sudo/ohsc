@@ -17,13 +17,27 @@ if (!empty($uri_array[2])) {
 <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
 <?php
 echo '<style>';
-require_once(dirname(__FILE__) . '/../css/nd/main_styles.css');
-require_once(dirname(__FILE__) . '/../css/nd/responsive.css');
-require_once(dirname(__FILE__) . '/../css/nd/developer.css');
-require_once(dirname(__FILE__) . '/../appleple-modal-video-810fe8f/css/modal-video.min.css');
-require_once(dirname(__FILE__) . '/../jquery-modal-master/jquery.modal.min.css');
-require_once(dirname(__FILE__) . '/../OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.carousel.min.css');
-require_once(dirname(__FILE__) . '/../OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.theme.default.min.css');
+// ORIGINAL: a missing vendor stylesheet stopped the page inside the style tag, so the rest of the CSS never reached the browser.
+// require_once(dirname(__FILE__) . '/../css/nd/main_styles.css');
+// require_once(dirname(__FILE__) . '/../css/nd/responsive.css');
+// require_once(dirname(__FILE__) . '/../css/nd/developer.css');
+// require_once(dirname(__FILE__) . '/../appleple-modal-video-810fe8f/css/modal-video.min.css');
+// require_once(dirname(__FILE__) . '/../jquery-modal-master/jquery.modal.min.css');
+// require_once(dirname(__FILE__) . '/../OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.carousel.min.css');
+// require_once(dirname(__FILE__) . '/../OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.theme.default.min.css');
+foreach (array(
+    dirname(__FILE__) . '/../css/nd/main_styles.css',
+    dirname(__FILE__) . '/../css/nd/responsive.css',
+    dirname(__FILE__) . '/../css/nd/developer.css',
+    dirname(__FILE__) . '/../appleple-modal-video-810fe8f/css/modal-video.min.css',
+    dirname(__FILE__) . '/../jquery-modal-master/jquery.modal.min.css',
+    dirname(__FILE__) . '/../OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.carousel.min.css',
+    dirname(__FILE__) . '/../OwlCarousel2-2.3.4/docs/assets/owlcarousel/assets/owl.theme.default.min.css',
+) as $ohscStylesheet) {
+    if (is_file($ohscStylesheet)) {
+        require $ohscStylesheet;
+    }
+}
 echo '</style>';
 $social_row = $db->query("SELECT * FROM social_links")->fetch_array();
 ?>

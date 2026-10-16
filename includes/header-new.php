@@ -18,11 +18,26 @@ if (!empty($uri_array[2])) {
 <link rel="preload" href="<?php echo $pdots; ?>fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 <?php
-$style_css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/assets/css/style.css');
-$style_css = str_replace("../img", $pdots . 'assets/img', $style_css);
-echo $style_css;
-require_once(dirname(__FILE__) . '/../assets/css/bootstrap.min.css');
-require_once(dirname(__FILE__) . '/../css/nd/developer.css');
+// ORIGINAL: DOCUMENT_ROOT on tools.kasdo.org is the parent folder, so style.css was not found.
+// $style_css = file_get_contents($_SERVER['DOCUMENT_ROOT'] . '/assets/css/style.css');
+// $style_css = str_replace("../img", $pdots . 'assets/img', $style_css);
+// echo $style_css;
+// require_once(dirname(__FILE__) . '/../assets/css/bootstrap.min.css');
+// require_once(dirname(__FILE__) . '/../css/nd/developer.css');
+$styleFile = dirname(__FILE__) . '/../assets/css/style.css';
+if (is_file($styleFile)) {
+    $style_css = file_get_contents($styleFile);
+    $style_css = str_replace("../img", $pdots . 'assets/img', $style_css);
+    echo $style_css;
+}
+foreach (array(
+    dirname(__FILE__) . '/../assets/css/bootstrap.min.css',
+    dirname(__FILE__) . '/../css/nd/developer.css',
+) as $ohscStylesheet) {
+    if (is_file($ohscStylesheet)) {
+        require $ohscStylesheet;
+    }
+}
 ?>
 @font-face{
     font-family:"Red Hat Text";
