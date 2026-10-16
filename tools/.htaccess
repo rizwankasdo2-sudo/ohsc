@@ -1,0 +1,9 @@
+# Tool files stay out of search results. The username prompt is applied in PHP
+# on the tool pages so a missing password file cannot take the whole site down.
+<IfModule mod_headers.c>
+Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
+</IfModule>
+CGIPassAuth On
+<IfModule mod_setenvif.c>
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+</IfModule>

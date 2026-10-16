@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/includes/lock.php';
 include dirname(__FILE__) . '/../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../includes/functions.php';
 require_once dirname(__FILE__) . '/includes/registry.php';
@@ -9,6 +10,7 @@ $tools = ohsc_tools_active($db);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <title>Tools | Oxford Home Study Centre</title>
     <meta name="description" content="Free tools from Oxford Home Study Centre.">
     <?php include dirname(__FILE__) . '/../includes/header-home-new.php'; ?>

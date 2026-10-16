@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
@@ -14,6 +15,7 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <title>Typing Speed Test | Oxford Home Study Centre</title>
     <meta name="description" content="Take a free one, three, or five minute typing test. Check your words per minute and accuracy.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>

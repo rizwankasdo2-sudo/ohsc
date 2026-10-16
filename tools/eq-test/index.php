@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
@@ -39,6 +40,7 @@ $benefits = array(
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <title>Emotional Intelligence Test | Oxford Home Study Centre</title>
     <meta name="description" content="Take a free emotional intelligence test. Answer short questions and see how you notice, manage, and respond to emotions.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
