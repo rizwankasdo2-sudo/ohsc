@@ -1,4 +1,5 @@
 <?php
+require_once dirname(__FILE__) . '/site-lock.php';
 require_once(dirname(__FILE__) . '/../admin/classes/connection.php');
 // TOOLS HOST: pages that load this file keep links on tools.kasdo.org even if an older connection.php still points at the live site.
 $ohscRequestHost = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';

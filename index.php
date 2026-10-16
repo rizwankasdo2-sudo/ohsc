@@ -18,7 +18,8 @@ $seo_row = $seo_result->fetch_array();
     <meta property="og:url" content="/" />
     <meta property="og:site_name" content="Oxford Home Study College" />
     <meta name="keywords" content="<?php echo $seo_row['metatitle']; ?>" />
-    <meta name="robots" content="<?php echo $seo_row['robots']; ?>" />
+    <?php /* ORIGINAL: meta robots used the SEO table value, which is Index,Follow. */ ?>
+    <meta name="robots" content="noindex, nofollow">
     <link rel="canonical" href="<?php echo htmlspecialchars(getCanonicalURL($_SERVER['REQUEST_URI']), ENT_QUOTES, 'UTF-8'); ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title><?php echo $seo_row['pagetitle']; ?></title>

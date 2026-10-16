@@ -34,6 +34,17 @@ SetEnvIf Host "tools\.kasdo\.org" ohsc_noindex
 <IfModule mod_headers.c>
 Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex" env=ohsc_noindex
 </IfModule>
+# ORIGINAL: only /tools asked for a password. The course site stayed open.
+# The whole tools.kasdo.org site now uses the same browser login. Localhost is not inside this block.
+<If "%{HTTP_HOST} =~ /tools\.kasdo\.org/i">
+AuthType Basic
+AuthName "Courses with Certificates Online | OHSC"
+AuthUserFile "/home/toolskasdo/public_html/ohsc/.htpasswd"
+Require valid-user
+</If>
+<Files ".htpasswd">
+Require all denied
+</Files>
 
 RewriteCond %{QUERY_STRING} (^|&)category=industry-insights(&|$) [NC]
 RewriteRule ^OHSC-Blog/?$ /OHSC-Blog? [R=301,NC,L]
