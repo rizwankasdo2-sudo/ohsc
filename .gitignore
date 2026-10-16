@@ -1,9 +1,9 @@
-# The admin panel stays out of git. Only the database connection file is tracked,
-# so a pull on tools.kasdo.org creates admin/classes/connection.php.
-/admin/*
-!/admin/classes/
-/admin/classes/*
-!/admin/classes/connection.php
+# Admin code is tracked so a pull opens /admin. Logs, uploaded files, and sql dumps stay off git.
+/admin/error_log
+/admin/**/error_log
+/admin/**/Thumbs.db
+/admin/uploads/
+/admin/sql/
 /air-datepicker-master
 # Keep uploaded pictures out of git. CSS, scripts, and the logo/hero pictures are required for the live UI.
 /assets/*
@@ -36,6 +36,7 @@
 !/images/footer_logo.png
 !/images/nopic.png
 !/images/logo.png
+!/images/logo_new.png
 !/images/enroll_btn1.webp
 !/images/enroll_btn2.webp
 /Image-to-WebP-Converter-master

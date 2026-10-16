@@ -1,0 +1,449 @@
+<?php
+session_start();
+
+ob_start();
+
+if($_SESSION['adminid']== "") {
+
+	header("location:index.php");
+	exit();
+
+} ?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Course Information</title>
+
+<link rel="stylesheet" href="../Resources/admin_css/admin-style.css" />
+
+<link rel="stylesheet" href="../Resources/admin_css/products.css" />
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.3.1/css/buttons.dataTables.min.css" />
+
+<script type="text/javascript" src="../Resources/admin_js/csshorizontalmenu.js"></script>
+
+
+
+<!--[if lte IE 6]>
+
+	<script type="text/javascript" src="../Resources/admin_js/supersleight-min.js"></script>
+
+<![endif]-->
+
+<style>
+    table
+    {
+        border-collapse: collapse;
+
+    }
+    table thead tr
+    {
+        background: #f5f5f5;
+    }
+    table td, table th
+    {
+        border: 1px solid #ddd;
+        padding: 10px 10px 10px 10px;
+        text-align: left;
+        font-family: "Helvetica", "Arial", sans-serif;
+        font-size: 13px;
+    }
+    table tr:nth-child(even)
+    {
+        background: #f5f5f5;
+    }
+    #addaction{
+    	width: 600px;
+
+    }
+    .h3{
+    	font-size: 16px;
+    }
+
+</style>
+
+
+
+</head >
+
+
+
+<body>
+
+
+
+ <div id="wrap_dashboard">
+
+   
+
+   <?php
+
+    $pagename = "manage-action.php";
+	$pagetitle = "Course Actions";
+
+           include("classes/connection.php");
+
+		   include("includes/admin-header.php");
+
+		   include("includes/admin-menu.php");
+
+ //update action and status as bulk/group
+
+if(isset($_POST['addbtn']))
+{
+	$action=$_POST['addaction'];
+	$id = $_POST['id'];
+	if(empty($id))
+	{
+	$insert="insert into course_action (title) value ('$action')";
+	$msg="Successfully Added";
+	}
+	else
+	{
+	 $insert="update course_action set title = '$action' where id = $id";
+	 $msg="Successfully Updated";
+	}
+	$query=$db->query($insert);
+	header('Location: manage-action.php?msg='.$msg);
+	exit;
+}
+	
+if(isset($_GET['update'])  && is_numeric($_GET['update'])) {
+
+		$update=$_GET['update'];
+		//smysql_select_db('oxford_db');
+		$update1="select * from course_action where id='$update'";
+		//echo $update1;
+		$query_update=$db->query($update1);
+		$result= $query_update->fetch_array();
+		//print_r($result);
+		//exit();
+		$msg="Updated Successfully";
+		//header('Location: manage-action.php?msg='.$msg);
+		
+}
+
+if(isset($_GET['delete']) && is_numeric($_GET['delete'])) {
+		$delete=$_GET['delete'];
+		//mysql_select_db('oxford_db');
+		$delete1="DELETE FROM course_action WHERE id='$delete'";
+		//$query_delete=$db->query($delete1);
+		$query=$db->query($delete1);
+		$msg1="Record Deleted Successfully";
+		
+		header('Location: manage-action.php?msg='.$msg1);
+		exit;
+}
+
+
+	require "includes/pagination.php";
+
+$page = 1;
+$size = 50;
+
+if (isset($_GET['page'])){
+    $page = (int) $_GET['page'];
+}
+
+
+
+
+?>
+
+   <div id="outer_contanier">
+   <?php 
+           if($_GET['msg'] != ""){
+            ?>
+             <br /> <br />
+            <h4 align="left" name="" class="alert alert-success" style="color:green;"><?php echo $_GET['msg']; ?></h4>
+            <?php
+
+           }
+
+           ?>
+           <?php 
+           if($_GET['msg1'] != ""){
+            ?>
+            <h4 align="left" name="" class="alert alert-success" style="color:green;"><?php echo $_GET['msg1']; ?></h4>
+            <?php
+
+           }
+
+           ?>
+     
+
+     <div id="board">
+
+     
+
+       <div id="left_corner">
+
+       </div>
+
+       
+
+       <div id="midle_repeat">
+
+         
+
+         <div id="productsheading" style="width:300px; margin-top:0px;">
+
+         
+
+           <h3>Course Information</h3><input type="button" class="btn btn-success" onclick="redirect(this)" value="Back" name="back" id="back">  
+
+
+
+
+
+
+
+         
+
+         </div>
+
+         
+
+         <!--<div id="adddel">
+
+         
+
+           <ul>
+
+           
+
+             <li style="float:right"><a href="add_task.php">Add</a></li>
+
+           
+
+           </ul>
+
+         
+
+         </div>-->
+
+       
+
+       </div>
+
+       
+
+       <div id="right_corner">
+		
+       </div>
+
+       
+
+       <div id="main_content">
+
+       
+
+         <div id="productslistsearch">
+
+           <div class="clear">&nbsp;</div>
+
+           <div class="in" style="margin-top:0px">
+      
+
+        <form action="" method="post" id="courseForm">
+        <div class="form-group">
+        <h3 class="h3">Add Action:</h3>
+        <input type="text" name="addaction" id="addaction" placeholder="Enter Action Title" class="form-control input-lg" value="<?php if(isset($result['title'])){echo $result['title']; } ?>">
+         <input type="hidden" name="id" id="id" value="<?php if(isset($result['id'])){echo $result['id'];}?>" class="form-control input-lg">
+
+        <br />
+        <input type="submit" class="btn btn-success btn-lg" name="addbtn" value="Add Action" id="addbtn">
+        
+
+        </div>
+        </form>
+        
+        <div class="container-fluid">
+         <table class="table table-striped table-bordered table-hover" id="example">
+            <thead>
+                <tr>
+                    <th>No</th>
+                     <th>Title</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+          
+            <tbody>
+              <?php 
+            $count = 1;
+            $select="select * from course_action";
+            $result=$db->query($select,$con);
+            $num= $result->num_rows;
+
+            if($num > 0){
+            	while($rows= $result->fetch_assoc())
+            	{
+
+
+            ?>
+                         
+                     <tr>
+                  <td><?php echo $count; ?></td>
+                  <td><?php echo $rows['title']; ?></td>
+                  <td><a href="manage-action.php?update=<?php echo $rows['id']; ?>" style="margin:0px 5px;">Edit</a>|<a href="manage-action.php?delete=<?php echo $rows['id']; ?>" onclick="return confirm('Are you sure you want to delete this action?');" style="margin:0px 5px;">Delete</a></td>
+                </tr>
+
+                <?php 
+               $count++;
+                 	}
+            }
+            else {
+            	echo "No rows found:";}
+            
+
+
+
+                ?>
+                     
+                            </tbody>
+               
+        </table>
+	
+
+
+
+
+        </div>
+       
+         
+         
+         
+    </div>
+
+         
+
+         </div>
+
+         
+
+         <div class="clear">&nbsp;</div>
+
+              
+
+       </div>
+
+     
+
+     </div>
+  
+   
+
+   </div>
+
+ 
+
+ <script type="text/javascript">
+   function redirect(){
+    //alert('pak');
+    window.location.href="info.php";
+   } 
+
+ </script>
+ 
+<script src="ajax/jquery-1.12.3.min.js"></script>
+<script  async="async" type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></script>
+
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script type="text/javascript" >
+/*
+ $(document).ready(function() { 
+		
+            $('#photoimg').live('change', function()			{ 
+			           $("#preview").html('');
+			    $("#preview").html('<img src="loader.gif" alt="Uploading...."/>');
+			$("#imageform").ajaxForm({
+						target: '#preview'
+		}).submit();
+		
+			});
+        }); 
+        */
+</script>
+<!-- Include Date Range Picker -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
+<script>
+/*
+var jq = $.noConflict();
+    jq(document).ready(function(){
+        var date_input=jq('input[name="date"]'); //our date input has the name "date"
+        var container=jq('.bootstrap-iso form').length>0 ? jq('.bootstrap-iso form').parent() : "body";
+        date_input.datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+        })
+    });
+    */
+</script>
+<script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+
+
+
+
+<script>
+ 
+  $(document).ready(function() {
+    $('#example').DataTable( {
+
+         dom: 'Bfrtip',
+        "ordering": true,
+        "bPaginate": true,
+		"info": true,
+		//"searching": false,
+
+		buttons: [
+            {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4, 5, 6, 7, 10]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [1, 2, 3, 4, 5, 6, 7, 10]
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [ 1, 2, 3, 4, 5, 6, 7, 10]
+                }
+            }
+            
+        ]
+
+
+		 
+    } );
+	 table.buttons( 0, null ).container().prependTo(
+        table.table().container()
+    );
+} );
+</script>
+
+
+
+
+
+<script src="ajax/custom.js"></script>
+
+</body>
+
+</html>
