@@ -14,7 +14,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
     <title>CV Builder | Oxford Home Study Centre</title>
     <meta name="description" content="Build a CV from your details. Choose a Modern, Classic, or Minimal template and download it.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder.css?v=2">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder.css?v=3">
     <main class="ohsc-cv" id="ohsc-cv">
         <div class="cv-wrap">
             <section class="cv-hero">
@@ -182,10 +182,10 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
     </main>
     <script>
         window.OHSC_CV = <?php echo json_encode(array(
-            'css' => $asset . 'cv-builder.css?v=2',
+            'css' => $asset . 'cv-builder.css?v=3',
             'html2pdf' => 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'
         ), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     </script>
-    <script src="<?php echo ohsc_h($asset); ?>cv-builder.js?v=2"></script>
+    <script src="<?php echo ohsc_h($asset); ?>cv-builder.js?v=3"></script>
     <?php include dirname(__FILE__) . '/../../includes/footer-new.php'; ?>
 </html>

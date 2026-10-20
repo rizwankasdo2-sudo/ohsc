@@ -127,6 +127,9 @@
     });
 
     paint();
+    setTimeout(function () {
+        loadHtml2Pdf().catch(function () {});
+    }, 800);
 
     function paint() {
         document.getElementById('cvStepNum').textContent = String(state.step);
@@ -280,46 +283,83 @@
         save();
         modal.hidden = false;
         modalSheet.innerHTML = sheet(currentData(), state.template);
+        loadHtml2Pdf().catch(function () {});
     }
 
     function download() {
         var button = document.getElementById('cvDownload');
+        if (button.disabled) {
+            return;
+        }
+        readStep();
+        save();
         var data = currentData();
         var rawName = (data.personal.name || 'CV').replace(/[^\w\s-]/g, '').trim() || 'CV';
         var filename = rawName.replace(/\s+/g, '-') + '-CV.pdf';
-        var wrap = document.createElement('div');
-        wrap.setAttribute('aria-hidden', 'true');
-        wrap.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;background:#fff;pointer-events:none;';
-        wrap.innerHTML = sheet(data, state.template);
-        var el = wrap.firstElementChild;
-        if (el) {
-            el.style.width = '794px';
-            el.style.border = '0';
-            el.style.borderRadius = '0';
-            el.style.minHeight = '0';
+        modal.hidden = false;
+        modalSheet.innerHTML = sheet(data, state.template);
+        var el = modalSheet.querySelector('.cv-sheet');
+        if (!el) {
+            error.hidden = false;
+            error.textContent = 'Could not create the PDF. Please try again.';
+            return;
         }
-        document.body.appendChild(wrap);
+
+        var prev = {
+            width: el.style.width,
+            maxWidth: el.style.maxWidth,
+            border: el.style.border,
+            borderRadius: el.style.borderRadius,
+            minHeight: el.style.minHeight,
+            boxShadow: el.style.boxShadow
+        };
+        el.style.width = '794px';
+        el.style.maxWidth = '794px';
+        el.style.border = '0';
+        el.style.borderRadius = '0';
+        el.style.minHeight = '0';
+        el.style.boxShadow = 'none';
+
         button.disabled = true;
         button.textContent = 'Preparing PDF…';
 
-        loadHtml2Pdf().then(function () {
+        waitForPaint().then(function () {
+            return loadHtml2Pdf();
+        }).then(function () {
             return window.html2pdf().set({
-                margin: [10, 10, 10, 10],
+                margin: [8, 8, 8, 8],
                 filename: filename,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                image: { type: 'jpeg', quality: 0.92 },
+                html2canvas: {
+                    scale: 1.5,
+                    useCORS: true,
+                    logging: false,
+                    backgroundColor: '#ffffff',
+                    scrollX: 0,
+                    scrollY: 0
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).from(el).save();
         }).catch(function () {
             error.hidden = false;
             error.textContent = 'Could not create the PDF. Please try again.';
         }).then(function () {
-            if (wrap.parentNode) {
-                wrap.parentNode.removeChild(wrap);
-            }
+            el.style.width = prev.width;
+            el.style.maxWidth = prev.maxWidth;
+            el.style.border = prev.border;
+            el.style.borderRadius = prev.borderRadius;
+            el.style.minHeight = prev.minHeight;
+            el.style.boxShadow = prev.boxShadow;
             button.disabled = false;
             button.textContent = 'Download PDF';
+        });
+    }
+
+    function waitForPaint() {
+        return new Promise(function (resolve) {
+            requestAnimationFrame(function () {
+                requestAnimationFrame(resolve);
+            });
         });
     }
 
@@ -327,8 +367,11 @@
         if (window.html2pdf) {
             return Promise.resolve();
         }
+        if (loadHtml2Pdf.pending) {
+            return loadHtml2Pdf.pending;
+        }
         var src = (window.OHSC_CV && window.OHSC_CV.html2pdf) ? window.OHSC_CV.html2pdf : 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
-        return new Promise(function (resolve, reject) {
+        loadHtml2Pdf.pending = new Promise(function (resolve, reject) {
             var script = document.createElement('script');
             script.src = src;
             script.onload = function () {
@@ -339,10 +382,12 @@
                 }
             };
             script.onerror = function () {
+                loadHtml2Pdf.pending = null;
                 reject(new Error('html2pdf failed'));
             };
             document.head.appendChild(script);
         });
+        return loadHtml2Pdf.pending;
     }
 
     function sheet(data, template) {
