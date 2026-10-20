@@ -14,7 +14,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
     <title>CV Builder | Oxford Home Study Centre</title>
     <meta name="description" content="Build a CV from your details. Choose a Modern, Classic, or Minimal template and download it.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder.css?v=1">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder.css?v=2">
     <main class="ohsc-cv" id="ohsc-cv">
         <div class="cv-wrap">
             <section class="cv-hero">
@@ -172,7 +172,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                 <div class="cv-modal-bar">
                     <h2 id="cvModalTitle">Your CV</h2>
                     <div>
-                        <button type="button" class="cv-next" id="cvDownload">Download CV</button>
+                        <button type="button" class="cv-next" id="cvDownload">Download PDF</button>
                         <button type="button" class="cv-outline" id="cvClosePreview">Close</button>
                     </div>
                 </div>
@@ -181,8 +181,11 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
         </div>
     </main>
     <script>
-        window.OHSC_CV = <?php echo json_encode(array('css' => $asset . 'cv-builder.css?v=1'), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
+        window.OHSC_CV = <?php echo json_encode(array(
+            'css' => $asset . 'cv-builder.css?v=2',
+            'html2pdf' => 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'
+        ), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     </script>
-    <script src="<?php echo ohsc_h($asset); ?>cv-builder.js?v=1"></script>
+    <script src="<?php echo ohsc_h($asset); ?>cv-builder.js?v=2"></script>
     <?php include dirname(__FILE__) . '/../../includes/footer-new.php'; ?>
 </html>

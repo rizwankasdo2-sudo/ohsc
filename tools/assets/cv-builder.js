@@ -283,16 +283,66 @@
     }
 
     function download() {
+        var button = document.getElementById('cvDownload');
         var data = currentData();
-        var css = (window.OHSC_CV && window.OHSC_CV.css) ? window.OHSC_CV.css : '';
-        var popup = window.open('', 'ohsc-cv');
-        if (!popup) {
-            window.print();
-            return;
+        var rawName = (data.personal.name || 'CV').replace(/[^\w\s-]/g, '').trim() || 'CV';
+        var filename = rawName.replace(/\s+/g, '-') + '-CV.pdf';
+        var wrap = document.createElement('div');
+        wrap.setAttribute('aria-hidden', 'true');
+        wrap.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;background:#fff;pointer-events:none;';
+        wrap.innerHTML = sheet(data, state.template);
+        var el = wrap.firstElementChild;
+        if (el) {
+            el.style.width = '794px';
+            el.style.border = '0';
+            el.style.borderRadius = '0';
+            el.style.minHeight = '0';
         }
-        popup.document.open();
-        popup.document.write('<!doctype html><html><head><meta charset="utf-8"><title>' + esc(data.personal.name || 'CV') + '</title><link rel="stylesheet" href="' + esc(css) + '"><style>body{margin:0;background:#fff} .cv-sheet{border:0;border-radius:0;min-height:100vh} @page{margin:12mm}</style></head><body>' + sheet(data, state.template) + '<script>window.onload=function(){window.print();}<\/script></body></html>');
-        popup.document.close();
+        document.body.appendChild(wrap);
+        button.disabled = true;
+        button.textContent = 'Preparing PDF…';
+
+        loadHtml2Pdf().then(function () {
+            return window.html2pdf().set({
+                margin: [10, 10, 10, 10],
+                filename: filename,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            }).from(el).save();
+        }).catch(function () {
+            error.hidden = false;
+            error.textContent = 'Could not create the PDF. Please try again.';
+        }).then(function () {
+            if (wrap.parentNode) {
+                wrap.parentNode.removeChild(wrap);
+            }
+            button.disabled = false;
+            button.textContent = 'Download PDF';
+        });
+    }
+
+    function loadHtml2Pdf() {
+        if (window.html2pdf) {
+            return Promise.resolve();
+        }
+        var src = (window.OHSC_CV && window.OHSC_CV.html2pdf) ? window.OHSC_CV.html2pdf : 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
+        return new Promise(function (resolve, reject) {
+            var script = document.createElement('script');
+            script.src = src;
+            script.onload = function () {
+                if (window.html2pdf) {
+                    resolve();
+                } else {
+                    reject(new Error('html2pdf missing'));
+                }
+            };
+            script.onerror = function () {
+                reject(new Error('html2pdf failed'));
+            };
+            document.head.appendChild(script);
+        });
     }
 
     function sheet(data, template) {
