@@ -182,6 +182,21 @@ if (!function_exists('ohsc_tools_ensure')) {
             }
         }
 
+        $cvTool = $db->query("SELECT tool_id FROM tbl_site_tools WHERE slug = 'cv-builder' LIMIT 1");
+        if ($cvTool && (int) $cvTool->num_rows === 0) {
+            $stmt = $db->prepare("INSERT INTO tbl_site_tools (title, slug, summary, sort_order, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $title = 'CV Builder';
+                $slug = 'cv-builder';
+                $summary = 'Enter your details, pick a template, and download a CV that is ready to send.';
+                $sort = 3;
+                $active = 1;
+                $stmt->bind_param('sssiss', $title, $slug, $summary, $sort, $active, $now);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+
         $ready = true;
     }
 }
