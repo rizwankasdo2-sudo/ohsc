@@ -313,12 +313,26 @@
     overflow: hidden;
 }
 .cv-sheet h3, .cv-sheet h4, .cv-sheet p { margin: 0; }
+.cv-sheet h3,
+.cv-sheet .role,
+.cv-sheet .contact,
+.cv-sheet p,
+.cv-sheet li {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
 .cv-sheet .role { font-weight: 800; }
-.cv-sheet .when { color: #6d6788; font-size: 12px; }
+.cv-sheet .when { color: #6d6788; font-size: 12px; overflow-wrap: anywhere; word-break: break-word; }
 .cv-sheet .job, .cv-sheet .school { margin-top: 10px; }
 .cv-sheet .job p, .cv-sheet .school p { margin-top: 4px; white-space: pre-wrap; }
-.cv-modern { display: grid; grid-template-columns: 168px 1fr; min-height: 320px; }
-.cv-modern .side { background: #3d2e8c; color: #fff; padding: 18px 14px; }
+.cv-modern { display: grid; grid-template-columns: minmax(0, 210px) minmax(0, 1fr); min-height: 320px; }
+.cv-modern .side {
+    background: #3d2e8c;
+    color: #fff;
+    padding: 18px 14px;
+    min-width: 0;
+    overflow: hidden;
+}
 .cv-modern .avatar {
     width: 64px;
     height: 64px;
@@ -331,21 +345,40 @@
     font-weight: 800;
     margin-bottom: 10px;
 }
-.cv-modern h3 { font-size: 18px; line-height: 1.15; }
-.cv-modern .side p, .cv-modern .side li { color: #e6e0ff; font-size: 12px; }
+.cv-modern h3 { font-size: 18px; line-height: 1.2; }
+.cv-modern .side p,
+.cv-modern .side li {
+    color: #e6e0ff;
+    font-size: 12px;
+    line-height: 1.4;
+    max-width: 100%;
+}
 .cv-modern .side h4 { margin: 14px 0 6px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
-.cv-modern .side ul { margin: 0; padding-left: 16px; }
-.cv-modern .main { padding: 18px 16px; }
+.cv-modern .side ul { margin: 0; padding-left: 16px; overflow-wrap: anywhere; }
+.cv-modern .main { padding: 18px 16px; min-width: 0; }
 .cv-modern .main h4 { margin: 14px 0 6px; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #3d2e8c; }
 .cv-classic { padding: 22px 20px; font-family: Georgia, "Times New Roman", serif; }
 .cv-classic header { text-align: center; border-bottom: 2px solid #1c1740; padding-bottom: 10px; }
-.cv-classic h3 { font-size: 28px; letter-spacing: 0.04em; text-transform: uppercase; }
-.cv-classic .contact { margin-top: 4px; font-size: 13px; color: #4d4868; }
+.cv-classic h3 { font-size: 28px; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.15; }
+.cv-classic .contact { margin-top: 4px; font-size: 13px; color: #4d4868; line-height: 1.45; }
 .cv-classic h4 { margin: 16px 0 6px; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid #d9d4e8; }
 .cv-minimal { padding: 26px 22px 18px; }
-.cv-minimal h3 { font-size: 30px; font-weight: 600; letter-spacing: -0.03em; }
+.cv-minimal h3 { font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
 .cv-minimal .jobtitle { color: #6d6788; margin-top: 2px; }
-.cv-minimal .contact { margin-top: 8px; font-size: 13px; color: #6d6788; }
+.cv-minimal .contact { margin-top: 8px; font-size: 13px; color: #6d6788; line-height: 1.45; }
+.cv-sheet .contact-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 14px;
+}
+.cv-minimal .contact-stack { justify-content: flex-start; }
+.cv-sheet .contact-stack span {
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
 .cv-minimal h4 { margin: 18px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #8a84a3; }
 .cv-empty { color: #8a84a3; font-size: 13px; }
 

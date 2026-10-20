@@ -393,7 +393,11 @@
     function sheet(data, template) {
         var person = data.personal;
         var name = person.name || 'Your name';
-        var contact = [person.email, person.phone, person.location].filter(Boolean).join(' · ');
+        var contactBits = [person.email, person.phone, person.location].filter(Boolean);
+        var contactLine = contactBits.join(' · ');
+        var contactBlock = contactBits.length
+            ? contactBits.map(function (bit) { return '<span>' + esc(bit) + '</span>'; }).join('')
+            : '';
         var summary = person.summary ? '<p>' + esc(person.summary) + '</p>' : '';
         var jobs = data.experience.length ? data.experience.map(function (job) {
             return '<div class="job"><div class="role">' + esc(job.role || 'Role') + (job.company ? ' · ' + esc(job.company) : '') + '</div><div class="when">' + esc([job.start, job.end].filter(Boolean).join(' – ')) + '</div><p>' + esc(job.detail) + '</p></div>';
@@ -402,13 +406,16 @@
             return '<div class="school"><div class="role">' + esc(item.qualification || 'Qualification') + (item.school ? ' · ' + esc(item.school) : '') + '</div><div class="when">' + esc([item.start, item.end].filter(Boolean).join(' – ')) + '</div></div>';
         }).join('') : '<p class="cv-empty">Education will appear here.</p>';
         var skills = data.skills.length ? data.skills.map(function (skill) { return '<li>' + esc(skill) + '</li>'; }).join('') : '<li>Skills will appear here.</li>';
+        var sideContact = contactBits.length
+            ? contactBits.map(function (bit) { return '<p>' + esc(bit) + '</p>'; }).join('')
+            : '<p class="cv-empty">Contact will appear here.</p>';
         if (template === 'classic') {
-            return '<article class="cv-sheet cv-classic"><header><h3>' + esc(name) + '</h3><p>' + esc(person.title) + '</p><p class="contact">' + esc(contact) + '</p></header><h4>Profile</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '<h4>Skills</h4><p>' + esc(data.skills.join(', ') || 'Skills will appear here.') + '</p></article>';
+            return '<article class="cv-sheet cv-classic"><header><h3>' + esc(name) + '</h3><p>' + esc(person.title) + '</p><p class="contact contact-stack">' + (contactBlock || esc(contactLine) || 'Contact will appear here.') + '</p></header><h4>Profile</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '<h4>Skills</h4><p>' + esc(data.skills.join(', ') || 'Skills will appear here.') + '</p></article>';
         }
         if (template === 'minimal') {
-            return '<article class="cv-sheet cv-minimal"><h3>' + esc(name) + '</h3><p class="jobtitle">' + esc(person.title) + '</p><p class="contact">' + esc(contact) + '</p><h4>Profile</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '<h4>Skills</h4><p>' + esc(data.skills.join('  ·  ') || 'Skills will appear here.') + '</p></article>';
+            return '<article class="cv-sheet cv-minimal"><h3>' + esc(name) + '</h3><p class="jobtitle">' + esc(person.title) + '</p><p class="contact contact-stack">' + (contactBlock || esc(contactLine) || 'Contact will appear here.') + '</p><h4>Profile</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '<h4>Skills</h4><p>' + esc(data.skills.join('  ·  ') || 'Skills will appear here.') + '</p></article>';
         }
-        return '<article class="cv-sheet cv-modern"><aside class="side"><div class="avatar">' + esc(initials(name)) + '</div><h3>' + esc(name) + '</h3><p>' + esc(person.title) + '</p><h4>Contact</h4><p>' + esc(person.email) + '</p><p>' + esc(person.phone) + '</p><p>' + esc(person.location) + '</p><h4>Skills</h4><ul>' + skills + '</ul></aside><div class="main"><h4>Professional summary</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '</div></article>';
+        return '<article class="cv-sheet cv-modern"><aside class="side"><div class="avatar">' + esc(initials(name)) + '</div><h3>' + esc(name) + '</h3><p>' + esc(person.title) + '</p><h4>Contact</h4>' + sideContact + '<h4>Skills</h4><ul>' + skills + '</ul></aside><div class="main"><h4>Professional summary</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '</div></article>';
     }
 
     function initials(name) {
