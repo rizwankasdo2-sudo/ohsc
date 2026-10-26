@@ -197,6 +197,36 @@ if (!function_exists('ohsc_tools_ensure')) {
             }
         }
 
+        $quizTool = $db->query("SELECT tool_id FROM tbl_site_tools WHERE slug = 'career-quiz' LIMIT 1");
+        if ($quizTool && (int) $quizTool->num_rows === 0) {
+            $stmt = $db->prepare("INSERT INTO tbl_site_tools (title, slug, summary, sort_order, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $title = 'Career Quiz';
+                $slug = 'career-quiz';
+                $summary = 'Answer ten short questions and see which career paths could suit you.';
+                $sort = 4;
+                $active = 1;
+                $stmt->bind_param('sssiss', $title, $slug, $summary, $sort, $active, $now);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+
+        $interviewTool = $db->query("SELECT tool_id FROM tbl_site_tools WHERE slug = 'interview-prep' LIMIT 1");
+        if ($interviewTool && (int) $interviewTool->num_rows === 0) {
+            $stmt = $db->prepare("INSERT INTO tbl_site_tools (title, slug, summary, sort_order, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?)");
+            if ($stmt) {
+                $title = 'Interview Prep';
+                $slug = 'interview-prep';
+                $summary = 'Practise interview questions by industry and review sample answers.';
+                $sort = 5;
+                $active = 1;
+                $stmt->bind_param('sssiss', $title, $slug, $summary, $sort, $active, $now);
+                $stmt->execute();
+                $stmt->close();
+            }
+        }
+
         $ready = true;
     }
 }
