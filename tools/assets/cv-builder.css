@@ -362,10 +362,21 @@
 .cv-classic h3 { font-size: 28px; letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.15; }
 .cv-classic .contact { margin-top: 4px; font-size: 13px; color: #4d4868; line-height: 1.45; }
 .cv-classic h4 { margin: 16px 0 6px; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; border-bottom: 1px solid #d9d4e8; }
-.cv-minimal { padding: 26px 22px 18px; }
-.cv-minimal h3 { font-size: 30px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
-.cv-minimal .jobtitle { color: #6d6788; margin-top: 2px; }
-.cv-minimal .contact { margin-top: 8px; font-size: 13px; color: #6d6788; line-height: 1.45; }
+/* Minimal: monochrome sidebar and clean white main column. */
+.cv-minimal { display: grid; grid-template-columns: 29% minmax(0, 1fr); padding: 0; min-height: 440px; color: #202020; font-family: Arial, sans-serif; }
+.cv-minimal .minimal-side { background: #191919; color: #fff; padding: 24px 16px; min-width: 0; }
+.cv-minimal .minimal-avatar { width: 64px; height: 64px; margin: 0 auto 16px; border: 3px solid #fff; border-radius: 50%; background: #e4e4e4; color: #222; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 600; }
+.cv-minimal h3 { color: #fff; font-size: 19px; font-weight: 600; letter-spacing: .02em; line-height: 1.25; text-align: center; }
+.cv-minimal .jobtitle { color: #ddd; margin-top: 7px; font-size: 11px; line-height: 1.5; text-align: center; text-transform: uppercase; letter-spacing: .07em; }
+.cv-minimal .minimal-side h4 { color: #fff; border-bottom: 1px solid #626262; margin: 24px 0 10px; padding-bottom: 7px; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+.cv-minimal .minimal-side p, .cv-minimal .minimal-side li { color: #e5e5e5; font-size: 11px; line-height: 1.6; margin-bottom: 7px; }
+.cv-minimal .minimal-side ul { padding-left: 14px; margin: 0; }
+.cv-minimal .minimal-main { padding: 24px 25px; min-width: 0; }
+.cv-minimal .minimal-main h4 { margin: 22px 0 10px; padding-bottom: 7px; border-bottom: 1px solid #d7d7d7; color: #222; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.cv-minimal .minimal-main h4:first-child { margin-top: 0; }
+.cv-minimal .minimal-main p { color: #555; font-size: 12px; line-height: 1.65; }
+.cv-minimal .minimal-main .role { color: #222; font-size: 12px; }
+.cv-minimal .when { color: #777; font-size: 11px; margin-top: 4px; }
 .cv-sheet .contact-stack {
     display: flex;
     flex-wrap: wrap;
@@ -379,7 +390,7 @@
     overflow-wrap: anywhere;
     word-break: break-word;
 }
-.cv-minimal h4 { margin: 18px 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: #8a84a3; }
+
 .cv-empty { color: #8a84a3; font-size: 13px; }
 
 @media (max-width: 860px) {
@@ -390,3 +401,7 @@
     .cv-guides img { height: 140px; }
     .cv-cta, .cv-preview-block .cv-section-head, .cv-resources .cv-section-head, .cv-modal-bar { display: grid; }
 }
+
+.cv-template-grid .mini.minimal { background: linear-gradient(to right, #191919 0 29%, #fff 29% 100%); border: 1px solid #e8e8e8; border-radius: 2px; }
+.cv-template-grid .mini.minimal:before { left: 8%; top: 9px; width: 12%; height: 19px; border: 2px solid #fff; border-radius: 50%; background: #c9c9c9; box-shadow: none; }
+.cv-template-grid .mini.minimal:after { left: 36%; top: 15px; width: 54%; height: 3px; border-radius: 0; background: #555; box-shadow: 0 8px 0 #dedede, 0 14px 0 #dedede, 0 27px 0 #555, 0 35px 0 #dedede, 0 41px 0 #dedede, 0 54px 0 #555, 0 62px 0 #dedede; }

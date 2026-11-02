@@ -5,6 +5,9 @@ require_once dirname(__FILE__) . '/../includes/functions.php';
 require_once dirname(__FILE__) . '/includes/registry.php';
 ohsc_tools_ensure($db);
 $tools = ohsc_tools_active($db);
+$industries = ohsc_iv_industries($db);
+$siteBase = rtrim($base_url, '/');
+$hubSections = require dirname(__FILE__) . '/includes/hub-content.php';
 $asset = rtrim($base_url, '/') . '/tools/assets/';
 $toolBase = rtrim($base_url, '/') . '/tools/';
 
@@ -65,8 +68,8 @@ foreach ($bySlug as $tool) {
     <title>Career Tools | Oxford Home Study Centre</title>
     <meta name="description" content="Free career tools from Oxford Home Study Centre: career quiz, CV builder, interview prep, typing test, and strengths test.">
     <?php include dirname(__FILE__) . '/../includes/header-home-new.php'; ?>
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>tools.css?v=2">
-    <main class="ohsc-tool">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>tools.css?v=3">
+    <main class="ohsc-tool ohsc-career-hub">
         <div class="ohsc-wrap">
             <section class="ohsc-hub-hero">
                 <div>
@@ -80,7 +83,7 @@ foreach ($bySlug as $tool) {
                     <a class="ohsc-open" href="#tools-list">Explore now →</a>
                 </div>
                 <div class="ohsc-hub-art" aria-hidden="true">
-                    <img src="<?php echo ohsc_h($asset); ?>hero-typing.jpg" alt="">
+                    <img src="<?php echo ohsc_h($asset); ?>career-hero.svg" alt="">
                 </div>
             </section>
 
@@ -97,9 +100,9 @@ foreach ($bySlug as $tool) {
                     );
                     ?>
                 <article class="ohsc-hub-card tone-<?php echo ohsc_h($meta['tone']); ?>">
-                    <div>
-                        <p class="ohsc-free">FREE</p>
-                        <h2><?php echo ohsc_h($meta['headline']); ?></h2>
+                    <span class="ohsc-card-icon" aria-hidden="true"><?php echo ohsc_hub_icon($tool['slug']); ?></span>
+                    <div class="ohsc-card-copy">
+                        <div class="ohsc-card-title"><h2><?php echo ohsc_h($meta['headline']); ?></h2><span class="ohsc-free">FREE</span></div>
                         <p><?php echo ohsc_h($meta['summary']); ?></p>
                     </div>
                     <a class="ohsc-open" href="<?php echo ohsc_h($toolBase . $tool['slug'] . '/'); ?>"><?php echo ohsc_h($meta['cta']); ?></a>
@@ -108,16 +111,37 @@ foreach ($bySlug as $tool) {
             </div>
             <?php } ?>
 
-            <section class="ohsc-hub-more">
-                <h2>More free career resources</h2>
-                <div class="ohsc-hub-links">
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/tools/cv-builder/'); ?>">CV Templates</a>
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/tools/interview-prep/'); ?>">Interview Checklists</a>
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/tools/career-quiz/'); ?>">Career Quiz</a>
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/OHSC-Blog'); ?>">Career Advice</a>
+            <?php foreach ($hubSections as $section) { ?>
+            <section class="ohsc-hub-section" aria-labelledby="<?php echo ohsc_h($section['id']); ?>">
+                <div class="ohsc-section-heading">
+                    <div><h2 id="<?php echo ohsc_h($section['id']); ?>"><?php echo ohsc_h($section['title']); ?></h2><p><?php echo ohsc_h($section['summary']); ?></p></div>
+                    <a href="<?php echo ohsc_h($section['url']); ?>"><?php echo ohsc_h($section['view']); ?> <span aria-hidden="true">→</span></a>
                 </div>
+                <?php if ($section['id'] === 'career-resources') { ?>
+                <div class="ohsc-hub-links">
+                    <?php foreach ($section['items'] as $item) { ?>
+                    <a href="<?php echo ohsc_h($item['url']); ?>"><span class="ohsc-resource-icon" aria-hidden="true"><?php echo ohsc_hub_icon($item['icon']); ?></span><span><?php echo ohsc_h($item['title']); ?></span><span aria-hidden="true">→</span></a>
+                    <?php } ?>
+                </div>
+                <?php } else { ?>
+                <div class="ohsc-carousel" data-hub-carousel>
+                    <button class="ohsc-carousel-prev" type="button" aria-label="Previous <?php echo ohsc_h($section['title']); ?>" hidden>‹</button>
+                    <div class="ohsc-carousel-track" tabindex="0" role="group" aria-label="<?php echo ohsc_h($section['title']); ?>">
+                        <?php foreach ($section['items'] as $item) { ?>
+                        <a class="ohsc-story-card" href="<?php echo ohsc_h($item['url']); ?>">
+                            <img src="<?php echo ohsc_h($asset . $item['image']); ?>" alt="" loading="lazy" width="560" height="240">
+                            <span><?php echo ohsc_h($item['title']); ?><span aria-hidden="true">→</span></span>
+                        </a>
+                        <?php } ?>
+                    </div>
+                    <button class="ohsc-carousel-next" type="button" aria-label="Next <?php echo ohsc_h($section['title']); ?>" hidden>›</button>
+                    <div class="ohsc-carousel-dots" aria-hidden="true"></div>
+                </div>
+                <?php } ?>
             </section>
+            <?php } ?>
         </div>
     </main>
+    <script src="<?php echo ohsc_h($asset); ?>hub.js?v=1" defer></script>
     <?php include dirname(__FILE__) . '/../includes/footer-new.php'; ?>
 </html>

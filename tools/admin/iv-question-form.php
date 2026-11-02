@@ -2,7 +2,7 @@
 require dirname(__FILE__) . '/_boot.php';
 
 $industries = array();
-$industryResult = $db->query("SELECT industry_id, title FROM tbl_iv_industries WHERE is_active = 1 ORDER BY sort_order ASC, industry_id ASC");
+$industryResult = $db->query("SELECT industry_id, title FROM tbl_iv_industries ORDER BY sort_order ASC, industry_id ASC");
 if ($industryResult) {
     while ($row = $industryResult->fetch_assoc()) {
         $industries[] = $row;
@@ -15,21 +15,23 @@ $question = array(
     'industry_id' => !empty($industries[0]['industry_id']) ? (int) $industries[0]['industry_id'] : 0,
     'question_text' => '',
     'sample_answer' => '',
+    'question_type' => 'common',
     'sort_order' => 1,
     'is_active' => 1,
 );
 $error = '';
 
 if ($questionId > 0 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
-    $stmt = $db->prepare("SELECT question_id, industry_id, question_text, sample_answer, sort_order, is_active FROM tbl_iv_questions WHERE question_id = ?");
+    $stmt = $db->prepare("SELECT question_id, industry_id, question_text, sample_answer, question_type, sort_order, is_active FROM tbl_iv_questions WHERE question_id = ?");
     $stmt->bind_param('i', $questionId);
     $stmt->execute();
-    $stmt->bind_result($id, $industryId, $text, $answer, $sort, $active);
+    $stmt->bind_result($id, $industryId, $text, $answer, $questionType, $sort, $active);
     if ($stmt->fetch()) {
         $question['question_id'] = $id;
         $question['industry_id'] = $industryId;
         $question['question_text'] = $text;
         $question['sample_answer'] = $answer;
+        $question['question_type'] = $questionType;
         $question['sort_order'] = $sort;
         $question['is_active'] = $active;
     }
@@ -44,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $question['industry_id'] = isset($_POST['industry_id']) ? (int) $_POST['industry_id'] : 0;
         $question['question_text'] = trim(isset($_POST['question_text']) ? $_POST['question_text'] : '');
         $question['sample_answer'] = trim(isset($_POST['sample_answer']) ? $_POST['sample_answer'] : '');
+        $question['question_type'] = isset($_POST['question_type']) && is_string($_POST['question_type']) ? $_POST['question_type'] : '';
         $question['sort_order'] = isset($_POST['sort_order']) ? (int) $_POST['sort_order'] : 0;
         $question['is_active'] = !empty($_POST['is_active']) ? 1 : 0;
         $industryOk = false;
@@ -57,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = 'Write a question of 400 characters or less.';
         } elseif ($question['sample_answer'] === '' || strlen($question['sample_answer']) > 2000) {
             $error = 'Write a sample answer of 2000 characters or less.';
+        } elseif (!ohsc_iv_question_type($question['question_type'])) {
+            $error = 'Choose a valid question category.';
         } elseif (!$industryOk) {
             $error = 'Choose an industry.';
         } elseif ($question['sort_order'] < 0 || $question['sort_order'] > 999) {
@@ -64,13 +69,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $now = date('Y-m-d H:i:s');
             if ($question['question_id'] > 0) {
-                $stmt = $db->prepare("UPDATE tbl_iv_questions SET industry_id = ?, question_text = ?, sample_answer = ?, sort_order = ?, is_active = ?, updated_at = ? WHERE question_id = ?");
-                $stmt->bind_param('issiisi', $question['industry_id'], $question['question_text'], $question['sample_answer'], $question['sort_order'], $question['is_active'], $now, $question['question_id']);
+                $stmt = $db->prepare("UPDATE tbl_iv_questions SET industry_id = ?, question_text = ?, sample_answer = ?, question_type = ?, sort_order = ?, is_active = ?, updated_at = ? WHERE question_id = ?");
+                $stmt->bind_param('isssiisi', $question['industry_id'], $question['question_text'], $question['sample_answer'], $question['question_type'], $question['sort_order'], $question['is_active'], $now, $question['question_id']);
                 $stmt->execute();
                 $stmt->close();
             } else {
-                $stmt = $db->prepare("INSERT INTO tbl_iv_questions (industry_id, question_text, sample_answer, sort_order, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param('issiiss', $question['industry_id'], $question['question_text'], $question['sample_answer'], $question['sort_order'], $question['is_active'], $now, $now);
+                $stmt = $db->prepare("INSERT INTO tbl_iv_questions (industry_id, question_text, sample_answer, question_type, sort_order, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param('isssiiss', $question['industry_id'], $question['question_text'], $question['sample_answer'], $question['question_type'], $question['sort_order'], $question['is_active'], $now, $now);
                 $stmt->execute();
                 $stmt->close();
             }
@@ -98,7 +103,13 @@ if (!$industries) {
             <?php } ?>
         </select>
     </p>
+    <p>Category<br><select name="question_type" required>
+        <?php foreach (array('common' => 'Common', 'behavioural' => 'Behavioural', 'situational' => 'Situational') as $value => $label) { ?>
+        <option value="<?php echo $value; ?>" <?php echo $question['question_type'] === $value ? 'selected' : ''; ?>><?php echo $label; ?></option>
+        <?php } ?>
+    </select></p>
     <p>Question<br><textarea name="question_text" maxlength="400" required><?php echo ohsc_h($question['question_text']); ?></textarea></p>
+    <p>Use the Common Interview Questions profession for the landing-page accordion. Numbered answer steps can be entered on separate lines starting with 1. 2. 3. Plain text is displayed safely.</p>
     <p>Sample answer tip<br><textarea name="sample_answer" maxlength="2000" required><?php echo ohsc_h($question['sample_answer']); ?></textarea></p>
     <p>Order<br><input type="number" name="sort_order" min="0" max="999" value="<?php echo (int) $question['sort_order']; ?>"></p>
     <p><label><input type="checkbox" name="is_active" value="1" <?php echo ((int) $question['is_active'] === 1) ? 'checked' : ''; ?>> Show this question in the tool</label></p>

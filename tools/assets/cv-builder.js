@@ -31,6 +31,12 @@
     };
     var emptyJob = function () { return { role: '', company: '', start: '', end: '', detail: '' }; };
     var emptySchool = function () { return { qualification: '', school: '', start: '', end: '' }; };
+    // sessionStorage is scoped to this origin and browser tab, and survives reloads.
+    // Never automatically load the former browser-wide localStorage draft.
+    var draftKey = 'ohscCvBuilderTabV1';
+    var draftLifetime = 8 * 60 * 60 * 1000;
+    var storageAvailable = true;
+    var draftExpired = false;
     var state = load();
 
     var fields = document.getElementById('cvFields');
@@ -126,7 +132,34 @@
         }
     });
 
+    var clearPanel = document.getElementById('cvClearConfirm');
+    document.getElementById('cvClearDraft').addEventListener('click', function () {
+        clearPanel.hidden = false;
+        document.getElementById('cvCancelClear').focus();
+    });
+    document.getElementById('cvCancelClear').addEventListener('click', function () {
+        clearPanel.hidden = true;
+        document.getElementById('cvClearDraft').focus();
+    });
+    document.getElementById('cvConfirmClear').addEventListener('click', function () {
+        var cleared = true;
+        try { sessionStorage.removeItem(draftKey); } catch (error) { cleared = false; }
+        try { localStorage.removeItem('ohscCvBuilder'); } catch (error) { cleared = false; }
+        state = freshState();
+        modal.hidden = true;
+        clearPanel.hidden = true;
+        paint();
+        showLegacyNotice();
+        draftStatus(cleared ? 'Draft cleared. You can start a new CV.' : 'Form cleared, but browser storage could not be cleared. Clear this site’s browser data on a shared device.');
+        document.getElementById('cvClearDraft').focus();
+    });
+    showLegacyNotice();
     paint();
+    if (!storageAvailable) {
+        draftStatus('Browser storage is unavailable. Keep this page open; refresh will lose your progress.');
+    } else if (draftExpired) {
+        draftStatus('The previous tab draft expired after 8 hours. Start a new CV.');
+    }
     setTimeout(function () {
         loadHtml2Pdf().catch(function () {});
     }, 800);
@@ -413,7 +446,7 @@
             return '<article class="cv-sheet cv-classic"><header><h3>' + esc(name) + '</h3><p>' + esc(person.title) + '</p><p class="contact contact-stack">' + (contactBlock || esc(contactLine) || 'Contact will appear here.') + '</p></header><h4>Profile</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '<h4>Skills</h4><p>' + esc(data.skills.join(', ') || 'Skills will appear here.') + '</p></article>';
         }
         if (template === 'minimal') {
-            return '<article class="cv-sheet cv-minimal"><h3>' + esc(name) + '</h3><p class="jobtitle">' + esc(person.title) + '</p><p class="contact contact-stack">' + (contactBlock || esc(contactLine) || 'Contact will appear here.') + '</p><h4>Profile</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '<h4>Skills</h4><p>' + esc(data.skills.join('  ·  ') || 'Skills will appear here.') + '</p></article>';
+            return '<article class="cv-sheet cv-minimal"><aside class="minimal-side"><div class="minimal-avatar">' + esc(initials(name)) + '</div><h3>' + esc(name) + '</h3><p class="jobtitle">' + esc(person.title) + '</p><h4>Contact</h4>' + sideContact + '<h4>Skills</h4><ul>' + skills + '</ul></aside><div class="minimal-main"><h4>Professional summary</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '</div></article>';
         }
         return '<article class="cv-sheet cv-modern"><aside class="side"><div class="avatar">' + esc(initials(name)) + '</div><h3>' + esc(name) + '</h3><p>' + esc(person.title) + '</p><h4>Contact</h4>' + sideContact + '<h4>Skills</h4><ul>' + skills + '</ul></aside><div class="main"><h4>Professional summary</h4>' + (summary || '<p class="cv-empty">Your summary will appear here.</p>') + '<h4>Experience</h4>' + jobs + '<h4>Education</h4>' + schools + '</div></article>';
     }
@@ -439,8 +472,8 @@
         });
     }
 
-    function load() {
-        var fresh = {
+    function freshState() {
+        return {
             step: 1,
             template: 'modern',
             personal: { name: '', title: '', email: '', phone: '', location: '', summary: '' },
@@ -448,39 +481,69 @@
             education: [emptySchool()],
             skills: []
         };
+    }
+
+    function text(value, max) {
+        return typeof value === 'string' ? value.slice(0, max || 2000) : '';
+    }
+
+    function load() {
+        var fresh = freshState();
         try {
-            var saved = JSON.parse(localStorage.getItem('ohscCvBuilder') || 'null');
-            if (!saved || !saved.personal) {
+            var envelope = JSON.parse(sessionStorage.getItem(draftKey) || 'null');
+            if (!envelope) { return fresh; }
+            if (envelope.version !== 1 || typeof envelope.savedAt !== 'number' ||
+                Date.now() - envelope.savedAt > draftLifetime || envelope.savedAt > Date.now() + 60000) {
+                sessionStorage.removeItem(draftKey);
+                draftExpired = true;
                 return fresh;
             }
-            saved.step = Math.min(5, Math.max(1, Number(saved.step) || 1));
-            if (['modern', 'classic', 'minimal'].indexOf(saved.template) === -1) {
-                saved.template = 'modern';
+            var saved = envelope.data;
+            if (!saved || !saved.personal || typeof saved.personal !== 'object') { return fresh; }
+            fresh.step = Math.min(5, Math.max(1, Math.floor(Number(saved.step) || 1)));
+            if (['modern', 'classic', 'minimal'].indexOf(saved.template) !== -1) {
+                fresh.template = saved.template;
             }
-            if (!saved.experience || !saved.experience.length) {
-                saved.experience = [emptyJob()];
+            Object.keys(fresh.personal).forEach(function (key) {
+                fresh.personal[key] = text(saved.personal[key], key === 'summary' ? 300 : 300);
+            });
+            function records(items, factory) {
+                if (!Array.isArray(items) || !items.length) { return [factory()]; }
+                return items.slice(0, 100).map(function (item) {
+                    var row = factory();
+                    Object.keys(row).forEach(function (key) { row[key] = text(item && item[key]); });
+                    return row;
+                });
             }
-            if (!saved.education || !saved.education.length) {
-                saved.education = [emptySchool()];
-            }
-            if (!saved.skills) {
-                saved.skills = [];
-            }
-            saved.personal.summary = saved.personal.summary || '';
-            saved.personal.name = saved.personal.name || '';
-            saved.personal.title = saved.personal.title || '';
-            saved.personal.email = saved.personal.email || '';
-            saved.personal.phone = saved.personal.phone || '';
-            saved.personal.location = saved.personal.location || '';
-            return saved;
+            fresh.experience = records(saved.experience, emptyJob);
+            fresh.education = records(saved.education, emptySchool);
+            fresh.skills = Array.isArray(saved.skills) ? saved.skills.slice(0, 16).map(function (skill) { return text(skill, 300); }).filter(Boolean) : [];
+            return fresh;
         } catch (error) {
+            // An invalid draft must not break the form; report genuinely blocked storage.
+            try { sessionStorage.getItem(draftKey); } catch (blocked) { storageAvailable = false; }
             return fresh;
         }
     }
 
+    function draftStatus(message) {
+        document.getElementById('cvDraftStatus').textContent = message;
+    }
+
+    function showLegacyNotice() {
+        var notice = document.getElementById('cvLegacyNotice');
+        try { notice.hidden = localStorage.getItem('ohscCvBuilder') === null; }
+        catch (error) { notice.hidden = true; }
+    }
+
     function save() {
         try {
-            localStorage.setItem('ohscCvBuilder', JSON.stringify(state));
-        } catch (error) {}
+            sessionStorage.setItem(draftKey, JSON.stringify({ version: 1, savedAt: Date.now(), data: state }));
+            storageAvailable = true;
+            draftStatus('Saved in this tab. Refresh is safe. Draft expires after 8 hours without edits; clear it on a shared device.');
+        } catch (error) {
+            storageAvailable = false;
+            draftStatus('Draft could not be saved in this tab. Keep this page open; refresh may lose your latest changes.');
+        }
     }
 })();

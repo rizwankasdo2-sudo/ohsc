@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . "/tool-images.php";
+require_once dirname(__FILE__) . '/interview-content.php';
 /**
  * Tools module.
  * This folder is separate from the rest of the site. Pages only read $db
@@ -324,6 +326,8 @@ if (!function_exists('ohsc_tools_ensure')) {
             }
         }
 
+        ohsc_iv_upgrade($db);
+        ohsc_iv_expand_questions($db);
         $ready = true;
     }
 }
@@ -489,7 +493,7 @@ if (!function_exists('ohsc_iv_industries')) {
             return $industries;
         }
         ohsc_tools_ensure($db);
-        $result = $db->query("SELECT industry_id, slug, title, summary, image FROM tbl_iv_industries WHERE is_active = 1 ORDER BY sort_order ASC, industry_id ASC");
+        $result = $db->query("SELECT industry_id, slug, title, summary, image FROM tbl_iv_industries WHERE is_active = 1 AND slug <> 'general' ORDER BY sort_order ASC, industry_id ASC");
         if (!$result) {
             return $industries;
         }

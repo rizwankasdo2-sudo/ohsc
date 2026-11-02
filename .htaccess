@@ -4,6 +4,9 @@
 
 RewriteEngine On
 
+# Never route or serve hidden configuration/password files.
+RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
+
 # ORIGINAL production rule: force every request to https://www.oxfordhomestudy.com
 # RewriteCond %{HTTPS} off [OR]
 # RewriteCond %{HTTP_HOST} !^www\. [NC]
@@ -32,14 +35,21 @@ RewriteRule ^(.*)$ https://tools.kasdo.org/$1 [R=301,L]
 # Every response on this host is noindex, nofollow. Homepage, courses, contact and tools are all covered.
 SetEnvIf Host "tools\.kasdo\.org" ohsc_noindex
 <IfModule mod_headers.c>
-Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex" env=ohsc_noindex
+Header always set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet, noimageindex"
 </IfModule>
 # ORIGINAL: only /tools asked for a password. The course site stayed open.
-# The whole tools.kasdo.org site now uses the same browser login. Localhost is not inside this block.
+# The deployed tools host uses the same browser login as local staging.
 <If "%{HTTP_HOST} =~ /tools\.kasdo\.org/i">
 AuthType Basic
 AuthName "Courses with Certificates Online | OHSC"
 AuthUserFile "/home/toolskasdo/public_html/ohsc/.htpasswd"
+Require valid-user
+</If>
+# Apply the same staging-site login on local development as on the tools host.
+<If "%{HTTP_HOST} =~ /^(localhost|127\.0\.0\.1)(:[0-9]+)?$/i">
+AuthType Basic
+AuthName "Courses with Certificates Online | OHSC"
+AuthUserFile "C:/Users/Builtin Soft/OneDrive/Desktop/OHSC/.htpasswd"
 Require valid-user
 </If>
 <Files ".htpasswd">
@@ -268,6 +278,7 @@ RewriteRule ^admin/career-quiz-questions/?$ tools/admin/cq-questions.php [QSA,EN
 RewriteRule ^admin/career-quiz-question/?$ tools/admin/cq-question-form.php [QSA,END]
 RewriteRule ^admin/interview-questions/?$ tools/admin/iv-questions.php [QSA,END]
 RewriteRule ^admin/interview-question/?$ tools/admin/iv-question-form.php [QSA,END]
+RewriteRule ^admin/interview-professions/?$ tools/admin/iv-professions.php [QSA,END]
 RewriteRule ^voucher-redemption$ voucher-redemption.php [L]
 RewriteRule ^start-your-course-now$ apply_now.php [L]
 RewriteRule ^free-online-courses-with-certificates$ free-courses.php [L]

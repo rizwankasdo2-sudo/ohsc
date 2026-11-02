@@ -1,6 +1,2 @@
 User-agent: *
 Disallow: /
-Disallow: /admin/
-Disallow: /tools/
-Disallow: /accreditation$
-Sitemap: https://www.oxfordhomestudy.com/sitemap.xml

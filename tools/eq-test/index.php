@@ -3,7 +3,9 @@ require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
+ohsc_image_start($db, 'eq-test', $base_url);
 
+$asset = rtrim($base_url, '/') . '/tools/assets/';
 $questions = ohsc_eq_questions($db);
 $areas = ohsc_eq_areas();
 $questionCount = count($questions);
@@ -45,12 +47,13 @@ $benefits = array(
     <meta name="description" content="Take a free emotional intelligence test. Answer short questions and see how you notice, manage, and respond to emotions.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/eq-test.css?v=2">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>eq-test-ui.css?v=1">
     <main class="ohsc-eq" id="ohsc-eq">
         <div class="ohsc-wrap">
             <section class="ohsc-hero">
                 <div>
-                    <span class="ohsc-badge">FREE EQ TEST</span>
                     <h1>Understand<br>your <span>emotions.</span></h1>
+                    <span class="ohsc-badge">FREE EQ TEST</span>
                     <p class="lede">Discover how you think, feel and connect.</p>
                     <a class="ohsc-go" href="#eq-test">Start Free Test</a>
                     <p class="ohsc-meta"><?php echo (int) $questionCount; ?> questions · About <?php echo (int) $minutes; ?> minutes</p>
@@ -60,7 +63,7 @@ $benefits = array(
                 </div>
             </section>
 
-            <section class="ohsc-section">
+            <section class="ohsc-section eq-discover">
                 <h2>What will you discover?</h2>
                 <p class="sub">Explore five key areas of emotional intelligence.</p>
                 <div class="ohsc-areas">
@@ -74,7 +77,7 @@ $benefits = array(
                     );
                     foreach ($areas as $key => $area) { ?>
                     <article class="ohsc-area <?php echo ohsc_h($key); ?>">
-                        <span class="ohsc-ico"><?php echo $areaIcons[$key]; ?></span>
+                        <span class="ohsc-ico" aria-hidden="true"><?php echo $areaIcons[$key]; ?></span>
                         <h3><?php echo ohsc_h($area[0]); ?></h3>
                         <p><?php echo ohsc_h($area[1]); ?></p>
                     </article>
@@ -82,13 +85,13 @@ $benefits = array(
                 </div>
             </section>
 
-            <section class="ohsc-section" id="eq-test">
+            <section class="ohsc-section eq-preview" id="eq-test">
                 <h2>A glimpse of the test</h2>
                 <p class="sub">Answer simple questions about how you think, feel and behave.</p>
                 <div class="ohsc-quiz" id="eqQuiz">
-                    <p class="ohsc-progress" id="eqProgress">Question 1 of <?php echo (int) $questionCount; ?></p>
+                    <p class="ohsc-progress" id="eqProgress" aria-live="polite">Question 1 of <?php echo (int) $questionCount; ?></p>
                     <h3 id="eqPrompt">Loading the first question...</h3>
-                    <div class="ohsc-choices" id="eqChoices"></div>
+                    <div class="ohsc-choices" id="eqChoices" role="group" aria-labelledby="eqPrompt"></div>
                     <p class="ohsc-need" id="eqNeed" hidden>Choose an answer to continue.</p>
                     <button type="button" class="ohsc-go wide" id="eqNext">Start Free Test</button>
                 </div>
@@ -103,31 +106,31 @@ $benefits = array(
                 </div>
             </section>
 
-            <section class="ohsc-section">
+            <section class="ohsc-section eq-how">
                 <h2>How it works</h2>
                 <p class="sub">Get insights about your emotional intelligence in three simple steps.</p>
                 <div class="ohsc-steps">
                     <article>
-                        <span class="n1">1</span>
-                        <h3>Answer questions</h3>
+                        <div class="eq-step-art"><span class="n1">1</span><div class="eq-step-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 9H9v32h27V9h-6M19 5h9v8h-9zM15 21h13m-13 7h10m-10 7h6m8-6 10-10 4 4-10 10-6 2z"/></svg></div></div>
+                        <h3>Answer Questions</h3>
                         <p>Complete <?php echo (int) $questionCount; ?> simple questions about how you think, feel and behave.</p>
                     </article>
                     <article>
-                        <span class="n2">2</span>
-                        <h3>Get your results</h3>
-                        <p>We add your answers and show a score for each area.</p>
+                        <div class="eq-step-art"><span class="n2">2</span><div class="eq-step-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 41h38M11 39V28h6v11m7 0V21h6v18m7 0V12h6v27M7 22l13-9 9 2L42 4m-9 0h9v9"/></svg></div></div>
+                        <h3>Get Your Results</h3>
+                        <p>We analyse your responses and calculate your Emotional Intelligence score.</p>
                     </article>
                     <article>
-                        <span class="n3">3</span>
-                        <h3>Discover insights</h3>
-                        <p>See where you are steady, and where a small change would help.</p>
+                        <div class="eq-step-art"><span class="n3">3</span><div class="eq-step-icon" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 36h12m-11 5h10M24 10a12 12 0 0 1 7 22l-2 4H19l-2-4a12 12 0 0 1 7-22zM24 2v3M7 9l3 3m28 0 3-3M3 24h4m34 0h4"/></svg></div></div>
+                        <h3>Discover Insights</h3>
+                        <p>Explore your strengths, areas for development and actionable tips.</p>
                     </article>
                 </div>
             </section>
 
             <section class="ohsc-section">
-                <h2>Benefits for your personal and professional life</h2>
-                <p class="sub">A clearer read on your emotions can help you at home and at work.</p>
+                <h2>Benefits for Your Personal and Professional Life</h2>
+                <p class="sub">A higher EQ can help you in many areas of life.</p>
                 <div class="ohsc-benefits">
                     <?php foreach ($benefits as $benefit) { ?>
                     <article>
@@ -143,8 +146,8 @@ $benefits = array(
             <section class="ohsc-section">
                 <div class="ohsc-section-head">
                     <div>
-                        <h2>Recommended courses to improve your EQ</h2>
-                        <p class="sub">Build people skills with free courses from Oxford Home Study Centre.</p>
+                        <h2>Recommended Courses to Improve Your EQ</h2>
+                        <p class="sub">Build essential people skills with our expert-designed courses.</p>
                     </div>
                     <a href="<?php echo ohsc_h($base_url . '/free-online-courses-with-certificates'); ?>">View all courses</a>
                 </div>
@@ -170,8 +173,8 @@ $benefits = array(
 
             <section class="ohsc-cta">
                 <div>
-                    <h2>Ready to learn more about yourself?</h2>
-                    <p>Take the test now and see a personal snapshot of how you think, feel and connect.</p>
+                    <h2>Ready to learn more<br>about <span>yourself?</span></h2>
+                    <p>Take the test now and get personalised insights<br class="eq-desktop-break"> to help you grow personally and professionally.</p>
                 </div>
                 <div class="ohsc-cta-side">
                     <a href="#eq-test">Start Free Test</a>

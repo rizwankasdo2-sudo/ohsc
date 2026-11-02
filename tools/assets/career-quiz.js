@@ -110,7 +110,7 @@
             var article = document.createElement('article');
             article.className = 'cq-match';
             var img = document.createElement('img');
-            img.src = (data.asset || '') + (item.meta.image || 'career-office.jpg');
+            img.src = (data.imageUrls || {})[item.meta.image || 'career-office.jpg'] || (data.asset || '') + (item.meta.image || 'career-office.jpg');
             img.alt = '';
             var body = document.createElement('div');
             var rank = document.createElement('p');

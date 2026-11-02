@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
+ohsc_image_start($db, 'cv-builder', $base_url);
 ohsc_tools_ensure($db);
 $asset = rtrim($base_url, '/') . '/tools/assets/';
 ?>
@@ -14,27 +15,17 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
     <title>CV Builder | Oxford Home Study Centre</title>
     <meta name="description" content="Build a CV from your details. Choose a Modern, Classic, or Minimal template and download it.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder.css?v=4">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder.css?v=6">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder-ui.css?v=2">
     <main class="ohsc-cv" id="ohsc-cv">
         <div class="cv-wrap">
             <section class="cv-hero">
                 <div class="cv-hero-copy">
                     <h1>Build a CV that <span>stands out.</span></h1>
                     <p>Create, edit and download your CV.</p>
-                    <a class="cv-gold" href="#cv-form">Free CV builder</a>
+                    <a class="cv-gold" href="#cv-form">FREE CV BUILDER</a>
                 </div>
-                <div class="cv-hero-art" aria-hidden="true">
-                    <div class="cv-plant"></div>
-                    <div class="cv-paper">
-                        <strong>CV</strong>
-                        <div class="cv-paper-person"></div>
-                        <em></em>
-                        <i></i>
-                        <i></i>
-                        <i class="short"></i>
-                    </div>
-                    <span class="cv-mic"></span>
-                </div>
+                <div class="cv-hero-art" aria-hidden="true"><img src="<?php echo ohsc_h($asset); ?>cv-builder-hero.svg" alt="" width="520" height="340"></div>
             </section>
 
             <section class="cv-builder" id="cv-form">
@@ -47,6 +38,16 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                         </div>
                     </div>
                     <div class="cv-bar" aria-hidden="true"><b id="cvBar"></b></div>
+                    <div class="cv-draft-notice">
+                        <div><strong>Your draft stays in this tab</strong><p id="cvDraftStatus" role="status">Refresh without losing your progress. Clear your draft when using a shared device.</p></div>
+                        <button type="button" class="cv-clear-draft" id="cvClearDraft">Clear draft</button>
+                    </div>
+                    <p class="cv-legacy-notice" id="cvLegacyNotice" hidden>An older draft is stored in this browser. It has not been opened. Use Clear draft to remove it too.</p>
+                    <div class="cv-clear-confirm" id="cvClearConfirm" hidden>
+                        <p>Delete this draft and any older CV draft saved by this builder in this browser? This cannot be undone.</p>
+                        <button type="button" class="cv-outline" id="cvCancelClear">Keep draft</button>
+                        <button type="button" class="cv-outline cv-delete" id="cvConfirmClear">Delete draft</button>
+                    </div>
                     <div id="cvFields"></div>
                     <p class="cv-error" id="cvError" hidden></p>
                     <div class="cv-form-actions">
@@ -62,7 +63,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                         <h2><span class="cv-eye" aria-hidden="true"></span> Preview your CV</h2>
                         <p>See how your CV looks as you build it.</p>
                     </div>
-                    <button type="button" class="cv-outline" id="cvOpenPreview">Open Preview</button>
+                    <button type="button" class="cv-outline" id="cvOpenPreview">Open Preview <span aria-hidden="true">→</span></button>
                 </div>
                 <div class="cv-preview-frame">
                     <div id="cvLive"></div>
@@ -71,7 +72,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
             </section>
 
             <section class="cv-templates" id="templates">
-                <h2>Choose a design</h2>
+                <h2><span class="cv-ui-icon" aria-hidden="true">✧</span>Choose a design</h2>
                 <p>Pick a template that suits your style.</p>
                 <div class="cv-template-grid" id="cvTemplates">
                     <button type="button" class="is-on" data-template="modern">
@@ -80,7 +81,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                     </button>
                     <button type="button" data-template="classic">
                         <span class="mini classic"></span>
-                        <strong>Classic</strong>
+                        <strong>Classic <small>ATS layout</small></strong>
                     </button>
                     <button type="button" data-template="minimal">
                         <span class="mini minimal"></span>
@@ -90,7 +91,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
             </section>
 
             <section class="cv-how">
-                <h2>How it works</h2>
+                <h2><span class="cv-ui-icon" aria-hidden="true">⚙</span>How it works</h2>
                 <p>Create a professional CV in a few simple steps.</p>
                 <div class="cv-how-grid">
                     <article>
@@ -115,17 +116,17 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                 <article>
                     <img src="<?php echo ohsc_h($asset); ?>career-office.jpg" alt="">
                     <div>
-                        <h3>CV writing tips</h3>
+                        <h3><span class="cv-ui-icon" aria-hidden="true">▤</span>CV writing tips</h3>
                         <p>Practical advice to help you create a stronger CV.</p>
-                        <a href="#cv-form">View CV tips</a>
+                        <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/OHSC-Blog'); ?>">View CV Tips <span aria-hidden="true">→</span></a>
                     </div>
                 </article>
                 <article>
-                    <img src="<?php echo ohsc_h($asset); ?>eq-course-people.jpg" alt="">
+                    <img src="<?php echo ohsc_h($asset); ?>career-data.jpg" alt="">
                     <div>
-                        <h3>CV examples</h3>
+                        <h3><span class="cv-ui-icon green" aria-hidden="true">◇</span>CV examples</h3>
                         <p>Explore real CV examples for different jobs and industries.</p>
-                        <a href="#templates">View CV examples</a>
+                        <a href="#templates">View CV Examples <span aria-hidden="true">→</span></a>
                     </div>
                 </article>
             </section>
@@ -139,9 +140,9 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                     <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/courses'); ?>">View all resources</a>
                 </div>
                 <div class="cv-resource-grid">
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/courses'); ?>">
+                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/tools/interview-prep/'); ?>">
                         <img src="<?php echo ohsc_h($asset); ?>career-service.jpg" alt="">
-                        <strong>Interview preparation</strong>
+                        <strong>Interview preparation <span aria-hidden="true">→</span></strong>
                     </a>
                     <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/OHSC-Blog'); ?>">
                         <img src="<?php echo ohsc_h($asset); ?>career-data.jpg" alt="">
@@ -163,7 +164,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                     <h2>Ready to create your CV?</h2>
                     <p>Build a professional CV and take the next step in your career.</p>
                 </div>
-                <a class="cv-gold" href="#cv-form">Create my CV</a>
+                <a class="cv-gold" href="#cv-form">Create My CV <span aria-hidden="true">→</span></a>
             </section>
         </div>
 
@@ -182,10 +183,10 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
     </main>
     <script>
         window.OHSC_CV = <?php echo json_encode(array(
-            'css' => $asset . 'cv-builder.css?v=4',
+            'css' => $asset . 'cv-builder.css?v=6',
             'html2pdf' => 'https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js'
         ), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     </script>
-    <script src="<?php echo ohsc_h($asset); ?>cv-builder.js?v=4"></script>
+    <script src="<?php echo ohsc_h($asset); ?>cv-builder.js?v=6"></script>
     <?php include dirname(__FILE__) . '/../../includes/footer-new.php'; ?>
 </html>

@@ -19,6 +19,7 @@ $prettyMap = array(
     'cq-question-form.php' => '/admin/career-quiz-question',
     'iv-questions.php' => '/admin/interview-questions',
     'iv-question-form.php' => '/admin/interview-question',
+    'iv-professions.php' => '/admin/interview-professions',
 );
 
 if (strpos($path, '/tools/admin') === 0 && isset($prettyMap[$script])) {
@@ -97,6 +98,7 @@ function ohsc_tools_admin_open($heading)
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/eq-questions">EQ questions</a>
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/career-quiz-questions">Career Quiz</a>
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/interview-questions">Interview Prep</a>
+                    <a href="<?php echo ohsc_h($base_url); ?>/admin/interview-professions">Interview professions</a>
                 </p>
     <?php
 }

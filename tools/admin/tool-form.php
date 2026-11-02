@@ -12,7 +12,7 @@ $tool = array(
 );
 $error = '';
 
-if ($toolId > 0 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+if ($toolId > 0 && ($_SERVER['REQUEST_METHOD'] !== 'POST' || isset($_POST['image_action']))) {
     $stmt = $db->prepare("SELECT tool_id, title, slug, summary, sort_order, is_active FROM tbl_site_tools WHERE tool_id = ?");
     $stmt->bind_param('i', $toolId);
     $stmt->execute();
@@ -30,7 +30,9 @@ if ($toolId > 0 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
     $stmt->close();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+require __DIR__ . '/tool-image-upload.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['image_action'])) {
     if (!ohsc_tools_csrf_ok()) {
         $error = 'The form expired. Reload the page and try again.';
     } else {
@@ -96,4 +98,5 @@ $pageReady = $tool['slug'] !== '' && is_file(dirname(__FILE__) . '/../' . $tool[
     <p><button class="save-btn" type="submit">Save</button></p>
 </form>
 <?php
+require __DIR__ . '/tool-image-fields.php';
 ohsc_tools_admin_close();

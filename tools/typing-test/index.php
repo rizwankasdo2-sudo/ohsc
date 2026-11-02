@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
+ohsc_image_start($db, 'typing-test', $base_url);
 $passages = ohsc_typing_passages($db);
 $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_icon_alt, tc.slug AS catslug
     FROM tbl_diploma AS td
@@ -20,13 +21,14 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
     <meta name="description" content="Take a free one, three, or five minute typing test. Check your words per minute and accuracy.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test.css?v=17">
+    <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test-ui.css?v=1">
     <main class="ohsc-tool" id="ohsc-typing">
         <div class="ohsc-wrap">
             <section class="ohsc-hero">
                 <div>
-                    <span class="ohsc-badge">FREE TYPING TEST</span>
                     <h1>Type faster.<br>Know your <span>speed.</span></h1>
-                    <p class="lede">Check your speed and accuracy in minutes. No account needed.</p>
+                    <span class="ohsc-badge">FREE TYPING TEST</span>
+                    <p class="lede">Check your speed and accuracy in minutes.</p>
                 </div>
                 <div class="ohsc-art">
                     <img src="<?php echo ohsc_h($base_url); ?>/tools/assets/hero-typing.jpg" alt="A student smiling while practising on a laptop">
@@ -35,11 +37,14 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
 
             <section class="ohsc-panel" id="start-test">
                 <h2>Start your typing test</h2>
-                <p class="sub">Type in the box. Correct letters turn purple. A wrong letter turns red and counts as an error. Symbols and numbers stay out until you turn them on.</p>
+                <p class="sub">Choose a duration and type the text below as accurately as you can.</p>
                 <div class="ohsc-times">
                     <button type="button" class="is-on" data-seconds="60">1 Minute</button>
                     <button type="button" data-seconds="180">3 Minutes</button>
                     <button type="button" data-seconds="300">5 Minutes</button>
+                </div>
+                <div class="typing-options" aria-label="Typing text options">
+                    <span>Include:</span>
                     <button type="button" class="ohsc-mode" id="modeSymbols" aria-pressed="false">@! Symbols</button>
                     <button type="button" class="ohsc-mode" id="modeNumbers" aria-pressed="false">123 Numbers</button>
                 </div>
@@ -58,11 +63,11 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
                     <button type="button" id="newText">New text</button>
                 </div>
                 <button type="button" class="ohsc-start" id="startTest">Start Free Test</button>
-                <p class="ohsc-tip">Tip: Accuracy matters more than speed. WPM is correct characters divided by five, then divided by minutes.</p>
+                <p class="ohsc-tip"><span class="typing-tip-icon" aria-hidden="true">♧</span><span><strong>Tip:</strong> Type accurately. Accuracy is more important than speed. Correct letters turn purple; mistakes turn red.</span></p>
                 <div class="ohsc-score" id="scoreBox"></div>
             </section>
 
-            <section class="ohsc-section" id="ohsc-results">
+            <section class="ohsc-section typing-results-panel" id="ohsc-results">
                 <h2>Your results will show</h2>
                 <p class="sub">See your typing performance after you complete the test.</p>
                 <div class="ohsc-results">
@@ -97,9 +102,9 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
                 </div>
             </section>
 
-            <section class="ohsc-section">
+            <section class="ohsc-section typing-tips-panel">
                 <h2>Improve your typing</h2>
-                <p class="sub">Small habits make a large difference.</p>
+                <p class="sub">Small steps make a big difference. Try these tips to boost your speed and accuracy.</p>
                 <div class="ohsc-cards">
                     <article class="ohsc-card practice">
                         <div class="ohsc-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M7 14h10"/></svg></div>
@@ -151,8 +156,8 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
             <section class="ohsc-section">
                 <div class="ohsc-section-head">
                     <div>
-                        <h2>Recommended courses</h2>
-                        <p class="sub">Free courses from Oxford Home Study Centre.</p>
+                        <h2>Recommended Courses to Improve Your Skills</h2>
+                        <p class="sub">Learn essential skills with our expert-designed free courses.</p>
                     </div>
                     <a href="<?php echo ohsc_h($base_url . '/free-online-courses-with-certificates'); ?>">View all courses</a>
                 </div>
@@ -181,9 +186,9 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
             <section class="ohsc-cta">
                 <div>
                     <h2>Ready to test your typing skills?</h2>
-                    <p>It only takes a minute. Pick a duration and start when you are ready.</p>
+                    <p>Take the free typing test and see how you do. It only takes a few minutes.</p>
                 </div>
-                <a href="#start-test">Take the test</a>
+                <a href="#start-test">Try the Test <span aria-hidden="true">→</span></a>
             </section>
         </div>
     </main>
