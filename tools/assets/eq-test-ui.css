@@ -1,5 +1,5 @@
 /* Visual shell for the EQ test. Question data and scoring remain unchanged. */
-.ohsc-eq { --ink:#081450; --muted:#425273; --purple:#7923b1; --accent:#ffa51a; --line:#e9edf5; background:linear-gradient(110deg,#fff,#fbfcff); color:var(--ink); }
+.ohsc-eq { overflow-x:clip; --ink:#081450; --muted:#425273; --purple:#7923b1; --accent:#ffa51a; --line:#e9edf5; background:linear-gradient(110deg,#fff,#fbfcff); color:var(--ink); }
 .ohsc-eq [hidden] { display:none!important; }
 .ohsc-eq p { font-weight:400; }
 .ohsc-eq .ohsc-wrap { width:min(1120px,calc(100% - 64px)); }

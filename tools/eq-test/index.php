@@ -47,7 +47,7 @@ $benefits = array(
     <meta name="description" content="Take a free emotional intelligence test. Answer short questions and see how you notice, manage, and respond to emotions.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/eq-test.css?v=2">
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>eq-test-ui.css?v=1">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>eq-test-ui.css?v=2">
     <main class="ohsc-eq" id="ohsc-eq">
         <div class="ohsc-wrap">
             <section class="ohsc-hero">

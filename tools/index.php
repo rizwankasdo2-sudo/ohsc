@@ -68,7 +68,7 @@ foreach ($bySlug as $tool) {
     <title>Career Tools | Oxford Home Study Centre</title>
     <meta name="description" content="Free career tools from Oxford Home Study Centre: career quiz, CV builder, interview prep, typing test, and strengths test.">
     <?php include dirname(__FILE__) . '/../includes/header-home-new.php'; ?>
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>tools.css?v=3">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>tools.css?v=10">
     <main class="ohsc-tool ohsc-career-hub">
         <div class="ohsc-wrap">
             <section class="ohsc-hub-hero">

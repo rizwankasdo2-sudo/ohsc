@@ -24,7 +24,7 @@ $pathCards = array(
     <title>Career Quiz | Oxford Home Study Centre</title>
     <meta name="description" content="Take a free career quiz. Answer 10 short questions and explore careers that could suit you.">
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>career-quiz.css?v=8">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>career-quiz.css?v=9">
     <main class="ohsc-cq" id="ohsc-cq">
         <div class="cq-wrap">
             <section class="cq-hero">

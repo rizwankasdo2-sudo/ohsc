@@ -1,4 +1,4 @@
-.ohsc-cq { --cq-ink:#081453; --cq-muted:#3c4d70; --cq-navy:#06134f; --cq-gold:#ffa508; --cq-orange:#a84109; background:linear-gradient(115deg,#fff,#fcfdff); color:var(--cq-ink); font-family:Inter,Arial,sans-serif; }
+.ohsc-cq { overflow-x:clip; --cq-ink:#081453; --cq-muted:#3c4d70; --cq-navy:#06134f; --cq-gold:#ffa508; --cq-orange:#a84109; background:linear-gradient(115deg,#fff,#fcfdff); color:var(--cq-ink); font-family:Inter,Arial,sans-serif; }
 .ohsc-cq * { box-sizing:border-box; }
 .ohsc-cq h1,.ohsc-cq h2,.ohsc-cq h3,.ohsc-cq h4,.ohsc-cq p { margin:0; font-family:inherit; }
 .ohsc-cq a { text-decoration:none; }
