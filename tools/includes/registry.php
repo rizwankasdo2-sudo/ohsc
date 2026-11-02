@@ -227,6 +227,103 @@ if (!function_exists('ohsc_tools_ensure')) {
             }
         }
 
+        $db->query("CREATE TABLE IF NOT EXISTS tbl_cq_questions (
+            question_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            prompt VARCHAR(400) NOT NULL,
+            sort_order INT NOT NULL DEFAULT 0,
+            is_active TINYINT(1) NOT NULL DEFAULT 1,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL,
+            PRIMARY KEY (question_id),
+            KEY sort_active (sort_order, is_active)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $db->query("CREATE TABLE IF NOT EXISTS tbl_cq_choices (
+            choice_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            question_id INT UNSIGNED NOT NULL,
+            choice_text VARCHAR(255) NOT NULL,
+            path_scores TEXT NOT NULL,
+            sort_order INT NOT NULL DEFAULT 0,
+            PRIMARY KEY (choice_id),
+            KEY question_id (question_id)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $cqCount = $db->query("SELECT COUNT(*) AS total FROM tbl_cq_questions");
+        $cqTotal = ($cqCount) ? (int) $cqCount->fetch_assoc()['total'] : 0;
+        if ($cqTotal === 0) {
+            $cqSeed = require dirname(__FILE__) . '/career-quiz-seed.php';
+            $insertCq = $db->prepare("INSERT INTO tbl_cq_questions (prompt, sort_order, is_active, created_at, updated_at) VALUES (?, ?, 1, ?, ?)");
+            $insertCqChoice = $db->prepare("INSERT INTO tbl_cq_choices (question_id, choice_text, path_scores, sort_order) VALUES (?, ?, ?, ?)");
+            if ($insertCq && $insertCqChoice && !empty($cqSeed['questions'])) {
+                $order = 1;
+                foreach ($cqSeed['questions'] as $seedQuestion) {
+                    $insertCq->bind_param('siss', $seedQuestion['prompt'], $order, $now, $now);
+                    $insertCq->execute();
+                    $questionId = (int) $db->insert_id;
+                    $choiceOrder = 1;
+                    foreach ($seedQuestion['choices'] as $seedChoice) {
+                        $scoresJson = json_encode($seedChoice[1]);
+                        $insertCqChoice->bind_param('issi', $questionId, $seedChoice[0], $scoresJson, $choiceOrder);
+                        $insertCqChoice->execute();
+                        $choiceOrder++;
+                    }
+                    $order++;
+                }
+                $insertCq->close();
+                $insertCqChoice->close();
+            }
+        }
+
+        $db->query("CREATE TABLE IF NOT EXISTS tbl_iv_industries (
+            industry_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            slug VARCHAR(80) NOT NULL,
+            title VARCHAR(150) NOT NULL,
+            summary VARCHAR(255) NOT NULL DEFAULT '',
+            image VARCHAR(120) NOT NULL DEFAULT '',
+            sort_order INT NOT NULL DEFAULT 0,
+            is_active TINYINT(1) NOT NULL DEFAULT 1,
+            PRIMARY KEY (industry_id),
+            UNIQUE KEY slug (slug)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $db->query("CREATE TABLE IF NOT EXISTS tbl_iv_questions (
+            question_id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            industry_id INT UNSIGNED NOT NULL,
+            question_text VARCHAR(400) NOT NULL,
+            sample_answer TEXT NOT NULL,
+            sort_order INT NOT NULL DEFAULT 0,
+            is_active TINYINT(1) NOT NULL DEFAULT 1,
+            created_at DATETIME NOT NULL,
+            updated_at DATETIME NOT NULL,
+            PRIMARY KEY (question_id),
+            KEY industry_sort (industry_id, sort_order)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+        $ivIndustryCount = $db->query("SELECT COUNT(*) AS total FROM tbl_iv_industries");
+        $ivIndustryTotal = ($ivIndustryCount) ? (int) $ivIndustryCount->fetch_assoc()['total'] : 0;
+        if ($ivIndustryTotal === 0) {
+            $ivSeed = require dirname(__FILE__) . '/interview-seed.php';
+            $insertIndustry = $db->prepare("INSERT INTO tbl_iv_industries (slug, title, summary, image, sort_order, is_active) VALUES (?, ?, ?, ?, ?, 1)");
+            $insertIvQuestion = $db->prepare("INSERT INTO tbl_iv_questions (industry_id, question_text, sample_answer, sort_order, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, 1, ?, ?)");
+            if ($insertIndustry && $insertIvQuestion && is_array($ivSeed)) {
+                $industryOrder = 1;
+                foreach ($ivSeed as $seedIndustry) {
+                    $insertIndustry->bind_param('ssssi', $seedIndustry['id'], $seedIndustry['title'], $seedIndustry['summary'], $seedIndustry['image'], $industryOrder);
+                    $insertIndustry->execute();
+                    $industryId = (int) $db->insert_id;
+                    $qOrder = 1;
+                    foreach ($seedIndustry['questions'] as $seedQuestion) {
+                        $insertIvQuestion->bind_param('ississ', $industryId, $seedQuestion['q'], $seedQuestion['a'], $qOrder, $now, $now);
+                        $insertIvQuestion->execute();
+                        $qOrder++;
+                    }
+                    $industryOrder++;
+                }
+                $insertIndustry->close();
+                $insertIvQuestion->close();
+            }
+        }
+
         $ready = true;
     }
 }
@@ -325,5 +422,111 @@ if (!function_exists('ohsc_eq_questions')) {
             }
         }
         return array_values($questions);
+    }
+}
+
+if (!function_exists('ohsc_cq_paths')) {
+    function ohsc_cq_paths()
+    {
+        $seed = require dirname(__FILE__) . '/career-quiz-seed.php';
+        return isset($seed['paths']) ? $seed['paths'] : array();
+    }
+}
+
+if (!function_exists('ohsc_cq_questions')) {
+    function ohsc_cq_questions($db)
+    {
+        $questions = array();
+        if (!($db instanceof mysqli)) {
+            return $questions;
+        }
+        ohsc_tools_ensure($db);
+        $result = $db->query("SELECT question_id, prompt FROM tbl_cq_questions WHERE is_active = 1 ORDER BY sort_order ASC, question_id ASC");
+        if (!$result) {
+            return $questions;
+        }
+        $map = array();
+        $ids = array();
+        while ($row = $result->fetch_assoc()) {
+            $id = (int) $row['question_id'];
+            $map[$id] = array(
+                'prompt' => $row['prompt'],
+                'choices' => array(),
+            );
+            $ids[] = $id;
+        }
+        if (!$ids) {
+            return array();
+        }
+        $choiceResult = $db->query("SELECT question_id, choice_text, path_scores FROM tbl_cq_choices WHERE question_id IN (" . implode(',', $ids) . ") ORDER BY sort_order ASC, choice_id ASC");
+        if ($choiceResult) {
+            while ($choice = $choiceResult->fetch_assoc()) {
+                $questionId = (int) $choice['question_id'];
+                if (!isset($map[$questionId])) {
+                    continue;
+                }
+                $scores = json_decode($choice['path_scores'], true);
+                if (!is_array($scores)) {
+                    $scores = array();
+                }
+                $map[$questionId]['choices'][] = array($choice['choice_text'], $scores);
+            }
+        }
+        foreach ($ids as $id) {
+            if (!empty($map[$id]['choices'])) {
+                $questions[] = $map[$id];
+            }
+        }
+        return $questions;
+    }
+}
+
+if (!function_exists('ohsc_iv_industries')) {
+    function ohsc_iv_industries($db)
+    {
+        $industries = array();
+        if (!($db instanceof mysqli)) {
+            return $industries;
+        }
+        ohsc_tools_ensure($db);
+        $result = $db->query("SELECT industry_id, slug, title, summary, image FROM tbl_iv_industries WHERE is_active = 1 ORDER BY sort_order ASC, industry_id ASC");
+        if (!$result) {
+            return $industries;
+        }
+        $map = array();
+        $ids = array();
+        while ($row = $result->fetch_assoc()) {
+            $id = (int) $row['industry_id'];
+            $map[$id] = array(
+                'id' => $row['slug'],
+                'title' => $row['title'],
+                'summary' => $row['summary'],
+                'image' => $row['image'],
+                'questions' => array(),
+            );
+            $ids[] = $id;
+        }
+        if (!$ids) {
+            return array();
+        }
+        $questionResult = $db->query("SELECT industry_id, question_text, sample_answer FROM tbl_iv_questions WHERE is_active = 1 AND industry_id IN (" . implode(',', $ids) . ") ORDER BY sort_order ASC, question_id ASC");
+        if ($questionResult) {
+            while ($question = $questionResult->fetch_assoc()) {
+                $industryId = (int) $question['industry_id'];
+                if (!isset($map[$industryId])) {
+                    continue;
+                }
+                $map[$industryId]['questions'][] = array(
+                    'q' => $question['question_text'],
+                    'a' => $question['sample_answer'],
+                );
+            }
+        }
+        foreach ($ids as $id) {
+            if (!empty($map[$id]['questions'])) {
+                $industries[] = $map[$id];
+            }
+        }
+        return $industries;
     }
 }

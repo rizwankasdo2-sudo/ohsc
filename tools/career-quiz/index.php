@@ -5,9 +5,8 @@ require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
 ohsc_tools_ensure($db);
 $asset = rtrim($base_url, '/') . '/tools/assets/';
-$seed = require dirname(__FILE__) . '/../includes/career-quiz-seed.php';
-$paths = $seed['paths'];
-$questions = $seed['questions'];
+$paths = ohsc_cq_paths();
+$questions = ohsc_cq_questions($db);
 $questionCount = count($questions);
 $pathCards = array(
     array('healthcare', 'Healthcare'),

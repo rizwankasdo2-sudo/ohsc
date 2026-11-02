@@ -86,6 +86,7 @@ if (!empty($_GET['msg'])) {
     </tr>
     <?php } ?>
 </table>
-<p class="tools-note">Hiding a tool removes it from the website menu. The typing test text is edited under Typing texts.</p>
+<p class="tools-note">Hiding a tool removes it from the website menu. Edit tool content under Typing texts, EQ questions, Career Quiz, and Interview Prep.</p>
+<p class="tools-note">CV Builder has no question bank — users fill their own details on the page. Use Edit above to change its title or summary.</p>
 <?php
 ohsc_tools_admin_close();

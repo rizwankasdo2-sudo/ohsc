@@ -5,7 +5,7 @@ require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
 ohsc_tools_ensure($db);
 $asset = rtrim($base_url, '/') . '/tools/assets/';
-$industries = require dirname(__FILE__) . '/../includes/interview-seed.php';
+$industries = ohsc_iv_industries($db);
 ?>
 <!doctype html>
 <html lang="en">
