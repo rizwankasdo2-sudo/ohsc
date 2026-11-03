@@ -15,7 +15,8 @@ ohsc_tools_admin_open('Career resources');
 if ($error) { echo '<p class="tools-error">'.ohsc_h($error).'</p>'; }
 if (!empty($_GET['msg'])) { echo '<p role="status">'.ohsc_h($_GET['msg']).'</p>'; }
 ?>
-<p>Add downloadable resources, then publish them when the files are ready. Hidden resources and their downloads are unavailable to visitors.</p>
+<p class="tools-actions"><a href="<?php echo ohsc_h($base_url); ?>/admin/resource-pages">Manage resource pages &amp; SEO</a></p>
+<p>Add downloadable resources, then publish them when the files are ready. Assign each item to a category and optional subcategory. FAQs can be published with an answer instead of a file. Hidden items and downloads are unavailable to visitors.</p>
 <p class="tools-actions"><a href="<?php echo ohsc_h($base_url); ?>/admin/career-resource">Add resource</a> <a href="<?php echo ohsc_h($base_url); ?>/tools/resources/" target="_blank" rel="noopener">View resources page</a></p>
 <table class="tools" width="100%"><tr><th>Title</th><th>Category / Goal</th><th>Files</th><th>Order</th><th>Status</th><th>Actions</th></tr>
 <?php if (!$rows) { ?><tr><td colspan="6">No resources yet. Use Add resource to upload your first download.</td></tr><?php } ?>

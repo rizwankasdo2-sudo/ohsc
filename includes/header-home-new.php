@@ -4,7 +4,7 @@ $social_row = $db->query("SELECT * FROM social_links")->fetch_array();
 ?>
 <?php include dirname(__FILE__) . '/favicon.php'; ?>
 <?php if (isset($_SERVER['HTTP_HOST']) && stripos($_SERVER['HTTP_HOST'], 'tools.kasdo.org') !== false) { ?>
-<meta name="robots" content="noindex, nofollow">
+<?php if (empty($ohsc_resource_meta)) { ?><meta name="robots" content="noindex, nofollow"><?php } ?>
 <?php } ?>
 <link rel="preload" href="<?php echo $pdots; ?>fonts/UcCo3FwrK3iLTcviYwY.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="<?php echo $pdots; ?>fonts/JTUSjIg1_i6t8kCHKm459Wlhyw.woff2" as="font" type="font/woff2" crossorigin>

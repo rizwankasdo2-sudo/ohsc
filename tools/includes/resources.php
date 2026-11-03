@@ -1,6 +1,7 @@
 <?php
+require_once __DIR__.'/resource-pages.php';
 /** Downloadable career resources, isolated from courses and tool question banks. */
-function ohsc_resource_categories() { return array('templates'=>'Templates','checklists'=>'Checklists','worksheets'=>'Worksheets','examples'=>'Examples','toolkits'=>'Toolkits'); }
+function ohsc_resource_categories() { return array('templates'=>'Templates','checklists'=>'Checklists','examples'=>'Examples','worksheets'=>'Worksheets','faqs'=>'FAQs','downloads'=>'Downloads','toolkits'=>'Toolkits'); }
 function ohsc_resource_goals() { return array('find-job'=>'Find a job','interviews'=>'Prepare for interviews','plan-career'=>'Plan your career','develop-skills'=>'Develop your skills'); }
 function ohsc_resources_ensure($db) {
     static $ready=false; if ($ready) { return; }
@@ -20,17 +21,22 @@ function ohsc_resources_ensure($db) {
         mime VARCHAR(100) NOT NULL, bytes INT UNSIGNED NOT NULL,
         KEY resource (resource_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    $cols=$db->query("SHOW COLUMNS FROM tbl_career_resources")->fetch_all(MYSQLI_ASSOC);
+    $names=array_column($cols,'Field');
+    if (!in_array('subcategory',$names,true)) { $db->query("ALTER TABLE tbl_career_resources ADD subcategory VARCHAR(80) NOT NULL DEFAULT ''"); }
+    if (!in_array('answer',$names,true)) { $db->query("ALTER TABLE tbl_career_resources ADD answer TEXT NULL"); }
+    ohsc_resource_pages_ensure($db);
     $ready=true;
 }
 function ohsc_resource_files($db,$id) {
     $stmt=$db->prepare('SELECT * FROM tbl_career_resource_files WHERE resource_id=? ORDER BY file_id');
     $stmt->bind_param('i',$id);$stmt->execute();$rows=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);$stmt->close();return $rows;
 }
-function ohsc_resources_list($db,$search='', $category='', $goal='') {
+function ohsc_resources_list($db,$search='', $category='', $goal='', $subcategory='') {
     ohsc_resources_ensure($db);
     $like='%'.str_replace(array('!','%','_'),array('!!','!%','!_'),$search).'%';
-    $stmt=$db->prepare("SELECT r.* FROM tbl_career_resources r WHERE is_active=1 AND EXISTS (SELECT 1 FROM tbl_career_resource_files f WHERE f.resource_id=r.resource_id) AND (title LIKE ? ESCAPE '!' OR summary LIKE ? ESCAPE '!') AND (?='' OR category=?) AND (?='' OR goal=?) ORDER BY is_featured DESC,sort_order,resource_id DESC");
-    $stmt->bind_param('ssssss',$like,$like,$category,$category,$goal,$goal);$stmt->execute();$rows=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);$stmt->close();return $rows;
+    $stmt=$db->prepare("SELECT r.* FROM tbl_career_resources r WHERE is_active=1 AND (EXISTS (SELECT 1 FROM tbl_career_resource_files f WHERE f.resource_id=r.resource_id) OR (category='faqs' AND answer IS NOT NULL AND answer<>'')) AND (title LIKE ? ESCAPE '!' OR summary LIKE ? ESCAPE '!') AND (?='' OR category=?) AND (?='' OR goal=?) AND (?='' OR subcategory=?) ORDER BY is_featured DESC,sort_order,resource_id DESC");
+    $stmt->bind_param('ssssssss',$like,$like,$category,$category,$goal,$goal,$subcategory,$subcategory);$stmt->execute();$rows=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);$stmt->close();return $rows;
 }
 function ohsc_resource_formats() { return array('pdf'=>'PDF','docx'=>'Word','xlsx'=>'Excel','pptx'=>'PowerPoint','txt'=>'Text','zip'=>'ZIP'); }
 function ohsc_resource_validate_file($path,$name,$bytes) {

@@ -105,7 +105,7 @@ RewriteRule .* - [G,L]
 # RewriteCond %{QUERY_STRING} !^msg=.*$ [NC]
 # RewriteRule ^ - [G,L]
 RewriteCond %{QUERY_STRING} .+
-RewriteCond %{THE_REQUEST} !\s/+(admin/|assets/|fonts/|images/|css/|js/|tools/|lms/|ajax/|jquery-modal-master/|design-two/|design-three/|Resources/|page\.php|classification_category\.php|course\.php|post\.php|faq\.php|footerlink\.php|applyonline|courses/|\S+\.(css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|eot|map)(\?|\s)) [NC]
+RewriteCond %{THE_REQUEST} !\s/+(admin/|assets/|fonts/|images/|css/|js/|tools/|career-expert/|lms/|ajax/|jquery-modal-master/|design-two/|design-three/|Resources/|page\.php|classification_category\.php|course\.php|post\.php|faq\.php|footerlink\.php|applyonline|courses/|\S+\.(css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|eot|map)(\?|\s)) [NC]
 RewriteRule ^ - [G,L]
 
 # Essential site routing (must appear before large redirect blocks)
@@ -271,6 +271,8 @@ RewriteRule ^applyonline$ apply.php [L]
 RewriteRule ^apply_target$ apply_target.php [L]
 # TOOLS: public pages live in /tools. "tools" must be claimed before the one-segment page router. Admin addresses open the tools folder inside the existing admin panel.
 RewriteRule ^tools/?$ tools/index.php [END]
+RewriteRule ^career-expert/[a-z0-9-]+(?:/[a-z0-9-]+){0,2}/?$ tools/resources/index.php [QSA,END]
+RewriteRule ^admin/resource-pages/?$ tools/admin/resource-pages.php [QSA,END]
 RewriteRule ^admin/career-resources/?$ tools/admin/resources.php [QSA,END]
 RewriteRule ^admin/career-resource/?$ tools/admin/resource-form.php [QSA,END]
 RewriteRule ^admin/tools-manager/?$ tools/admin/index.php [QSA,END]

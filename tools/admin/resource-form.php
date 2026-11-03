@@ -1,19 +1,23 @@
 <?php
 require __DIR__.'/_boot.php';require_once __DIR__.'/../includes/resources.php';ohsc_resources_ensure($db);
 $id=isset($_GET['id'])?(int)$_GET['id']:0;
-$item=array('resource_id'=>0,'title'=>'','summary'=>'','category'=>'templates','goal'=>'find-job','image'=>'','sort_order'=>0,'is_featured'=>0,'is_active'=>0);
+$item=array('resource_id'=>0,'title'=>'','summary'=>'','category'=>'templates','goal'=>'find-job','image'=>'','sort_order'=>0,'is_featured'=>0,'is_active'=>0,'subcategory'=>'','answer'=>'');
 if ($id) {
     $stmt=$db->prepare('SELECT * FROM tbl_career_resources WHERE resource_id=?');$stmt->bind_param('i',$id);$stmt->execute();$row=$stmt->get_result()->fetch_assoc();$stmt->close();
     if (!$row) { http_response_code(404);ohsc_tools_admin_open('Resource not found');echo '<p>This resource does not exist.</p>';ohsc_tools_admin_close();exit; } $item=$row;
 }
+$pages=ohsc_resource_pages($db);
 $error='';$files=$id?ohsc_resource_files($db,$id):array();
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if (!ohsc_tools_csrf_ok()) { $error='The form expired or upload exceeded the server limit. Reload and try a smaller file.'; }
     else {
-        foreach (array('title','summary','category','goal') as $key) { $item[$key]=isset($_POST[$key])&&is_string($_POST[$key])?trim($_POST[$key]):''; }
+        foreach (array('title','summary','category','goal','subcategory','answer') as $key) { $item[$key]=isset($_POST[$key])&&is_string($_POST[$key])?trim($_POST[$key]):''; }
         $item['sort_order']=isset($_POST['sort_order'])?(int)$_POST['sort_order']:0;$item['is_featured']=!empty($_POST['is_featured'])?1:0;$item['is_active']=!empty($_POST['is_active'])?1:0;
         if ($item['title']==='' || strlen($item['title'])>150 || strlen($item['summary'])>500) { $error='Title is required (maximum 150 characters); summary maximum 500 characters.'; }
         elseif (!isset(ohsc_resource_categories()[$item['category']]) || !isset(ohsc_resource_goals()[$item['goal']])) { $error='Choose a valid category and goal.'; }
+        if ($error==='' && ($item['subcategory']!=='' && (!isset($pages[$item['subcategory']]) || $pages[$item['subcategory']]['parent_key']!==$item['category']))) { $error='Choose a subcategory belonging to the selected category, or select General.'; }
+        if ($error==='' && strlen($item['answer'])>20000) { $error='Keep FAQ answers under 20,000 characters.'; }
+        if ($error==='' && $item['category']==='faqs' && $item['is_active'] && trim($item['answer'])==='') { $error='Add an answer before publishing an FAQ.'; }
         $remove=isset($_POST['remove_files'])&&is_array($_POST['remove_files'])?array_map('intval',$_POST['remove_files']):array();
         $remaining=array_filter($files,function($f)use($remove){return !in_array((int)$f['file_id'],$remove,true);});
         $pending=array();$uploaded=isset($_FILES['downloads'])?$_FILES['downloads']:null;
@@ -34,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
             if ($imageUpload['error']!==UPLOAD_ERR_OK || !is_uploaded_file($imageUpload['tmp_name'])) { $error='Thumbnail upload failed.'; }
             else { $error=ohsc_image_validate($imageUpload['tmp_name'],$imageUpload['name'],$imageUpload['size'],array('width'=>640,'height'=>400));if ($error==='') { $newImage=bin2hex(random_bytes(16)).'.webp'; } }
         }
-        if ($error==='' && $item['is_active'] && count($remaining)+count($pending)===0) { $error='Add at least one downloadable file before publishing.'; }
+        if ($error==='' && $item['is_active'] && $item['category']!=='faqs' && count($remaining)+count($pending)===0) { $error='Add at least one downloadable file before publishing.'; }
         if ($error==='') {
             $moved=array();$oldImage=$item['image'];$db->begin_transaction();
             try {
@@ -44,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                 }
                 $stmt=$db->prepare('INSERT INTO tbl_career_resources(resource_id,title,summary,category,goal,image,sort_order,is_featured,is_active,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,NOW(),NOW()) ON DUPLICATE KEY UPDATE title=VALUES(title),summary=VALUES(summary),category=VALUES(category),goal=VALUES(goal),image=VALUES(image),sort_order=VALUES(sort_order),is_featured=VALUES(is_featured),is_active=VALUES(is_active),updated_at=NOW()');
                 $stmt->bind_param('isssssiii',$id,$item['title'],$item['summary'],$item['category'],$item['goal'],$item['image'],$item['sort_order'],$item['is_featured'],$item['is_active']);$stmt->execute();if (!$id) { $id=(int)$db->insert_id; }$stmt->close();
+                $stmt=$db->prepare('UPDATE tbl_career_resources SET subcategory=?,answer=? WHERE resource_id=?');$stmt->bind_param('ssi',$item['subcategory'],$item['answer'],$id);$stmt->execute();$stmt->close();
                 foreach ($remove as $fileId) { $stmt=$db->prepare('DELETE FROM tbl_career_resource_files WHERE file_id=? AND resource_id=?');$stmt->bind_param('ii',$fileId,$id);$stmt->execute();$stmt->close(); }
                 foreach ($pending as $file) {
                     $target=ohsc_resource_file_path($file['filename']);if (!move_uploaded_file($file['tmp'],$target)) { throw new RuntimeException('Could not store download. Check directory permissions.'); }$moved[]=$target;
@@ -63,6 +68,9 @@ if (!empty($_GET['saved'])) { echo '<p role="status">Resource saved.</p>'; }
 <p><label>Title<br><input type="text" name="title" value="<?php echo ohsc_h($item['title']); ?>" maxlength="150" required></label></p>
 <p><label>Short description<br><textarea name="summary" maxlength="500" style="min-height:90px"><?php echo ohsc_h($item['summary']); ?></textarea></label></p>
 <p><label>Category <select name="category"><?php foreach (ohsc_resource_categories() as $k=>$label) { ?><option value="<?php echo ohsc_h($k); ?>" <?php echo $item['category']===$k?'selected':''; ?>><?php echo ohsc_h($label); ?></option><?php } ?></select></label></p>
+<p><label>Subcategory <select name="subcategory"><option value="">General / category-level item</option><?php foreach ($pages as $p) { if ($p['parent_key']==='' || $p['parent_key']==='hub') { continue; } ?><option value="<?php echo ohsc_h($p['page_key']); ?>" <?php echo $item['subcategory']===$p['page_key']?'selected':''; ?>><?php echo ohsc_h($pages[$p['parent_key']]['title'].' → '.$p['title']); ?></option><?php } ?></select></label></p>
+<p>Select a subcategory under the category above. Examples, downloads and toolkits are items, not additional public pages.</p>
+<p><label>FAQ answer (required when publishing in FAQs)<br><textarea name="answer" maxlength="20000"><?php echo ohsc_h($item['answer']); ?></textarea></label></p>
 <p><label>Career goal <select name="goal"><?php foreach (ohsc_resource_goals() as $k=>$label) { ?><option value="<?php echo ohsc_h($k); ?>" <?php echo $item['goal']===$k?'selected':''; ?>><?php echo ohsc_h($label); ?></option><?php } ?></select></label></p>
 <p><label>Display order<br><input type="number" name="sort_order" value="<?php echo (int)$item['sort_order']; ?>"></label></p>
 <h3>Resource image</h3>
@@ -74,6 +82,6 @@ if (!empty($_GET['saved'])) { echo '<p role="status">Resource saved.</p>'; }
 <p><label>Add files (up to 5 at a time)<br><input type="file" name="downloads[]" accept=".pdf,.docx,.xlsx,.pptx,.txt,.zip" multiple></label></p>
 <p>PDF, Word (.docx), Excel (.xlsx), PowerPoint (.pptx), TXT or ZIP. Maximum 10 MB each, subject to server limits: upload_max_filesize=<?php echo ohsc_h(ini_get('upload_max_filesize')); ?>; post_max_size=<?php echo ohsc_h(ini_get('post_max_size')); ?>. Files are downloaded as attachments. ZIP files must not contain scripts, executable files or nested archives.</p>
 <p><label><input type="checkbox" name="is_featured" value="1" <?php echo $item['is_featured']?'checked':''; ?>> Featured / show first</label></p>
-<p><label><input type="checkbox" name="is_active" value="1" <?php echo $item['is_active']?'checked':''; ?>> Publish resource (requires at least one file)</label></p>
+<p><label><input type="checkbox" name="is_active" value="1" <?php echo $item['is_active']?'checked':''; ?>> Publish resource (requires a file, or an answer for FAQs)</label></p>
 <p><button class="save-btn">Save resource</button> <a href="<?php echo ohsc_h($base_url); ?>/admin/career-resources">Back to resources</a></p></form>
 <?php ohsc_tools_admin_close(); ?>

@@ -1,4 +1,7 @@
 <?php
+require_once __DIR__.'/resources.php';
+ohsc_resources_ensure($db);
+$hubResourcePages=ohsc_resource_pages($db);
 // Content for the career hub only. Existing tool/admin data stays authoritative.
 if (!function_exists('ohsc_hub_icon')) {
     function ohsc_hub_icon($slug)
@@ -67,11 +70,11 @@ if ($interviewItems) {
     $sections[] = array('id' => 'interview-industries', 'title' => 'Interview Questions by Industry', 'summary' => 'Practise real interview questions with sample answers.', 'view' => 'View all industries', 'url' => $siteBase . '/tools/interview-prep/#iv-professions', 'items' => $interviewItems);
 }
 $sections[] = array('id' => 'career-guides', 'title' => 'Career Guides', 'summary' => 'Step-by-step guidance to help you make informed career decisions.', 'view' => 'View all guides', 'url' => $siteBase . '/OHSC-Blog', 'items' => $guideItems);
-$sections[] = array('id' => 'career-resources', 'title' => 'Free Career Resources', 'summary' => 'Download templates, checklists and practical worksheets.', 'view' => 'View all resources', 'url' => $siteBase . '/tools/resources/', 'items' => array(
-    array('title' => 'CV Templates', 'icon' => 'cv-builder', 'url' => $siteBase . '/tools/resources/?category=templates#resource-list'),
-    array('title' => 'Interview Checklists', 'icon' => 'interview-prep', 'url' => $siteBase . '/tools/resources/?category=checklists#resource-list'),
-    array('title' => 'Career Worksheets', 'icon' => 'career-quiz', 'url' => $siteBase . '/tools/resources/?category=worksheets#resource-list'),
-    array('title' => 'Career Toolkits', 'icon' => 'eq-test', 'url' => $siteBase . '/tools/resources/?category=toolkits#resource-list'),
+$sections[] = array('id' => 'career-resources', 'title' => 'Free Career Resources', 'summary' => 'Download templates, checklists and practical worksheets.', 'view' => 'View all resources', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'hub'), 'items' => array(
+    array('title' => 'CV Templates', 'icon' => 'cv-builder', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'templates')),
+    array('title' => 'Interview Checklists', 'icon' => 'interview-prep', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'checklists')),
+    array('title' => 'Career Worksheets', 'icon' => 'career-quiz', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'worksheets')),
+    array('title' => 'Career Toolkits', 'icon' => 'eq-test', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'toolkits')),
 ));
 $sections[] = array('id' => 'featured-courses', 'title' => 'Featured Courses', 'summary' => 'Learn new skills with expert-designed online courses.', 'view' => 'View all courses', 'url' => $siteBase . '/free-online-courses-with-certificates', 'items' => $courseItems);
 if ($adviceItems) {
