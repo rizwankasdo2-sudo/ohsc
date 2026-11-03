@@ -67,11 +67,11 @@ if ($interviewItems) {
     $sections[] = array('id' => 'interview-industries', 'title' => 'Interview Questions by Industry', 'summary' => 'Practise real interview questions with sample answers.', 'view' => 'View all industries', 'url' => $siteBase . '/tools/interview-prep/#iv-professions', 'items' => $interviewItems);
 }
 $sections[] = array('id' => 'career-guides', 'title' => 'Career Guides', 'summary' => 'Step-by-step guidance to help you make informed career decisions.', 'view' => 'View all guides', 'url' => $siteBase . '/OHSC-Blog', 'items' => $guideItems);
-$sections[] = array('id' => 'career-resources', 'title' => 'Free Career Resources', 'summary' => 'Practical tools to help you prepare for your next step.', 'view' => 'Explore all tools', 'url' => '#tools-list', 'items' => array(
-    array('title' => 'CV Templates', 'icon' => 'cv-builder', 'url' => $siteBase . '/tools/cv-builder/'),
-    array('title' => 'Interview Practice', 'icon' => 'interview-prep', 'url' => $siteBase . '/tools/interview-prep/'),
-    array('title' => 'Career Quiz', 'icon' => 'career-quiz', 'url' => $siteBase . '/tools/career-quiz/'),
-    array('title' => 'Strengths Test', 'icon' => 'eq-test', 'url' => $siteBase . '/tools/eq-test/'),
+$sections[] = array('id' => 'career-resources', 'title' => 'Free Career Resources', 'summary' => 'Download templates, checklists and practical worksheets.', 'view' => 'View all resources', 'url' => $siteBase . '/tools/resources/', 'items' => array(
+    array('title' => 'CV Templates', 'icon' => 'cv-builder', 'url' => $siteBase . '/tools/resources/?category=templates#resource-list'),
+    array('title' => 'Interview Checklists', 'icon' => 'interview-prep', 'url' => $siteBase . '/tools/resources/?category=checklists#resource-list'),
+    array('title' => 'Career Worksheets', 'icon' => 'career-quiz', 'url' => $siteBase . '/tools/resources/?category=worksheets#resource-list'),
+    array('title' => 'Career Toolkits', 'icon' => 'eq-test', 'url' => $siteBase . '/tools/resources/?category=toolkits#resource-list'),
 ));
 $sections[] = array('id' => 'featured-courses', 'title' => 'Featured Courses', 'summary' => 'Learn new skills with expert-designed online courses.', 'view' => 'View all courses', 'url' => $siteBase . '/free-online-courses-with-certificates', 'items' => $courseItems);
 if ($adviceItems) {

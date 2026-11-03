@@ -17,7 +17,7 @@ function ohsc_image_dimensions($file) {
     return null;
 }
 function ohsc_image_inventory($db, $slug) {
-    $allowed = array('typing-test','eq-test','career-quiz','cv-builder','interview-prep');
+    $allowed = array('typing-test','eq-test','career-quiz','cv-builder','interview-prep','resources');
     if (!in_array($slug, $allowed, true)) { return array(); }
     $root = dirname(__DIR__, 2);
     $files = array($root . '/tools/' . $slug . '/index.php');

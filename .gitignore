@@ -49,3 +49,8 @@ blog-article.html
 blog-category.html
 blog-landing.html
 stripe_config.php
+# Runtime resource downloads and tool images are stored by admin, not Git.
+/tools/resource-files/*
+!/tools/resource-files/.htaccess
+/tools/uploads/*
+!/tools/uploads/.htaccess

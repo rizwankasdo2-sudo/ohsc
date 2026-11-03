@@ -4,6 +4,9 @@
 
 RewriteEngine On
 
+# Resource originals are served only by the publication-aware download endpoint.
+RewriteRule ^tools/resource-files(?:/|$) - [F,L]
+
 # Never route or serve hidden configuration/password files.
 RewriteRule (^|/)\.(?!well-known(?:/|$)) - [F,L]
 
@@ -268,6 +271,8 @@ RewriteRule ^applyonline$ apply.php [L]
 RewriteRule ^apply_target$ apply_target.php [L]
 # TOOLS: public pages live in /tools. "tools" must be claimed before the one-segment page router. Admin addresses open the tools folder inside the existing admin panel.
 RewriteRule ^tools/?$ tools/index.php [END]
+RewriteRule ^admin/career-resources/?$ tools/admin/resources.php [QSA,END]
+RewriteRule ^admin/career-resource/?$ tools/admin/resource-form.php [QSA,END]
 RewriteRule ^admin/tools-manager/?$ tools/admin/index.php [QSA,END]
 RewriteRule ^admin/tool-edit/?$ tools/admin/tool-form.php [QSA,END]
 RewriteRule ^admin/typing-passages/?$ tools/admin/passages.php [QSA,END]

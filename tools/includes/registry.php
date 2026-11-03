@@ -328,6 +328,8 @@ if (!function_exists('ohsc_tools_ensure')) {
 
         ohsc_iv_upgrade($db);
         ohsc_iv_expand_questions($db);
+        // Add the resources page once; preserve later admin title/order/visibility edits.
+        $db->query("INSERT IGNORE INTO tbl_site_tools(title,slug,summary,sort_order,is_active,created_at) VALUES ('Career Resources','resources','Free downloadable templates, checklists, worksheets and toolkits.',6,1,NOW())");
         $ready = true;
     }
 }
