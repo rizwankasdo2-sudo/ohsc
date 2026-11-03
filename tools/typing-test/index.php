@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
+$ohsc_tool_meta=ohsc_tool_seo_init($db,'typing-test',$base_url);$ohsc_resource_meta=true;
 ohsc_image_start($db, 'typing-test', $base_url);
 $passages = ohsc_typing_passages($db);
 $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_icon_alt, tc.slug AS catslug
@@ -16,9 +17,7 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Typing Speed Test | Oxford Home Study Centre</title>
-    <meta name="description" content="Take a free one, three, or five minute typing test. Check your words per minute and accuracy.">
+    <?php ohsc_tool_seo_head($ohsc_tool_meta); ?>
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test.css?v=17">
     <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test-ui.css?v=1">

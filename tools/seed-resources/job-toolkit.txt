@@ -1,0 +1,24 @@
+Job Search Toolkit
+A CV checklist, application tracker and interview planner in one printable toolkit.
+
+1. CV and application checklist
+[ ] Choose a target role and read the requirements.
+[ ] Tailor your profile, skills and evidence to that role.
+[ ] Check dates, contact details and spelling.
+[ ] Follow the requested file format and submission instructions.
+[ ] Save a copy of the job description and application.
+
+2. Application tracker
+Employer | Role | Applied on | Status | Next action / date
+_______________________________________________________
+_______________________________________________________
+_______________________________________________________
+_______________________________________________________
+_______________________________________________________
+
+3. Interview planner
+Role and employer: ______________________________________
+Three relevant examples to prepare: ________________________
+Questions to ask: ________________________________________
+Time, location / link and preparation needed: _________________
+Afterwards: what went well and what will I improve? ___________

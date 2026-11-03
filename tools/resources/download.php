@@ -4,7 +4,7 @@ require __DIR__.'/../../admin/classes/connection.php';
 require_once __DIR__.'/../includes/resources.php';
 ohsc_resources_ensure($db);
 $id=isset($_GET['id'])?(int)$_GET['id']:0;
-$stmt=$db->prepare('SELECT f.* FROM tbl_career_resource_files f INNER JOIN tbl_career_resources r ON r.resource_id=f.resource_id WHERE f.file_id=? AND r.is_active=1');
+$stmt=$db->prepare('SELECT f.* FROM tbl_career_resource_files f INNER JOIN tbl_career_resources r ON r.resource_id=f.resource_id WHERE f.file_id=? AND r.is_active=1 AND r.is_deleted=0');
 $stmt->bind_param('i',$id);$stmt->execute();$file=$stmt->get_result()->fetch_assoc();$stmt->close();
 $path=$file?ohsc_resource_file_path($file['filename']):null;
 if (!$path || !is_file($path)) { http_response_code(404);header('Content-Type: text/plain; charset=UTF-8');exit('This download is unavailable.'); }

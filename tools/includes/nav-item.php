@@ -6,7 +6,7 @@ if (!isset($db) || !($db instanceof mysqli) || !isset($base_url)) {
 }
 
 $ohscTools = ohsc_tools_active($db);
-$ohscToolsHome = rtrim($base_url, '/') . '/tools/';
+$ohscToolsHome = ohsc_tool_url($db,$base_url,'tools-hub');
 $ohscToolsNavStyle = isset($ohsc_tools_nav_style) ? $ohsc_tools_nav_style : 'bootstrap';
 ?>
 <?php if ($ohscToolsNavStyle === 'legacy') { ?>
@@ -15,7 +15,7 @@ $ohscToolsNavStyle = isset($ohsc_tools_nav_style) ? $ohsc_tools_nav_style : 'boo
     <div class="cm-e-menu">
         <ul>
             <li><a href="<?php echo ohsc_h($ohscToolsHome); ?>">All tools</a></li>
-            <?php foreach ($ohscTools as $ohscTool) { $ohscToolUrl=$ohscToolsHome.$ohscTool['slug'].'/';if ($ohscTool['slug']==='resources') { require_once __DIR__.'/resources.php';ohsc_resources_ensure($db);$ohscToolUrl=rtrim($base_url,'/').ohsc_resource_page_path(ohsc_resource_pages($db),'hub'); } ?>
+            <?php foreach ($ohscTools as $ohscTool) { $ohscToolPages=ohsc_tool_pages($db);$ohscToolUrl=isset($ohscToolPages[$ohscTool['slug']])?rtrim($base_url,'/').ohsc_tool_page_path($ohscToolPages,$ohscTool['slug']):rtrim($base_url,'/').'/tools/'.$ohscTool['slug'].'/';if ($ohscTool['slug']==='resources') { require_once __DIR__.'/resources.php';ohsc_resources_ensure($db);$ohscToolUrl=rtrim($base_url,'/').ohsc_resource_page_path(ohsc_resource_pages($db),'hub'); } ?>
             <li><a href="<?php echo ohsc_h($ohscToolUrl); ?>"><?php echo ohsc_h($ohscTool['title']); ?></a></li>
             <?php } ?>
         </ul>
@@ -31,7 +31,7 @@ $ohscToolsNavStyle = isset($ohsc_tools_nav_style) ? $ohsc_tools_nav_style : 'boo
                     <a href="<?php echo ohsc_h($ohscToolsHome); ?>">All tools</a>
                 </div>
             </li>
-            <?php foreach ($ohscTools as $ohscTool) { $ohscToolUrl=$ohscToolsHome.$ohscTool['slug'].'/';if ($ohscTool['slug']==='resources') { require_once __DIR__.'/resources.php';ohsc_resources_ensure($db);$ohscToolUrl=rtrim($base_url,'/').ohsc_resource_page_path(ohsc_resource_pages($db),'hub'); } ?>
+            <?php foreach ($ohscTools as $ohscTool) { $ohscToolPages=ohsc_tool_pages($db);$ohscToolUrl=isset($ohscToolPages[$ohscTool['slug']])?rtrim($base_url,'/').ohsc_tool_page_path($ohscToolPages,$ohscTool['slug']):rtrim($base_url,'/').'/tools/'.$ohscTool['slug'].'/';if ($ohscTool['slug']==='resources') { require_once __DIR__.'/resources.php';ohsc_resources_ensure($db);$ohscToolUrl=rtrim($base_url,'/').ohsc_resource_page_path(ohsc_resource_pages($db),'hub'); } ?>
             <li class="dropdown-item">
                 <div class="head">
                     <a href="<?php echo ohsc_h($ohscToolUrl); ?>"><?php echo ohsc_h($ohscTool['title']); ?></a>

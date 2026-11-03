@@ -7,6 +7,8 @@ if ($id) {
     if (!$row) { http_response_code(404);ohsc_tools_admin_open('Resource not found');echo '<p>This resource does not exist.</p>';ohsc_tools_admin_close();exit; } $item=$row;
 }
 $pages=ohsc_resource_pages($db);
+$scope=isset($_GET['page'])&&is_string($_GET['page'])&&isset($pages[$_GET['page']])?$_GET['page']:'';
+if (!$id && $_SERVER['REQUEST_METHOD']!=='POST' && $scope && $scope!=='hub') { $item['category']=$pages[$scope]['parent_key']==='hub'?$scope:$pages[$scope]['parent_key'];$item['subcategory']=$pages[$scope]['parent_key']==='hub'?'':$scope; }
 $error='';$files=$id?ohsc_resource_files($db,$id):array();
 if ($_SERVER['REQUEST_METHOD']==='POST') {
     if (!ohsc_tools_csrf_ok()) { $error='The form expired or upload exceeded the server limit. Reload and try a smaller file.'; }
@@ -54,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                     $target=ohsc_resource_file_path($file['filename']);if (!move_uploaded_file($file['tmp'],$target)) { throw new RuntimeException('Could not store download. Check directory permissions.'); }$moved[]=$target;
                     $mime=ohsc_resource_mime($file['ext']);$stmt=$db->prepare('INSERT INTO tbl_career_resource_files(resource_id,filename,original_name,extension,mime,bytes) VALUES(?,?,?,?,?,?)');$stmt->bind_param('issssi',$id,$file['filename'],$file['name'],$file['ext'],$mime,$file['size']);$stmt->execute();$stmt->close();
                 }
-                $db->commit();header('Location: '.$base_url.'/admin/career-resource?id='.$id.'&saved=1');exit;
+                $db->commit();header('Location: '.$base_url.'/admin/career-resource?id='.$id.'&saved=1'.($scope?'&page='.rawurlencode($scope):''));exit;
             } catch (Throwable $e) { $db->rollback();foreach ($moved as $path) { if (is_file($path)) { unlink($path); } }$item['image']=$oldImage;$error='Could not save the resource. Please retry or check storage/database permissions.'; }
         }
     }
@@ -63,6 +65,7 @@ ohsc_tools_admin_open($item['resource_id']?'Edit resource':'Add resource');
 if ($error) { echo '<p class="tools-error" role="alert">'.ohsc_h($error).'</p>'; }
 if (!empty($_GET['saved'])) { echo '<p role="status">Resource saved.</p>'; }
 ?>
+<?php if ($scope) { ?><p><a href="<?php echo ohsc_h($base_url.'/admin/resource-pages?page='.rawurlencode($scope)); ?>">← Back to this resource page</a></p><?php } ?>
 <form method="post" enctype="multipart/form-data">
 <input type="hidden" name="csrf" value="<?php echo ohsc_h($_SESSION['ohsc_tools_csrf']); ?>">
 <p><label>Title<br><input type="text" name="title" value="<?php echo ohsc_h($item['title']); ?>" maxlength="150" required></label></p>
@@ -84,4 +87,4 @@ if (!empty($_GET['saved'])) { echo '<p role="status">Resource saved.</p>'; }
 <p><label><input type="checkbox" name="is_featured" value="1" <?php echo $item['is_featured']?'checked':''; ?>> Featured / show first</label></p>
 <p><label><input type="checkbox" name="is_active" value="1" <?php echo $item['is_active']?'checked':''; ?>> Publish resource (requires a file, or an answer for FAQs)</label></p>
 <p><button class="save-btn">Save resource</button> <a href="<?php echo ohsc_h($base_url); ?>/admin/career-resources">Back to resources</a></p></form>
-<?php ohsc_tools_admin_close(); ?>
+<?php if ($id) { ?><form method="post" action="<?php echo ohsc_h($base_url); ?>/admin/career-resources" onsubmit="return confirm('Delete this resource? You can restore it later.');"><input type="hidden" name="csrf" value="<?php echo ohsc_h($_SESSION['ohsc_tools_csrf']); ?>"><input type="hidden" name="resource_id" value="<?php echo (int)$id; ?>"><input type="hidden" name="action" value="delete"><button type="submit">Delete resource</button></form><?php } ohsc_tools_admin_close(); ?>

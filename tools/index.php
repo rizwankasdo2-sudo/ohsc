@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/includes/lock.php';
 include dirname(__FILE__) . '/../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../includes/functions.php';
 require_once dirname(__FILE__) . '/includes/registry.php';
+$ohsc_tool_meta=ohsc_tool_seo_init($db,'hub',$base_url);$ohsc_resource_meta=true;
 ohsc_tools_ensure($db);
 $tools = ohsc_tools_active($db);
 $industries = ohsc_iv_industries($db);
@@ -64,9 +65,7 @@ foreach ($bySlug as $tool) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Career Tools | Oxford Home Study Centre</title>
-    <meta name="description" content="Free career tools from Oxford Home Study Centre: career quiz, CV builder, interview prep, typing test, and strengths test.">
+    <?php ohsc_tool_seo_head($ohsc_tool_meta); ?>
     <?php include dirname(__FILE__) . '/../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>tools.css?v=10">
     <main class="ohsc-tool ohsc-career-hub">

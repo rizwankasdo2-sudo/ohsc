@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/resource-pages.php';
+require_once __DIR__.'/resource-starters.php';
 /** Downloadable career resources, isolated from courses and tool question banks. */
 function ohsc_resource_categories() { return array('templates'=>'Templates','checklists'=>'Checklists','examples'=>'Examples','worksheets'=>'Worksheets','faqs'=>'FAQs','downloads'=>'Downloads','toolkits'=>'Toolkits'); }
 function ohsc_resource_goals() { return array('find-job'=>'Find a job','interviews'=>'Prepare for interviews','plan-career'=>'Plan your career','develop-skills'=>'Develop your skills'); }
@@ -25,7 +26,9 @@ function ohsc_resources_ensure($db) {
     $names=array_column($cols,'Field');
     if (!in_array('subcategory',$names,true)) { $db->query("ALTER TABLE tbl_career_resources ADD subcategory VARCHAR(80) NOT NULL DEFAULT ''"); }
     if (!in_array('answer',$names,true)) { $db->query("ALTER TABLE tbl_career_resources ADD answer TEXT NULL"); }
+    if (!in_array('is_deleted',$names,true)) { try { $db->query("ALTER TABLE tbl_career_resources ADD is_deleted TINYINT(1) NOT NULL DEFAULT 0"); } catch (mysqli_sql_exception $e) { if ((int)$e->getCode()!==1060) { throw $e; } } }
     ohsc_resource_pages_ensure($db);
+    ohsc_resource_starters($db);
     $ready=true;
 }
 function ohsc_resource_files($db,$id) {
@@ -35,7 +38,7 @@ function ohsc_resource_files($db,$id) {
 function ohsc_resources_list($db,$search='', $category='', $goal='', $subcategory='') {
     ohsc_resources_ensure($db);
     $like='%'.str_replace(array('!','%','_'),array('!!','!%','!_'),$search).'%';
-    $stmt=$db->prepare("SELECT r.* FROM tbl_career_resources r WHERE is_active=1 AND (EXISTS (SELECT 1 FROM tbl_career_resource_files f WHERE f.resource_id=r.resource_id) OR (category='faqs' AND answer IS NOT NULL AND answer<>'')) AND (title LIKE ? ESCAPE '!' OR summary LIKE ? ESCAPE '!') AND (?='' OR category=?) AND (?='' OR goal=?) AND (?='' OR subcategory=?) ORDER BY is_featured DESC,sort_order,resource_id DESC");
+    $stmt=$db->prepare("SELECT r.* FROM tbl_career_resources r WHERE is_active=1 AND is_deleted=0 AND (EXISTS (SELECT 1 FROM tbl_career_resource_files f WHERE f.resource_id=r.resource_id) OR (category='faqs' AND answer IS NOT NULL AND answer<>'')) AND (title LIKE ? ESCAPE '!' OR summary LIKE ? ESCAPE '!') AND (?='' OR category=?) AND (?='' OR goal=?) AND (?='' OR subcategory=?) ORDER BY is_featured DESC,sort_order,resource_id DESC");
     $stmt->bind_param('ssssssss',$like,$like,$category,$category,$goal,$goal,$subcategory,$subcategory);$stmt->execute();$rows=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);$stmt->close();return $rows;
 }
 function ohsc_resource_formats() { return array('pdf'=>'PDF','docx'=>'Word','xlsx'=>'Excel','pptx'=>'PowerPoint','txt'=>'Text','zip'=>'ZIP'); }
@@ -91,4 +94,19 @@ function ohsc_resource_icon($kind) {
         'develop-skills'=>'<path d="m1 8 11-5 11 5-11 5zM5 10v8q7 5 14 0v-8m4-2v11"/>'
     );
     return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'.(isset($paths[$kind])?$paths[$kind]:$paths['templates']).'</svg>';
+}
+
+function ohsc_resources_for_page($db,$pageKey,$includeDeleted=false) {
+    $pages=ohsc_resource_pages($db);$rows=$db->query('SELECT r.*, (SELECT COUNT(*) FROM tbl_career_resource_files f WHERE f.resource_id=r.resource_id) file_count FROM tbl_career_resources r ORDER BY sort_order,resource_id DESC')->fetch_all(MYSQLI_ASSOC);
+    return array_values(array_filter($rows,function($r)use($pages,$pageKey,$includeDeleted){
+        if ((bool)$r['is_deleted']!==$includeDeleted) { return false; }
+        if (!$pageKey || $pageKey==='hub') { return true; }
+        if (!isset($pages[$pageKey])) { return false; }
+        return $pages[$pageKey]['parent_key']==='hub'?$r['category']===$pageKey:$r['subcategory']===$pageKey;
+    }));
+}
+function ohsc_resource_action($db,$id,$action) {
+    if (!in_array($action,array('hide','delete','restore'),true)) { return false; }
+    $sql=$action==='delete'?'is_deleted=1,is_active=0':($action==='restore'?'is_deleted=0,is_active=0':'is_active=0');
+    $stmt=$db->prepare('UPDATE tbl_career_resources SET '.$sql.',updated_at=NOW() WHERE resource_id=?');$stmt->bind_param('i',$id);$ok=$stmt->execute();$stmt->close();return $ok;
 }

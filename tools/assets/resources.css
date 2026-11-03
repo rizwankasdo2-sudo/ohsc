@@ -22,3 +22,5 @@
 .resource-featured{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.resource-featured>a{display:grid;grid-template-columns:1fr 30px;border:1px solid #e2e7f2;border-radius:14px;overflow:hidden;background:white;color:var(--navy)}.resource-featured img{grid-column:1/-1;width:100%;height:150px;object-fit:cover;background:#f1edff}.resource-featured strong{padding:16px;font-size:18px}.resource-featured>a>span{align-self:center;font-size:25px;color:var(--navy)}
 .resource-question{padding:18px 22px;border:1px solid #e2e7f2;border-radius:12px;background:white}.resource-question summary{font-size:20px;font-weight:700;cursor:pointer}.resource-question p{margin-top:14px;line-height:1.7;color:var(--blue)}.resource-question .resource-btn{margin-top:14px}
 @media(max-width:650px){.resource-categories a{padding:12px 7px;font-size:13px;gap:8px;min-height:47px}.resource-featured{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.resource-featured img{height:100px}.resource-featured strong{padding:12px 8px;font-size:15px}.resource-question summary{font-size:18px}}
+
+.resource-card h3,.resource-question summary{overflow-wrap:anywhere}

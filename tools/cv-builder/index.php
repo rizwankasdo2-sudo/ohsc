@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
+$ohsc_tool_meta=ohsc_tool_seo_init($db,'cv-builder',$base_url);$ohsc_resource_meta=true;
 ohsc_image_start($db, 'cv-builder', $base_url);
 ohsc_tools_ensure($db);
 $asset = rtrim($base_url, '/') . '/tools/assets/';
@@ -11,9 +12,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="robots" content="noindex, nofollow">
-    <title>CV Builder | Oxford Home Study Centre</title>
-    <meta name="description" content="Build a CV from your details. Choose a Modern, Classic, or Minimal template and download it.">
+    <?php ohsc_tool_seo_head($ohsc_tool_meta); ?>
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder.css?v=6">
     <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>cv-builder-ui.css?v=2">

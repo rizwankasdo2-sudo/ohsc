@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
 }
 ohsc_tools_admin_open('Resource pages & SEO');
 if ($error) { echo '<p class="tools-error">'.ohsc_h($error).'</p>'; }
+if (!empty($_GET['resource_msg']) && is_string($_GET['resource_msg'])) { echo '<p role="status">'.ohsc_h($_GET['resource_msg']).'</p>'; }
 if (!empty($_GET['saved'])) { echo '<p role="status">Page and SEO settings saved.</p>'; }
 ?>
 <p>Manage the resources hub, seven categories and their listed subcategories. Download items do not create additional front-end pages.</p>
@@ -30,7 +31,7 @@ if (!empty($_GET['saved'])) { echo '<p role="status">Page and SEO settings saved
 <p><label>Meta keywords<br><input type="text" name="meta_keywords" maxlength="500" value="<?php echo ohsc_h($item['meta_keywords']); ?>"></label></p>
 <p><label>Meta robots <select name="meta_robots"><?php foreach (ohsc_resource_robots_options() as $robots) { ?><option <?php echo $item['meta_robots']===$robots?'selected':''; ?>><?php echo ohsc_h($robots); ?></option><?php } ?></select></label></p>
 <button type="submit" class="save-btn">Save page & SEO</button></form>
-<?php } else { ?>
+<?php require __DIR__.'/resource-page-items.php'; } else { ?>
 <table class="tools" width="100%"><tr><th>Page</th><th>URL</th><th>Meta robots</th><th>Action</th></tr>
 <?php foreach (ohsc_resource_page_seed() as $seed) { $page=$pages[$seed['page_key']]; ?><tr><td><?php echo ohsc_h($page['title']); ?></td><td><?php echo ohsc_h(ohsc_resource_page_path($pages,$page['page_key'])); ?></td><td><?php echo ohsc_h($page['meta_robots']); ?></td><td><a href="<?php echo ohsc_h($base_url.'/admin/resource-pages?page='.$page['page_key']); ?>">Edit page / SEO</a></td></tr><?php } ?></table>
 <?php } ohsc_tools_admin_close(); ?>

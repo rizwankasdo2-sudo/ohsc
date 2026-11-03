@@ -1,0 +1,21 @@
+Professional CV Template
+Build a clear CV with prompts for your profile, experience, education and skills.
+
+Your details
+Full name: __________________________________________
+Job title or target role: _________________________________
+Email | Phone | Location | Portfolio: _______________________
+
+Professional profile
+Write 2-3 lines about your experience, strengths and target role.
+Example structure: [Role] with [experience] in [area]. Skilled in [skills]. Seeking to contribute [value] to [type of team].
+
+Experience
+Job title | Organisation | Dates
+Achievement: [Action taken] + [task or challenge] + [result].
+Add 2-4 relevant achievements. Use honest evidence and numbers where available.
+
+Education and skills
+Qualification | Institution | Dates
+List relevant technical skills, transferable skills and completed training.
+Before sending: tailor the content, check dates and proofread contact details.

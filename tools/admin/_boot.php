@@ -23,6 +23,7 @@ $prettyMap = array(
     'resources.php' => '/admin/career-resources',
     'resource-form.php' => '/admin/career-resource',
     'resource-pages.php' => '/admin/resource-pages',
+    'tool-pages.php' => '/admin/tool-pages',
 );
 
 if (strpos($path, '/tools/admin') === 0 && isset($prettyMap[$script])) {
@@ -97,6 +98,7 @@ function ohsc_tools_admin_open($heading)
             <div id="main_content">
                 <p class="tools-actions">
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/tools-manager">Tools</a>
+                    <a href="<?php echo ohsc_h($base_url); ?>/admin/tool-pages">Tool pages &amp; SEO</a>
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/typing-passages">Typing texts</a>
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/eq-questions">EQ questions</a>
                     <a href="<?php echo ohsc_h($base_url); ?>/admin/career-quiz-questions">Career Quiz</a>

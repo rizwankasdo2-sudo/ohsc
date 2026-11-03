@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__.'/tool-pages.php';
 require_once __DIR__ . "/tool-images.php";
 require_once dirname(__FILE__) . '/interview-content.php';
 /**
@@ -331,6 +332,7 @@ if (!function_exists('ohsc_tools_ensure')) {
         // Add the resources page once; preserve later admin title/order/visibility edits.
         $db->query("INSERT IGNORE INTO tbl_site_tools(title,slug,summary,sort_order,is_active,created_at) VALUES ('Career Resources','resources','Free downloadable templates, checklists, worksheets and toolkits.',6,1,NOW())");
         $ready = true;
+        ohsc_tool_pages_ensure($db);
     }
 }
 

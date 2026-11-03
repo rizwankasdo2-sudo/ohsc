@@ -41,7 +41,7 @@ ohsc_image_start($db,'resources',$base_url);
 <meta name="keywords" content="<?php echo ohsc_h($page['meta_keywords']); ?>">
 <link rel="canonical" href="<?php echo ohsc_h($canonical); ?>">
 <?php include __DIR__.'/../../includes/header-home-new.php'; ?>
-<link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>resources.css?v=4">
+<link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>resources.css?v=5">
 <main class="career-resources" id="career-resources"><div class="resource-wrap">
 <?php if (!$isHub) { ?><nav class="resource-breadcrumbs" aria-label="Breadcrumb"><a href="<?php echo ohsc_h($site.ohsc_resource_page_path($pages,'hub')); ?>">Resources</a> <span>›</span> <?php if ($subcategory) { ?><a href="<?php echo ohsc_h($site.ohsc_resource_page_path($pages,$category)); ?>"><?php echo ohsc_h($pages[$category]['title']); ?></a> <span>›</span><?php } ?><strong><?php echo ohsc_h($page['title']); ?></strong></nav><?php } ?>
 <section class="resource-hero"><div><h1><?php if ($isHub && $page['title']==='Free Career Resources') { ?>Practical tools.<br><span>Your next step.</span><?php } else { echo ohsc_h($page['title']); } ?></h1><p><?php echo ohsc_h($page['summary']); ?></p><strong class="resource-badge">FREE CAREER RESOURCES</strong><a class="resource-btn" href="#resource-search">Explore resources <span aria-hidden="true">→</span></a></div><img src="<?php echo ohsc_h($asset); ?>resources-hero.svg" alt="CV, checklist and career plan documents ready to download" width="640" height="440"></section>

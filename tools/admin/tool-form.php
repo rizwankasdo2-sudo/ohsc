@@ -83,12 +83,14 @@ if ($error !== '') {
 }
 $pageReady = $tool['slug'] !== '' && is_file(dirname(__FILE__) . '/../' . $tool['slug'] . '/index.php');
 ?>
+<?php $toolSeoLink=$tool['slug']==='resources'?$base_url.'/admin/resource-pages?page=hub':$base_url.'/admin/tool-pages'.(in_array($tool['slug'],array('typing-test','eq-test','career-quiz','cv-builder','interview-prep'),true)?'?page='.$tool['slug']:''); ?>
+<p class="tools-actions"><a href="<?php echo ohsc_h($toolSeoLink); ?>">Edit public slug &amp; SEO</a></p>
 <form method="post">
     <input type="hidden" name="csrf" value="<?php echo ohsc_h($_SESSION['ohsc_tools_csrf']); ?>">
     <input type="hidden" name="tool_id" value="<?php echo (int) $tool['tool_id']; ?>">
     <p>Title<br><input type="text" name="title" maxlength="150" value="<?php echo ohsc_h($tool['title']); ?>" required></p>
-    <p>Slug<br><input type="text" name="slug" maxlength="80" value="<?php echo ohsc_h($tool['slug']); ?>" required></p>
-    <p class="tools-note">The public link is /tools/slug/. The typing test slug is typing-test. A new slug is only a working page when that folder exists in the tools directory.</p>
+    <p>Slug<br><input type="text" name="slug" <?php echo in_array($tool['slug'],array('typing-test','eq-test','career-quiz','cv-builder','interview-prep','resources'),true)?'readonly':''; ?> maxlength="80" value="<?php echo ohsc_h($tool['slug']); ?>" required></p>
+    <p class="tools-note">This is the internal tool folder key. Use Edit public slug & SEO above to change the public URL without breaking the tool. Resources page URLs are managed under Resource pages & SEO.</p>
     <?php if ($tool['slug'] !== '' && !$pageReady) { ?>
     <p class="tools-error">No page folder was found for this slug.</p>
     <?php } ?>

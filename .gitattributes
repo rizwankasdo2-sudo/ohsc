@@ -14,3 +14,5 @@
 # Git files
 .gitattributes text eol=lf
 .gitignore text eol=lf
+# Preserve PDF byte offsets and binary data on every platform.
+*.pdf binary

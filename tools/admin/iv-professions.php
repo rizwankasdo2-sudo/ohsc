@@ -49,6 +49,7 @@ if (!empty($_GET['msg']) && is_string($_GET['msg'])) { echo '<p class="tools-not
 if ($error !== '') { echo '<p class="tools-error">' . ohsc_h($error) . '</p>'; }
 ?>
 <p>Manage the public profession directory. Hidden professions and their questions are not accessible publicly. The reserved general collection supplies common questions. Existing questions stay attached when a title or image changes.</p>
+<?php if ($id) { ?><p><a href="<?php echo ohsc_h($base_url.'/admin/tool-pages?page=profession-'.$id); ?>">Edit this profession page slug &amp; SEO</a></p><?php } ?>
 <form method="post">
 <input type="hidden" name="csrf" value="<?php echo ohsc_h($_SESSION['ohsc_tools_csrf']); ?>">
 <p>Title<br><input type="text" name="title" maxlength="150" required value="<?php echo ohsc_h($item['title']); ?>"></p>

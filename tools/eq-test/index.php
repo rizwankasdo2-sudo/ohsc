@@ -3,6 +3,7 @@ require_once dirname(__FILE__) . '/../includes/lock.php';
 include dirname(__FILE__) . '/../../admin/classes/connection.php';
 require_once dirname(__FILE__) . '/../../includes/functions.php';
 require_once dirname(__FILE__) . '/../includes/registry.php';
+$ohsc_tool_meta=ohsc_tool_seo_init($db,'eq-test',$base_url);$ohsc_resource_meta=true;
 ohsc_image_start($db, 'eq-test', $base_url);
 
 $asset = rtrim($base_url, '/') . '/tools/assets/';
@@ -42,9 +43,7 @@ $benefits = array(
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="robots" content="noindex, nofollow">
-    <title>Emotional Intelligence Test | Oxford Home Study Centre</title>
-    <meta name="description" content="Take a free emotional intelligence test. Answer short questions and see how you notice, manage, and respond to emotions.">
+    <?php ohsc_tool_seo_head($ohsc_tool_meta); ?>
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/eq-test.css?v=2">
     <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>eq-test-ui.css?v=2">

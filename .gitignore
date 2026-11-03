@@ -54,3 +54,7 @@ stripe_config.php
 !/tools/resource-files/.htaccess
 /tools/uploads/*
 !/tools/uploads/.htaccess
+
+# Generated PDF QA/build output; distributable starter PDFs live in tools/seed-resources.
+/output/pdf/
+/tmp/pdfs/

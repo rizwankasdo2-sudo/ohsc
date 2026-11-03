@@ -34,6 +34,8 @@ $questionMatchCount = count(array_filter($questions, function ($q) use ($selecte
     return !$selected || (($type === 'all' || $q['question_type'] === $type) && ($search === '' || stripos($q['question_text'] . ' ' . $q['sample_answer'], $search) !== false));
 }));
 $professionMatchCount = count(array_filter($professions, function ($p) use ($search) { return $search === '' || stripos($p['title'] . ' ' . $p['summary'], $search) !== false; }));
+$ohsc_tool_meta=$notFound?null:ohsc_tool_seo_init($db,'interview-prep',$base_url,$selected?(int)$selected['industry_id']:0);$ohsc_resource_meta=true;
+$ivBase=ohsc_tool_url($db,$base_url,'interview-prep');
 function iv_cards($items, $site, $asset) {
     foreach ($items as $item) { ?>
     <a class="iv-story" href="<?php echo ohsc_h($site . $item[3]); ?>"><img src="<?php echo ohsc_h($asset . $item[2]); ?>" alt="" loading="lazy" width="560" height="220"><div><h3><?php echo ohsc_h($item[0]); ?><span aria-hidden="true">→</span></h3><p><?php echo ohsc_h($item[1]); ?></p></div></a>
@@ -44,9 +46,7 @@ function iv_cards($items, $site, $asset) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="robots" content="noindex, nofollow">
-    <title><?php echo ohsc_h($notFound ? 'Profession not found' : $title); ?> | OHSC Career Expert</title>
-    <meta name="description" content="Prepare for your next interview. Browse profession-specific questions, sample answers and practical interview guidance.">
+    <?php if ($ohsc_tool_meta) { ohsc_tool_seo_head($ohsc_tool_meta); } else { ?><title>Profession not found | OHSC Career Expert</title><meta name="robots" content="noindex, nofollow"><?php } ?>
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>interview-prep.css?v=8">
     <main class="ohsc-iv" id="ohsc-iv">
