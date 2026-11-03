@@ -1,7 +1,7 @@
 <?php
 require __DIR__.'/_boot.php';require_once __DIR__.'/../includes/resources.php';ohsc_resources_ensure($db);
 $id=isset($_GET['id'])?(int)$_GET['id']:0;
-$item=array('resource_id'=>0,'title'=>'','summary'=>'','category'=>'templates','goal'=>'find-job','image'=>'','sort_order'=>0,'is_featured'=>0,'is_active'=>0,'subcategory'=>'','answer'=>'');
+$item=array('resource_id'=>0,'title'=>'','summary'=>'','category'=>'templates','goal'=>'find-job','image'=>'','sort_order'=>0,'is_featured'=>0,'is_active'=>0,'subcategory'=>'','answer'=>'','image_hidden'=>0);
 if ($id) {
     $stmt=$db->prepare('SELECT * FROM tbl_career_resources WHERE resource_id=?');$stmt->bind_param('i',$id);$stmt->execute();$row=$stmt->get_result()->fetch_assoc();$stmt->close();
     if (!$row) { http_response_code(404);ohsc_tools_admin_open('Resource not found');echo '<p>This resource does not exist.</p>';ohsc_tools_admin_close();exit; } $item=$row;
@@ -35,10 +35,12 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                 $pending[]=array('tmp'=>$tmp,'filename'=>bin2hex(random_bytes(16)).'.'.$ext,'name'=>substr(preg_replace('/[\x00-\x1f\x7f]/','',basename(str_replace('\\','/',$name))),0,180),'ext'=>$ext,'size'=>$size);
             }
         }
+        $removeImage=!empty($_POST['remove_thumbnail']);$restoreImage=!empty($_POST['restore_thumbnail']);
+        if ($removeImage) { $item['image_hidden']=1;$item['image']=''; }elseif ($restoreImage) { $item['image_hidden']=0; }
         $imageUpload=isset($_FILES['thumbnail'])?$_FILES['thumbnail']:null;$newImage=null;
         if ($error==='' && $imageUpload && $imageUpload['error']!==UPLOAD_ERR_NO_FILE) {
             if ($imageUpload['error']!==UPLOAD_ERR_OK || !is_uploaded_file($imageUpload['tmp_name'])) { $error='Thumbnail upload failed.'; }
-            else { $error=ohsc_image_validate($imageUpload['tmp_name'],$imageUpload['name'],$imageUpload['size'],array('width'=>640,'height'=>400));if ($error==='') { $newImage=bin2hex(random_bytes(16)).'.webp'; } }
+            else { $error=ohsc_image_validate($imageUpload['tmp_name'],$imageUpload['name'],$imageUpload['size'],array('width'=>640,'height'=>400));if ($error==='') { $newImage=bin2hex(random_bytes(16)).'.webp';$item['image_hidden']=0; } }
         }
         if ($error==='' && $item['is_active'] && $item['category']!=='faqs' && count($remaining)+count($pending)===0) { $error='Add at least one downloadable file before publishing.'; }
         if ($error==='') {
@@ -50,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD']==='POST') {
                 }
                 $stmt=$db->prepare('INSERT INTO tbl_career_resources(resource_id,title,summary,category,goal,image,sort_order,is_featured,is_active,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?,NOW(),NOW()) ON DUPLICATE KEY UPDATE title=VALUES(title),summary=VALUES(summary),category=VALUES(category),goal=VALUES(goal),image=VALUES(image),sort_order=VALUES(sort_order),is_featured=VALUES(is_featured),is_active=VALUES(is_active),updated_at=NOW()');
                 $stmt->bind_param('isssssiii',$id,$item['title'],$item['summary'],$item['category'],$item['goal'],$item['image'],$item['sort_order'],$item['is_featured'],$item['is_active']);$stmt->execute();if (!$id) { $id=(int)$db->insert_id; }$stmt->close();
-                $stmt=$db->prepare('UPDATE tbl_career_resources SET subcategory=?,answer=? WHERE resource_id=?');$stmt->bind_param('ssi',$item['subcategory'],$item['answer'],$id);$stmt->execute();$stmt->close();
+                $stmt=$db->prepare('UPDATE tbl_career_resources SET subcategory=?,answer=?,image_hidden=? WHERE resource_id=?');$stmt->bind_param('ssii',$item['subcategory'],$item['answer'],$item['image_hidden'],$id);$stmt->execute();$stmt->close();
                 foreach ($remove as $fileId) { $stmt=$db->prepare('DELETE FROM tbl_career_resource_files WHERE file_id=? AND resource_id=?');$stmt->bind_param('ii',$fileId,$id);$stmt->execute();$stmt->close(); }
                 foreach ($pending as $file) {
                     $target=ohsc_resource_file_path($file['filename']);if (!move_uploaded_file($file['tmp'],$target)) { throw new RuntimeException('Could not store download. Check directory permissions.'); }$moved[]=$target;
@@ -77,9 +79,9 @@ if (!empty($_GET['saved'])) { echo '<p role="status">Resource saved.</p>'; }
 <p><label>Career goal <select name="goal"><?php foreach (ohsc_resource_goals() as $k=>$label) { ?><option value="<?php echo ohsc_h($k); ?>" <?php echo $item['goal']===$k?'selected':''; ?>><?php echo ohsc_h($label); ?></option><?php } ?></select></label></p>
 <p><label>Display order<br><input type="number" name="sort_order" value="<?php echo (int)$item['sort_order']; ?>"></label></p>
 <h3>Resource image</h3>
-<?php if ($item['image']) { ?><p><img src="<?php echo ohsc_h($base_url.'/tools/uploads/'.$item['image']); ?>" alt="Current thumbnail" style="max-width:240px"></p><?php } ?>
+<?php if ($item['image'] && empty($item['image_hidden'])) { ?><p><img src="<?php echo ohsc_h($base_url.'/tools/uploads/'.$item['image']); ?>" alt="Current thumbnail" style="max-width:240px"></p><?php } ?>
 <p><label>Upload / replace thumbnail (optional): WebP, exactly <strong>640 × 400 px</strong>, maximum 5 MB<br><input type="file" name="thumbnail" accept="image/webp,.webp"></label></p>
-<p>A document illustration is shown when no thumbnail is uploaded.</p>
+<p><label><input type="checkbox" name="remove_thumbnail" value="1"> Delete / hide this resource image</label> <label><input type="checkbox" name="restore_thumbnail" value="1"> Restore default illustration</label></p><p><?php echo !empty($item['image_hidden'])?'Image is currently hidden.':'A document illustration is shown when no thumbnail is uploaded.'; ?></p>
 <h3>Downloadable files</h3>
 <?php foreach ($files as $f) { ?><p><?php echo ohsc_h($f['original_name']); ?> (<?php echo number_format($f['bytes']/1024,1); ?> KB) <label><input type="checkbox" name="remove_files[]" value="<?php echo (int)$f['file_id']; ?>"> Remove this download</label></p><?php } ?>
 <p><label>Add files (up to 5 at a time)<br><input type="file" name="downloads[]" accept=".pdf,.docx,.xlsx,.pptx,.txt,.zip" multiple></label></p>

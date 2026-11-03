@@ -1,6 +1,6 @@
 # Career resources
 
-Public hub: `/career-expert/resources`. The former `/tools/resources/` URL redirects. The hierarchy contains exactly 30 pages: the hub, seven categories, and the 22 listed subcategories. Download examples remain items, not separate pages. Admin: `/admin/career-resources` → Add resource.
+Public hub: `/resources/`. The former `/tools/resources/` URL redirects. The hierarchy contains exactly 30 pages: the hub, seven categories, and the 22 listed subcategories. Download examples remain items, not separate pages. Admin: `/admin/career-resources` → Add resource.
 
 Add title, description, category, career goal, order and optional thumbnail. Upload one or more files and select Publish. A published resource must have at least one file. Existing files can be removed and replacements added when editing. Hide removes both the public listing and download access.
 
@@ -31,3 +31,11 @@ The committed `tools/seed-resources/` manifest contains 24 relevant resources co
 `/admin/tool-pages` provides custom slug, meta title, description, keywords and robots for the tools hub, the five interactive tools and every interview profession. Tools Manager and profession editors link to these settings. Stable internal tool folder names remain unchanged. Default tool paths stay `/tools/{tool}/`; a custom public slug is resolved by `tools/router.php`. Profession pages have clean URLs under the current interview landing slug. Existing URLs redirect. The resource hierarchy retains its separate SEO manager.
 
 Run `php tools/tests/tool-pages.test.php` to check starter coverage, migration idempotence, recoverable deletion and all tool SEO records. With the local test-auth environment set, it also tests the live pages and a temporary real tool slug change, restoring the original settings afterwards.
+
+## Root URLs and image editing
+
+The canonical hub is `/resources/`, with categories and subcategories below `/resources`. Prior `/career-expert/resources` and `/tools/resources/` links redirect. The default hub shows its featured/navigation/FAQ content without the full download feed; category pages and explicit searches still show matching downloads. Renamed hub roots are resolved by the root resource dispatcher, which preserves the existing generic website-page fallback.
+
+Resources page Edit includes Page images: hero (640 × 440) and default resource-card image (640 × 400). The hub additionally has a toolkit image (640 × 440) and five independent featured-card images (640 × 400). Genuine WebP only, maximum 5 MB. Upload replaces a slot, Delete hides it, Restore default resets it. Resource-specific thumbnails also have hide/default controls in the resource editor. The Resources entry in Tools Manager includes all eight hub image controls directly.
+
+Tool Edit now includes Custom slug, Meta title, Meta description, Meta keywords and Meta robots in the same main form; Save tool & SEO commits both settings together. The dedicated Tool pages & SEO screen remains available for the tools hub and interview profession pages.

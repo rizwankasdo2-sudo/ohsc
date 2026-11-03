@@ -21,6 +21,7 @@ function ohsc_image_inventory($db, $slug) {
     if (!in_array($slug, $allowed, true)) { return array(); }
     $root = dirname(__DIR__, 2);
     $files = array($root . '/tools/' . $slug . '/index.php');
+    if ($slug === 'resources') { $files[] = __DIR__ . '/resource-images.php'; }
     if ($slug === 'career-quiz') { $files[] = __DIR__ . '/career-quiz-seed.php'; }
     $sources = array();
     foreach ($files as $file) {

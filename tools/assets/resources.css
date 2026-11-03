@@ -24,3 +24,6 @@
 @media(max-width:650px){.resource-categories a{padding:12px 7px;font-size:13px;gap:8px;min-height:47px}.resource-featured{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.resource-featured img{height:100px}.resource-featured strong{padding:12px 8px;font-size:15px}.resource-question summary{font-size:18px}}
 
 .resource-card h3,.resource-question summary{overflow-wrap:anywhere}
+
+.resource-hero.no-image,.resource-toolkit.no-image>div{grid-template-columns:1fr}.resource-card.no-image{grid-template-columns:minmax(0,1fr) 240px}.resource-featured>a.no-image{min-height:100px;align-items:center}
+@media(max-width:650px){.resource-card.no-image{grid-template-columns:1fr}}

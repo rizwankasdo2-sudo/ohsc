@@ -33,15 +33,15 @@ function ohsc_resource_pages($db) {
 }
 function ohsc_resource_page_path($pages,$key) {
     if (!isset($pages[$key])) { return ''; }
-    $segments=array();$guard=0;
+    $isHub=$key==='hub';$segments=array();$guard=0;
     while ($key!=='' && isset($pages[$key]) && $guard++<4) { array_unshift($segments,$pages[$key]['slug']);$key=$pages[$key]['parent_key']; }
-    return '/career-expert/'.implode('/',$segments);
+    return '/'.implode('/',$segments).($isHub?'/':'');
 }
 function ohsc_resource_page_resolve($pages,$path) {
-    foreach ($pages as $key=>$page) { if (rtrim($path,'/')===ohsc_resource_page_path($pages,$key)) { return $page; } }return null;
+    foreach ($pages as $key=>$page) { if (rtrim($path,'/')===rtrim(ohsc_resource_page_path($pages,$key),'/')) { return $page; } }return null;
 }
 function ohsc_resource_robots_options() { return array('index, follow','noindex, follow','index, nofollow','noindex, nofollow'); }
-function ohsc_resource_page_save($db,$pages,$key,$input) {
+function ohsc_resource_page_save($db,$pages,$key,$input,$validateOnly=false,$manageTransaction=true) {
     if (!isset($pages[$key])) { return 'Unknown resource page.'; }
     $limits=array('slug'=>80,'title'=>150,'summary'=>500,'meta_title'=>200,'meta_description'=>500,'meta_keywords'=>500,'meta_robots'=>100);
     foreach ($limits as $field=>$max) { if (!isset($input[$field]) || !is_string($input[$field]) || strlen($input[$field])>$max) { return 'Check the length of '.$field.'.'; } }
@@ -52,15 +52,21 @@ function ohsc_resource_page_save($db,$pages,$key,$input) {
     foreach ($proposed as $pageKey=>$page) { if (strlen(ohsc_resource_page_path($proposed,$pageKey))>240) { return 'The full page URL is too long. Shorten this slug.'; } }
     // An old URL must never be reassigned to another page.
     $aliases=$db->query('SELECT path,page_key FROM tbl_resource_page_aliases')->fetch_all(MYSQLI_ASSOC);
-    foreach ($proposed as $pageKey=>$page) { foreach ($aliases as $alias) { if ($alias['path']===ohsc_resource_page_path($proposed,$pageKey) && $alias['page_key']!==$pageKey) { return 'That URL belongs to a previous page address. Choose another slug.'; } } }
-    $db->begin_transaction();
+    foreach ($proposed as $pageKey=>$page) { foreach ($aliases as $alias) { if (rtrim($alias['path'],'/')===rtrim(ohsc_resource_page_path($proposed,$pageKey),'/') && $alias['page_key']!==$pageKey) { return 'That URL belongs to a previous page address. Choose another slug.'; } } }
+    if ($key==='hub' && $input['slug']!==$pages[$key]['slug']) {
+        $root=dirname(__DIR__,2);$slug=$input['slug'];
+        if (in_array($slug,array('admin','tools','career-expert','assets','images','courses','lms','fonts','css','js'),true) || ($slug!=='resources' && (is_dir($root.'/'.$slug) || is_file($root.'/'.$slug.'.php')))) { return 'That hub slug is reserved for the website.'; }
+        $stmt=$db->prepare('SELECT 1 FROM pages WHERE slug=? UNION SELECT 1 FROM tbl_courses WHERE slug=? LIMIT 1');$stmt->bind_param('ss',$slug,$slug);$stmt->execute();$taken=$stmt->get_result()->num_rows>0;$stmt->close();if ($taken) { return 'That hub slug is already used on the website.'; }
+    }
+    if ($validateOnly) { return ''; }
+    if ($manageTransaction) { $db->begin_transaction(); }
     try {
         foreach ($pages as $pageKey=>$page) {
-            $old=ohsc_resource_page_path($pages,$pageKey);$new=ohsc_resource_page_path($proposed,$pageKey);
+            $old=rtrim(ohsc_resource_page_path($pages,$pageKey),'/');$new=rtrim(ohsc_resource_page_path($proposed,$pageKey),'/');
             if ($old!==$new) { $stmt=$db->prepare('INSERT INTO tbl_resource_page_aliases(path,page_key) VALUES(?,?) ON DUPLICATE KEY UPDATE page_key=VALUES(page_key)');$stmt->bind_param('ss',$old,$pageKey);$stmt->execute();$stmt->close(); }
         }
         $stmt=$db->prepare('UPDATE tbl_resource_pages SET slug=?,title=?,summary=?,meta_title=?,meta_description=?,meta_keywords=?,meta_robots=? WHERE page_key=?');
-        $stmt->bind_param('ssssssss',$input['slug'],$input['title'],$input['summary'],$input['meta_title'],$input['meta_description'],$input['meta_keywords'],$input['meta_robots'],$key);$stmt->execute();$stmt->close();$db->commit();
-    } catch (Throwable $e) { $db->rollback();return 'Could not save page settings. Please retry.'; }
+        $stmt->bind_param('ssssssss',$input['slug'],$input['title'],$input['summary'],$input['meta_title'],$input['meta_description'],$input['meta_keywords'],$input['meta_robots'],$key);$stmt->execute();$stmt->close();if ($manageTransaction) { $db->commit(); }
+    } catch (Throwable $e) { if ($manageTransaction) { $db->rollback(); }return 'Could not save page settings. Please retry.'; }
     return '';
 }

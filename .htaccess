@@ -104,8 +104,14 @@ RewriteRule .* - [G,L]
 # RewriteCond %{REQUEST_URI} !^/applyonline$ [NC,OR]
 # RewriteCond %{QUERY_STRING} !^msg=.*$ [NC]
 # RewriteRule ^ - [G,L]
+RewriteCond %{QUERY_STRING} ^(?:q|goal)= [NC]
+RewriteCond %{REQUEST_URI} !^/(admin|tools|assets|fonts|images|css|js|courses|career-expert|resources|lms|ajax)(/|$) [NC]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^[a-z0-9-]+(?:/[a-z0-9-]+){0,2}/?$ tools/resource-root-router.php [QSA,END]
+
 RewriteCond %{QUERY_STRING} .+
-RewriteCond %{THE_REQUEST} !\s/+(admin/|assets/|fonts/|images/|css/|js/|tools/|career-expert/|lms/|ajax/|jquery-modal-master/|design-two/|design-three/|Resources/|page\.php|classification_category\.php|course\.php|post\.php|faq\.php|footerlink\.php|applyonline|courses/|\S+\.(css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|eot|map)(\?|\s)) [NC]
+RewriteCond %{THE_REQUEST} !\s/+(admin/|assets/|fonts/|images/|css/|js/|tools/|career-expert/|resources(?:/|\?|\s)|lms/|ajax/|jquery-modal-master/|design-two/|design-three/|Resources/|page\.php|classification_category\.php|course\.php|post\.php|faq\.php|footerlink\.php|applyonline|courses/|\S+\.(css|js|mjs|png|jpe?g|gif|webp|svg|ico|woff2?|ttf|eot|map)(\?|\s)) [NC]
 RewriteRule ^ - [G,L]
 
 # Essential site routing (must appear before large redirect blocks)
@@ -275,6 +281,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^tools/[a-z0-9-]+(?:/[a-z0-9-]+)?/?$ tools/router.php [QSA,END]
 RewriteRule ^admin/tool-pages/?$ tools/admin/tool-pages.php [QSA,END]
+RewriteRule ^resources(?:/[a-z0-9-]+){0,2}/?$ tools/resources/index.php [QSA,END,NC]
 RewriteRule ^career-expert/[a-z0-9-]+(?:/[a-z0-9-]+){0,2}/?$ tools/resources/index.php [QSA,END]
 RewriteRule ^admin/resource-pages/?$ tools/admin/resource-pages.php [QSA,END]
 RewriteRule ^admin/career-resources/?$ tools/admin/resources.php [QSA,END]
@@ -817,6 +824,9 @@ RewriteRule ^job\-skills\-courses/?$ /courses/job-skills-courses [R=301,NC,L]
 RewriteRule ^study-leadership-as-a-soft-skill/?$ /soft-skills [R=301,NC,L]
 RewriteRule ^communication\-skills\-and\-abilities/?$ /communication-abilities-and-skills [R=301,NC,L]
 RewriteRule ^continuing-professional-development-courses/?$ /online-continuing-education-courses [R=301,NC,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^[a-z0-9-]+/?$ tools/resource-root-router.php [QSA,END]
 RewriteRule ^([a-zA-Z0-9_-]+)/?$ /page.php?slug=$1 [L,QSA]
 
 # Begin returning 410 Gone for specific URLs
@@ -1839,3 +1849,8 @@ RewriteRule ^courses/warehouse\-management\-system\-course/warehouse\-stock\-man
 #   AddHandler application/x-httpd-ea-php81 .php .php8 .phtml
 # </IfModule>
 # php -- END cPanel-generated handler, do not edit
+
+# Resolve renamed resource subpages only after existing website routes and redirects.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^[a-z0-9-]+/[a-z0-9-]+(?:/[a-z0-9-]+)?/?$ tools/resource-root-router.php [QSA,END]

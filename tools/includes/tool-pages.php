@@ -20,7 +20,7 @@ function ohsc_tool_page_path($pages,$key) {
     return '/tools/'.$p['slug'].'/';
 }
 function ohsc_tool_url($db,$base,$key) { return rtrim($base,'/').ohsc_tool_page_path(ohsc_tool_pages($db),$key); }
-function ohsc_tool_page_save($db,$pages,$key,$input) {
+function ohsc_tool_page_save($db,$pages,$key,$input,$validateOnly=false,$manageTransaction=true) {
     if (!isset($pages[$key])) { return 'Unknown tool page.'; }
     foreach (array('slug'=>80,'meta_title'=>200,'meta_description'=>500,'meta_keywords'=>500,'meta_robots'=>100) as $field=>$max) { if (!isset($input[$field]) || !is_string($input[$field]) || strlen($input[$field])>$max) { return 'Check '.$field.'.'; } }
     if (($key!=='tools-hub'||$input['slug']!=='') && !preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/D',$input['slug'])) { return 'Use a lowercase slug with letters, numbers and hyphens.'; }
@@ -34,10 +34,11 @@ function ohsc_tool_page_save($db,$pages,$key,$input) {
         if (!$p['industry_id'] && $p['slug']!=='' && in_array($p['slug'],array('assets','admin','includes','resources','uploads','resource-files','seed-resources','scripts','tests'),true)) { return 'That slug is reserved.'; }
         if (!$p['industry_id']) { foreach (array('typing-test','eq-test','cv-builder','career-quiz','interview-prep') as $physical) { if ($p['slug']===$physical && $p['tool_slug']!==$physical) { return 'That slug is reserved for its original tool.'; } } }
     }
-    $db->begin_transaction();try {
+    if ($validateOnly) { return ''; }
+    if ($manageTransaction) { $db->begin_transaction(); }try {
         foreach ($pages as $k=>$p) { $old=ohsc_tool_page_path($pages,$k);if ($old!==ohsc_tool_page_path($next,$k)) { $stmt=$db->prepare('INSERT INTO tbl_tool_page_aliases(path,page_key) VALUES(?,?) ON DUPLICATE KEY UPDATE page_key=VALUES(page_key)');$stmt->bind_param('ss',$old,$k);$stmt->execute();$stmt->close(); } }
-        $stmt=$db->prepare('UPDATE tbl_tool_pages SET slug=?,meta_title=?,meta_description=?,meta_keywords=?,meta_robots=? WHERE page_key=?');$stmt->bind_param('ssssss',$input['slug'],$input['meta_title'],$input['meta_description'],$input['meta_keywords'],$input['meta_robots'],$key);$stmt->execute();$stmt->close();$db->commit();
-    } catch (Throwable $e) { $db->rollback();return 'Could not save tool SEO.'; }return '';
+        $stmt=$db->prepare('UPDATE tbl_tool_pages SET slug=?,meta_title=?,meta_description=?,meta_keywords=?,meta_robots=? WHERE page_key=?');$stmt->bind_param('ssssss',$input['slug'],$input['meta_title'],$input['meta_description'],$input['meta_keywords'],$input['meta_robots'],$key);$stmt->execute();$stmt->close();if ($manageTransaction) { $db->commit(); }
+    } catch (Throwable $e) { if ($manageTransaction) { $db->rollback(); }return 'Could not save tool SEO.'; }return '';
 }
 function ohsc_tool_seo_init($db,$tool,$base,$industry=0) {
     ohsc_tools_ensure($db);$pages=ohsc_tool_pages($db);$key=$industry?'profession-'.(int)$industry:($tool==='hub'?'tools-hub':$tool);$page=isset($pages[$key])?$pages[$key]:null;

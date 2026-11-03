@@ -1,6 +1,6 @@
 <?php
 if (PHP_SAPI!=='cli') { http_response_code(404);exit; }
-$_SERVER['HTTP_HOST']='localhost:300';$_SERVER['REQUEST_URI']='/career-expert/resources';
+$_SERVER['HTTP_HOST']='localhost:300';$_SERVER['REQUEST_URI']='/resources';
 require __DIR__.'/../../admin/classes/connection.php';require __DIR__.'/../includes/registry.php';require __DIR__.'/../includes/resources.php';
 function pages_check($ok,$why) { if (!$ok) { throw new RuntimeException($why); } }
 ohsc_resources_ensure($db);$pages=ohsc_resource_pages($db);
@@ -14,7 +14,7 @@ try {
     $oldChild=ohsc_resource_page_path($pages,$child);
     pages_check(ohsc_resource_page_save($db,$pages,$key,$input)==='','Page save failed');
     $changed=ohsc_resource_pages($db);pages_check($changed[$key]['meta_title']===$input['meta_title'] && $changed[$key]['meta_keywords']===$input['meta_keywords'],'SEO fields not saved');
-    pages_check(ohsc_resource_page_path($changed,$child)==='/career-expert/'.$input['slug'].'/child','Child URL did not follow parent slug');
+    pages_check(ohsc_resource_page_path($changed,$child)==='/'.$input['slug'].'/child','Child URL did not follow parent slug');
     $stmt=$db->prepare('SELECT page_key FROM tbl_resource_page_aliases WHERE path=?');$stmt->bind_param('s',$oldChild);$stmt->execute();pages_check($stmt->get_result()->fetch_assoc()['page_key']===$child,'Old child URL alias missing');$stmt->close();
     $bad=$input;$bad['slug']='../unsafe';pages_check(ohsc_resource_page_save($db,$changed,$key,$bad)!=='','Unsafe slug accepted');
     $bad=$input;$bad['meta_robots']='unsafe';pages_check(ohsc_resource_page_save($db,$changed,$key,$bad)!=='','Unsafe robots accepted');
@@ -43,6 +43,6 @@ if ($auth) {
     $html=file_get_contents($base.ohsc_resource_page_path($pages,'toolkits').'?q=Job%20Search%20Toolkit',false,$context);pages_check(strpos($http_response_header[0],'200')!==false && strpos($html,'Job Search Toolkit')!==false,'Resource search route blocked');
     $html=file_get_contents($base.'/tools/resources/?category=templates',false,$context);
     pages_check(strpos(implode('\n',$http_response_header),'301')!==false && strpos($html,'CV Templates')!==false,'Legacy redirect failed');
-    file_get_contents($base.'/career-expert/resources/not-a-real-page',false,$context);pages_check(strpos($http_response_header[0],'404')!==false,'Unknown page did not return 404');
+    file_get_contents($base.'/resources/not-a-real-page',false,$context);pages_check(strpos($http_response_header[0],'404')!==false,'Unknown page did not return 404');
     echo "PASS: all 30 HTTP pages, meta tags, canonicals, legacy redirect and unknown-route 404.\n";
 }

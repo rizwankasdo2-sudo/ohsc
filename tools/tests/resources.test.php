@@ -50,7 +50,7 @@ if ($auth) {
         $bytes=strlen($body);$stmt=$db->prepare("INSERT INTO tbl_career_resource_files(resource_id,filename,original_name,extension,mime,bytes) VALUES(?,?,'checklist.txt','txt','text/plain',?)");$stmt->bind_param('isi',$resourceId,$filename,$bytes);$stmt->execute();$fid=(int)$db->insert_id;$stmt->close();
         list($download,$headers)=resource_http('/tools/resources/download.php?id='.$fid,$auth);
         resource_check($download===$body,'Download content changed');resource_check(strpos(implode('\n',$headers),'attachment; filename="checklist.txt"')!==false,'Attachment header missing');
-        list($html,$headers)=resource_http('/career-expert/resources?q='.rawurlencode($title),$auth);resource_check(strpos($html,htmlspecialchars($title,ENT_QUOTES,'UTF-8'))!==false && strpos($html,'download.php?id='.$fid)!==false,'Published resource not linked');
+        list($html,$headers)=resource_http('/resources?q='.rawurlencode($title),$auth);resource_check(strpos($html,htmlspecialchars($title,ENT_QUOTES,'UTF-8'))!==false && strpos($html,'download.php?id='.$fid)!==false,'Published resource not linked');
         list($blocked,$headers)=resource_http('/tools/resource-files/'.$filename,$auth);resource_check(strpos($headers[0],'403')!==false,'Raw file exposed');
         ohsc_resource_action($db,$resourceId,'delete');
         list($deleted,$headers)=resource_http('/tools/resources/download.php?id='.$fid,$auth);resource_check(strpos($headers[0],'404')!==false,'Deleted download still available');

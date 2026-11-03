@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__.'/resource-pages.php';
 require_once __DIR__.'/resource-starters.php';
+require_once __DIR__.'/resource-images.php';
 /** Downloadable career resources, isolated from courses and tool question banks. */
 function ohsc_resource_categories() { return array('templates'=>'Templates','checklists'=>'Checklists','examples'=>'Examples','worksheets'=>'Worksheets','faqs'=>'FAQs','downloads'=>'Downloads','toolkits'=>'Toolkits'); }
 function ohsc_resource_goals() { return array('find-job'=>'Find a job','interviews'=>'Prepare for interviews','plan-career'=>'Plan your career','develop-skills'=>'Develop your skills'); }
@@ -27,6 +28,7 @@ function ohsc_resources_ensure($db) {
     if (!in_array('subcategory',$names,true)) { $db->query("ALTER TABLE tbl_career_resources ADD subcategory VARCHAR(80) NOT NULL DEFAULT ''"); }
     if (!in_array('answer',$names,true)) { $db->query("ALTER TABLE tbl_career_resources ADD answer TEXT NULL"); }
     if (!in_array('is_deleted',$names,true)) { try { $db->query("ALTER TABLE tbl_career_resources ADD is_deleted TINYINT(1) NOT NULL DEFAULT 0"); } catch (mysqli_sql_exception $e) { if ((int)$e->getCode()!==1060) { throw $e; } } }
+    if (!in_array('image_hidden',$names,true)) { try { $db->query("ALTER TABLE tbl_career_resources ADD image_hidden TINYINT(1) NOT NULL DEFAULT 0"); } catch (mysqli_sql_exception $e) { if ((int)$e->getCode()!==1060) { throw $e; } } }
     ohsc_resource_pages_ensure($db);
     ohsc_resource_starters($db);
     $ready=true;

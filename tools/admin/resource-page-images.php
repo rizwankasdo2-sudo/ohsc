@@ -1,0 +1,13 @@
+<?php
+if (!function_exists('ohsc_tools_csrf_ok') || empty($_SESSION['adminid'])) { http_response_code(403);exit; }
+ $imageRecords=ohsc_resource_image_records($db,$key);$legacy=ohsc_image_overrides($db,'resources');$imageDefault=rtrim($base_url,'/').(isset($legacy['/tools/assets/resources-hero.svg'])?$legacy['/tools/assets/resources-hero.svg']:'/tools/assets/resources-hero.svg'); ?>
+<section id="page-images" style="margin-top:30px;border-top:1px solid #ccc;padding-top:20px"><h3>Page images<?php echo $key==='hub'?' &amp; Featured Resources images':''; ?></h3>
+<p>Add or replace images with genuine WebP files. Exact dimensions are required; maximum 5 MB each. Delete hides the image; Restore default brings the illustration back. Resource-specific thumbnails can also be changed or removed under Update / files below.</p>
+<?php if (!empty($_GET['image_saved'])) { ?><p role="status">Image setting saved.</p><?php } ?>
+<?php foreach (ohsc_resource_image_specs($key) as $slot=>$spec) { $preview=ohsc_resource_image_url($imageRecords,$slot,$base_url,$imageDefault); ?>
+<div style="border:1px solid #ddd;margin:14px 0;padding:16px;background:#fafafa"><h4><?php echo ohsc_h($spec['label']); ?></h4>
+<?php if ($preview!=='') { ?><p><img src="<?php echo ohsc_h($preview); ?>" alt="Current <?php echo ohsc_h($spec['label']); ?>" style="max-width:240px;max-height:155px;object-fit:contain"></p><?php } else { ?><p>Image deleted / hidden.</p><?php } ?>
+<p><strong><?php echo $spec['width']; ?> × <?php echo $spec['height']; ?> px</strong> · WebP only · Maximum 5 MB<?php if (isset($imageRecords[$slot])&&$imageRecords[$slot]['filename']&&preg_match('/^[a-f0-9]{32}\.webp$/',$imageRecords[$slot]['filename'])) { $disk=dirname(__DIR__).'/uploads/'.$imageRecords[$slot]['filename'];if (is_file($disk)) { echo ' · Current file: '.number_format(filesize($disk)/1024,1).' KB'; } } ?></p>
+<form method="post" enctype="multipart/form-data"><input type="hidden" name="csrf" value="<?php echo ohsc_h($_SESSION['ohsc_tools_csrf']); ?>"><input type="hidden" name="image_slot" value="<?php echo ohsc_h($slot); ?>"><input type="hidden" name="image_action" value="upload"><p><label>Upload / replace <input type="file" name="page_image" accept="image/webp,.webp" required></label></p><button type="submit" class="save-btn">Upload / Replace image</button></form>
+<form method="post" style="display:inline"><input type="hidden" name="csrf" value="<?php echo ohsc_h($_SESSION['ohsc_tools_csrf']); ?>"><input type="hidden" name="image_slot" value="<?php echo ohsc_h($slot); ?>"><button type="submit" name="image_action" value="delete">Delete image</button><button type="submit" name="image_action" value="reset">Restore default</button></form></div>
+<?php } ?></section>
