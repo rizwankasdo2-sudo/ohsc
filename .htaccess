@@ -3,6 +3,8 @@
 # Enforce WAF/CDN restrictions at the hosting edge instead of origin .htaccess.
 
 RewriteEngine On
+RewriteRule ^career-expert(?:/[a-z0-9-]+){0,3}/?$ tools/career-router.php [QSA,END,NC]
+
 
 # Resource originals are served only by the publication-aware download endpoint.
 RewriteRule ^tools/(resource-files|seed-resources|scripts)(?:/|$) - [F,L]

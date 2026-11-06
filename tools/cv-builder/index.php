@@ -117,7 +117,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                     <div>
                         <h3><span class="cv-ui-icon" aria-hidden="true">▤</span>CV writing tips</h3>
                         <p>Practical advice to help you create a stronger CV.</p>
-                        <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/OHSC-Blog'); ?>">View CV Tips <span aria-hidden="true">→</span></a>
+                        <a href="<?php echo ohsc_h(rtrim($base_url, '/') . ohsc_content_article($db,'CV')); ?>">View CV Tips <span aria-hidden="true">→</span></a>
                     </div>
                 </article>
                 <article>
@@ -125,7 +125,7 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                     <div>
                         <h3><span class="cv-ui-icon green" aria-hidden="true">◇</span>CV examples</h3>
                         <p>Explore real CV examples for different jobs and industries.</p>
-                        <a href="#templates">View CV Examples <span aria-hidden="true">→</span></a>
+                        <a href="<?php echo ohsc_h(rtrim($base_url,'/').'/career-expert/cv-and-cover-letters/cv-examples'); ?>">View CV Examples <span aria-hidden="true">→</span></a>
                     </div>
                 </article>
             </section>
@@ -136,22 +136,22 @@ $asset = rtrim($base_url, '/') . '/tools/assets/';
                         <h2>More free career resources</h2>
                         <p>Build your skills with our free expert resources.</p>
                     </div>
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/courses'); ?>">View all resources</a>
+                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/career-expert/resources'); ?>">View all resources</a>
                 </div>
                 <div class="cv-resource-grid">
                     <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/tools/interview-prep/'); ?>">
                         <img src="<?php echo ohsc_h($asset); ?>career-service.jpg" alt="">
                         <strong>Interview preparation <span aria-hidden="true">→</span></strong>
                     </a>
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/OHSC-Blog'); ?>">
+                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/career-expert/career-guides'); ?>">
                         <img src="<?php echo ohsc_h($asset); ?>career-data.jpg" alt="">
                         <strong>Career guides</strong>
                     </a>
-                    <a href="#templates">
+                    <a href="<?php echo ohsc_h(rtrim($base_url,'/').'/career-expert/resources/templates/cv-templates'); ?>">
                         <img src="<?php echo ohsc_h($asset); ?>hero-typing.jpg" alt="">
                         <strong>CV templates</strong>
                     </a>
-                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/courses'); ?>">
+                    <a href="<?php echo ohsc_h(rtrim($base_url, '/') . ohsc_content_article($db,'job search')); ?>">
                         <img src="<?php echo ohsc_h($asset); ?>eq-course-talk.jpg" alt="">
                         <strong>Job search tips</strong>
                     </a>

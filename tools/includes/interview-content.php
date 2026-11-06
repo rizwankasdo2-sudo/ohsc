@@ -80,7 +80,7 @@ function ohsc_iv_article_route($db, $topic)
     $term = '%' . $topic . '%';
     $stmt = $db->prepare("SELECT slug FROM blog WHERE status = 1 AND slug <> '' AND title LIKE ? ORDER BY publish_date DESC LIMIT 1");
     $stmt->bind_param('s', $term); $stmt->execute(); $stmt->bind_result($slug);
-    $route = $stmt->fetch() ? '/OHSC-Blog/' . rawurlencode($slug) : '/OHSC-Blog';
+    $route = $stmt->fetch() ? '/OHSC-Blog/' . rawurlencode($slug) : '/career-expert/career-guides';
     $stmt->close(); return $route;
 }
 
@@ -113,4 +113,8 @@ function ohsc_iv_expand_questions($db)
         }
         $db->commit();
     } catch (Throwable $error) { $db->rollback(); throw $error; }
+}
+
+function ohsc_iv_image_url($base,$image) {
+    return rtrim($base,'/').(preg_match('~^/tools/uploads/[a-f0-9]{32}\.webp$~',$image)?$image:'/tools/assets/'.basename($image));
 }

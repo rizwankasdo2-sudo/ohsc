@@ -5,7 +5,7 @@ require __DIR__.'/../../admin/classes/connection.php';require __DIR__.'/../inclu
 function resource_check($ok,$message) { if (!$ok) { throw new RuntimeException($message); } }
 ohsc_resources_ensure($db);ohsc_resources_ensure($db);
 $tmp=tempnam(sys_get_temp_dir(),'resource-test');file_put_contents($tmp,"Career planning checklist\n1. Set a goal.\n2. Plan your next step.\n");
-resource_check(ohsc_resource_validate_file($tmp,'checklist.txt',filesize($tmp))==='', 'Text rejected');
+resource_check(ohsc_resource_validate_file($tmp,'checklist.txt',filesize($tmp))!=='', 'Text upload accepted');
 resource_check(ohsc_resource_validate_file($tmp,'fake.pdf',filesize($tmp))!=='', 'Fake PDF accepted');
 resource_check(ohsc_resource_validate_file($tmp,'file.php',filesize($tmp))!=='', 'Executable accepted');
 resource_check(ohsc_resource_validate_file($tmp,'large.txt',11*1024*1024)!=='', 'Oversized file accepted');

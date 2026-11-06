@@ -31,6 +31,8 @@ function ohsc_resources_ensure($db) {
     if (!in_array('image_hidden',$names,true)) { try { $db->query("ALTER TABLE tbl_career_resources ADD image_hidden TINYINT(1) NOT NULL DEFAULT 0"); } catch (mysqli_sql_exception $e) { if ((int)$e->getCode()!==1060) { throw $e; } } }
     ohsc_resource_pages_ensure($db);
     ohsc_resource_starters($db);
+    ohsc_resource_preferred_pages($db);
+    ohsc_resource_owner_migrate($db);
     $ready=true;
 }
 function ohsc_resource_files($db,$id) {
@@ -43,10 +45,10 @@ function ohsc_resources_list($db,$search='', $category='', $goal='', $subcategor
     $stmt=$db->prepare("SELECT r.* FROM tbl_career_resources r WHERE is_active=1 AND is_deleted=0 AND (EXISTS (SELECT 1 FROM tbl_career_resource_files f WHERE f.resource_id=r.resource_id) OR (category='faqs' AND answer IS NOT NULL AND answer<>'')) AND (title LIKE ? ESCAPE '!' OR summary LIKE ? ESCAPE '!') AND (?='' OR category=?) AND (?='' OR goal=?) AND (?='' OR subcategory=?) ORDER BY is_featured DESC,sort_order,resource_id DESC");
     $stmt->bind_param('ssssssss',$like,$like,$category,$category,$goal,$goal,$subcategory,$subcategory);$stmt->execute();$rows=$stmt->get_result()->fetch_all(MYSQLI_ASSOC);$stmt->close();return $rows;
 }
-function ohsc_resource_formats() { return array('pdf'=>'PDF','docx'=>'Word','xlsx'=>'Excel','pptx'=>'PowerPoint','txt'=>'Text','zip'=>'ZIP'); }
+function ohsc_resource_formats() { return array('pdf'=>'PDF','docx'=>'Word','xlsx'=>'Excel','pptx'=>'PowerPoint','zip'=>'ZIP'); }
 function ohsc_resource_validate_file($path,$name,$bytes) {
     $ext=strtolower(pathinfo($name,PATHINFO_EXTENSION));
-    if (!isset(ohsc_resource_formats()[$ext])) { return 'Allowed files: PDF, DOCX, XLSX, PPTX, TXT and ZIP.'; }
+    if (!isset(ohsc_resource_formats()[$ext])) { return 'Allowed files: PDF, DOCX, XLSX, PPTX and ZIP.'; }
     if ($bytes<1 || $bytes>10*1024*1024) { return 'Each download must be between 1 byte and 10 MB.'; }
     $mime=(new finfo(FILEINFO_MIME_TYPE))->file($path);
     if ($ext==='pdf') {
@@ -104,7 +106,8 @@ function ohsc_resources_for_page($db,$pageKey,$includeDeleted=false) {
         if ((bool)$r['is_deleted']!==$includeDeleted) { return false; }
         if (!$pageKey || $pageKey==='hub') { return true; }
         if (!isset($pages[$pageKey])) { return false; }
-        return $pages[$pageKey]['parent_key']==='hub'?$r['category']===$pageKey:$r['subcategory']===$pageKey;
+        if (!empty($pages[$pageKey]['resource_id'])) { return (int)$r['resource_id']===(int)$pages[$pageKey]['resource_id']; }
+          return $pages[$pageKey]['parent_key']==='hub'?$r['category']===$pageKey:$r['subcategory']===$pageKey;
     }));
 }
 function ohsc_resource_action($db,$id,$action) {

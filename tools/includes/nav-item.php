@@ -1,44 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/registry.php';
-
-if (!isset($db) || !($db instanceof mysqli) || !isset($base_url)) {
-    return;
-}
-
-$ohscTools = ohsc_tools_active($db);
-$ohscToolsHome = ohsc_tool_url($db,$base_url,'tools-hub');
-$ohscToolsNavStyle = isset($ohsc_tools_nav_style) ? $ohsc_tools_nav_style : 'bootstrap';
+require_once __DIR__.'/registry.php';
+if (!isset($db) || !($db instanceof mysqli) || !isset($base_url)) { return; }
+$ohscToolsHome=ohsc_tool_url($db,$base_url,'tools-hub');
 ?>
-<?php if ($ohscToolsNavStyle === 'legacy') { ?>
-<div class="dropdown">
-    <div class="vamiddle mrl40 menutxt bmoption curp">Tools</div>
-    <div class="cm-e-menu">
-        <ul>
-            <li><a href="<?php echo ohsc_h($ohscToolsHome); ?>">All tools</a></li>
-            <?php foreach ($ohscTools as $ohscTool) { $ohscToolPages=ohsc_tool_pages($db);$ohscToolUrl=isset($ohscToolPages[$ohscTool['slug']])?rtrim($base_url,'/').ohsc_tool_page_path($ohscToolPages,$ohscTool['slug']):rtrim($base_url,'/').'/tools/'.$ohscTool['slug'].'/';if ($ohscTool['slug']==='resources') { require_once __DIR__.'/resources.php';ohsc_resources_ensure($db);$ohscToolUrl=rtrim($base_url,'/').ohsc_resource_page_path(ohsc_resource_pages($db),'hub'); } ?>
-            <li><a href="<?php echo ohsc_h($ohscToolUrl); ?>"><?php echo ohsc_h($ohscTool['title']); ?></a></li>
-            <?php } ?>
-        </ul>
-    </div>
-</div>
-<?php } else { ?>
-<li class="nav-item">
-    <div class="custom-dropdown dropdown" style="margin-top:0px;">
-        <a class="dropdown-toggle nav-link" href="<?php echo ohsc_h($ohscToolsHome); ?>" role="button" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Tools</a>
-        <ul class="dropdown-menu">
-            <li class="dropdown-item">
-                <div class="head">
-                    <a href="<?php echo ohsc_h($ohscToolsHome); ?>">All tools</a>
-                </div>
-            </li>
-            <?php foreach ($ohscTools as $ohscTool) { $ohscToolPages=ohsc_tool_pages($db);$ohscToolUrl=isset($ohscToolPages[$ohscTool['slug']])?rtrim($base_url,'/').ohsc_tool_page_path($ohscToolPages,$ohscTool['slug']):rtrim($base_url,'/').'/tools/'.$ohscTool['slug'].'/';if ($ohscTool['slug']==='resources') { require_once __DIR__.'/resources.php';ohsc_resources_ensure($db);$ohscToolUrl=rtrim($base_url,'/').ohsc_resource_page_path(ohsc_resource_pages($db),'hub'); } ?>
-            <li class="dropdown-item">
-                <div class="head">
-                    <a href="<?php echo ohsc_h($ohscToolUrl); ?>"><?php echo ohsc_h($ohscTool['title']); ?></a>
-                </div>
-            </li>
-            <?php } ?>
-        </ul>
-    </div>
-</li>
-<?php } ?>
+<?php if (isset($ohsc_tools_nav_style) && $ohsc_tools_nav_style==='legacy') { ?>
+<a class="vamiddle mrl40 menutxt" href="<?php echo ohsc_h($ohscToolsHome); ?>">Tools</a>
+<?php } else { ?><li class="nav-item"><a class="nav-link" href="<?php echo ohsc_h($ohscToolsHome); ?>">Tools</a></li><?php } ?>

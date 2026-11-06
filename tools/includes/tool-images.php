@@ -17,10 +17,10 @@ function ohsc_image_dimensions($file) {
     return null;
 }
 function ohsc_image_inventory($db, $slug) {
-    $allowed = array('typing-test','eq-test','career-quiz','cv-builder','interview-prep','resources');
+    $allowed = array('tools-hub','typing-test','eq-test','career-quiz','cv-builder','interview-prep','resources');
     if (!in_array($slug, $allowed, true)) { return array(); }
     $root = dirname(__DIR__, 2);
-    $files = array($root . '/tools/' . $slug . '/index.php');
+    $files = $slug==='tools-hub'?array($root.'/tools/index.php',__DIR__.'/hub-content.php'):array($root . '/tools/' . $slug . '/index.php');
     if ($slug === 'resources') { $files[] = __DIR__ . '/resource-images.php'; }
     if ($slug === 'career-quiz') { $files[] = __DIR__ . '/career-quiz-seed.php'; }
     $sources = array();
@@ -32,9 +32,13 @@ function ohsc_image_inventory($db, $slug) {
         $rows = $db->query("SELECT image FROM tbl_iv_industries");
         while ($rows && $row = $rows->fetch_assoc()) { $sources['/tools/assets/' . basename($row['image'])] = true; }
     }
+    if ($slug==='eq-test') { $rows=$db->query('SELECT square_icon FROM tbl_diploma WHERE diplomaid IN (1366,1129,1369,1374)');while ($r=$rows->fetch_assoc()) { if ($r['square_icon']) $sources['/images/subject/'.basename($r['square_icon'])]=true; } }
     if ($slug === 'typing-test') {
-        $rows = $db->query("SELECT td.square_icon FROM tbl_diploma td INNER JOIN tbl_courses tc ON tc.cid=td.cid WHERE td.IStatus=1 AND tc.IStatus=1 AND td.type=2 ORDER BY td.ordernumber ASC LIMIT 4");
+        $rows = $db->query("SELECT td.square_icon FROM tbl_diploma td INNER JOIN tbl_courses tc ON tc.cid=td.cid WHERE td.IStatus=1 AND tc.IStatus=1 AND td.type=2 AND (td.name LIKE '%Data Entry%' OR td.name LIKE '%Microsoft%' OR td.name LIKE '%Office%' OR td.name LIKE '%Typing%' OR td.name LIKE '%Customer Service%' OR td.name LIKE '%Administrative%') ORDER BY td.ordernumber ASC LIMIT 4");
         while ($rows && $row = $rows->fetch_assoc()) { if ($row['square_icon'] !== '') { $sources['/images/subject/' . basename($row['square_icon'])] = true; } }
+    }
+    if ($slug==='tools-hub') {
+        foreach (array("SELECT image FROM blog WHERE status=1 AND (title LIKE '%career%' OR title LIKE '%skills%' OR title LIKE '%interview%' OR title LIKE '%CV%' OR title LIKE '%job%') ORDER BY publish_date DESC LIMIT 20","SELECT square_icon AS image FROM tbl_diploma WHERE IStatus=1 AND famous_course=1 ORDER BY ordernumber,diplomaid LIMIT 12") as $n=>$query) { $rows=$db->query($query);while ($r=$rows->fetch_assoc()) { if ($r['image']) $sources[($n===0?'/images/blog/':'/images/subject/').basename($r['image'])]=true; } }
     }
     $result = array();
     foreach ($sources as $source => $unused) {

@@ -1,5 +1,5 @@
 from pathlib import Path
-import json, shutil
+import json, shutil, zipfile
 from xml.sax.saxutils import escape
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak
 from reportlab.lib import colors
@@ -129,6 +129,11 @@ for r in records:
     shutil.copyfile(pdf,DEST/pdf.name)
     text=r['title']+'\n'+r['summary']+'\n\n'+'\n\n'.join(h+'\n'+'\n'.join(lines) for h,lines in r['sections'])+'\n'
     (DEST/(r['seed_key']+'.txt')).write_text(text,encoding='utf-8')
+    with zipfile.ZipFile(DEST/(r['seed_key']+'.docx'),'w',zipfile.ZIP_DEFLATED) as word:
+        word.writestr('[Content_Types].xml','<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>')
+        word.writestr('_rels/.rels','<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>')
+        body=''.join('<w:p><w:r><w:t xml:space="preserve">'+escape(line)+'</w:t></w:r></w:p>' for line in text.splitlines())
+        word.writestr('word/document.xml','<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'+body+'<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134"/></w:sectPr></w:body></w:document>')
     r['pdf']=r['seed_key']+'.pdf';r['text']=r['seed_key']+'.txt';del r['sections']
 (DEST/'manifest.json').write_text(json.dumps(records,indent=2,ensure_ascii=False),encoding='utf-8')
-print(f'Created {len(records)} relevant PDF resources with editable text companions.')
+print(f'Created {len(records)} relevant PDF resources with editable Word companions.')

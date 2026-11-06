@@ -14,6 +14,8 @@ function ohsc_resource_image_records($db,$key) {
 }
 function ohsc_resource_image_url($records,$slot,$base,$fallback=null) {
     if (isset($records[$slot])) { $r=$records[$slot];if ($r['is_hidden']) { return ''; }if (preg_match('/^[a-f0-9]{32}\.webp$/',$r['filename'])&&is_file(dirname(__DIR__).'/uploads/'.$r['filename'])) { return rtrim($base,'/').'/tools/uploads/'.$r['filename']; } }
+    $defaults=array('featured-cv'=>'cv','featured-interviews'=>'checklist','featured-planning'=>'plan','featured-toolkit'=>'toolkit','featured-development'=>'development');
+    if (isset($defaults[$slot]) && ($fallback===null || strpos($fallback,'/tools/assets/resources-hero.svg')!==false)) { return rtrim($base,'/').'/tools/assets/resources-'.$defaults[$slot].'.svg'; }
     return $fallback!==null?$fallback:rtrim($base,'/').'/tools/assets/resources-hero.svg';
 }
 function ohsc_resource_image_store($db,$key,$slot,$filename,$hidden) {

@@ -27,3 +27,12 @@
 
 .resource-hero.no-image,.resource-toolkit.no-image>div{grid-template-columns:1fr}.resource-card.no-image{grid-template-columns:minmax(0,1fr) 240px}.resource-featured>a.no-image{min-height:100px;align-items:center}
 @media(max-width:650px){.resource-card.no-image{grid-template-columns:1fr}}
+
+.resource-detail-preview{display:block;max-width:100%;height:auto;margin:24px auto;border-radius:15px}.resource-detail-downloads{display:flex;flex-wrap:wrap;gap:14px;margin:24px 0}.resource-detail h3{margin-top:25px}.resource-detail li{margin:10px 0}
+
+/* Featured downloads follow the wide preview-and-title reference cards. */
+.resource-featured{grid-template-columns:minmax(0,1fr);gap:18px}
+.resource-featured>a{grid-template-columns:32% minmax(0,1fr) 60px;align-items:center;min-height:170px}
+.resource-featured img{grid-column:auto;height:170px}.resource-featured strong{font-size:24px;padding:24px}.resource-featured>a>span{font-size:30px}
+.resource-featured>a.no-image{grid-template-columns:minmax(0,1fr) 60px}
+@media(max-width:650px){.resource-featured>a{grid-template-columns:32% minmax(0,1fr) 35px;min-height:120px}.resource-featured img{height:120px}.resource-featured strong{font-size:17px;padding:12px}.resource-featured>a>span{font-size:23px}}

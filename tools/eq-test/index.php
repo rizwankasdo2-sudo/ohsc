@@ -19,7 +19,7 @@ $coursePhotos = array(
     1374 => 'eq-course-people.jpg',
 );
 $idList = implode(',', array_map('intval', $courseIds));
-$courseResult = $db->query("SELECT td.diplomaid, td.name, td.slug, tc.slug AS catslug
+$courseResult = $db->query("SELECT td.diplomaid, td.name, td.slug, td.square_icon, tc.slug AS catslug
     FROM tbl_diploma AS td
     INNER JOIN tbl_courses AS tc ON tc.cid = td.cid
     WHERE td.IStatus = 1 AND tc.IStatus = 1 AND td.diplomaid IN ($idList)
@@ -158,7 +158,7 @@ $benefits = array(
                     ?>
                     <article class="ohsc-course">
                         <?php if ($photo !== '') { ?>
-                        <img src="<?php echo ohsc_h($base_url . '/tools/assets/' . $photo); ?>" alt="">
+                        <img src="<?php echo ohsc_h($course['square_icon']?$base_url.'/images/subject/'.rawurlencode(basename($course['square_icon'])):$base_url . '/tools/assets/' . $photo); ?>" alt="">
                         <?php } ?>
                         <div class="body">
                             <h3><?php echo ohsc_h($courseName); ?></h3>

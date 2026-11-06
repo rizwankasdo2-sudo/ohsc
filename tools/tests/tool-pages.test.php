@@ -24,7 +24,7 @@ try {
     tp_check($updated[$key]['meta_title']===$input['meta_title']&&$updated[$key]['meta_keywords']===$input['meta_keywords'],'SEO not persisted');
     $bad=$input;$bad['slug']='../unsafe';tp_check(ohsc_tool_page_save($db,$updated,$key,$bad)!=='','Unsafe slug accepted');$bad=$input;$bad['slug']='resources';tp_check(ohsc_tool_page_save($db,$updated,$key,$bad)!=='','Reserved slug accepted');
     $bad=$input;$bad['slug']=$updated['typing-test']['slug'];tp_check(ohsc_tool_page_save($db,$updated,$key,$bad)!=='','Duplicate slug accepted');
-    $old='/tools/'.$key.'/';$stmt=$db->prepare('SELECT page_key FROM tbl_tool_page_aliases WHERE path=?');$stmt->bind_param('s',$old);$stmt->execute();tp_check($stmt->get_result()->fetch_assoc()['page_key']===$key,'Old slug alias missing');$stmt->close();
+    $old='/career-expert/'.$key;$stmt=$db->prepare('SELECT page_key FROM tbl_tool_page_aliases WHERE path=?');$stmt->bind_param('s',$old);$stmt->execute();tp_check($stmt->get_result()->fetch_assoc()['page_key']===$key,'Old slug alias missing');$stmt->close();
 } finally { $stmt=$db->prepare('DELETE FROM tbl_tool_pages WHERE page_key=?');$stmt->bind_param('s',$key);$stmt->execute();$stmt->close();$stmt=$db->prepare('DELETE FROM tbl_tool_page_aliases WHERE page_key=?');$stmt->bind_param('s',$key);$stmt->execute();$stmt->close(); }
 echo "PASS: all 30 resource pages populated, 24 starters idempotent, delete/restore, tool/profession SEO, slug validation and old URL aliases.\n";
 $auth=getenv('OHSC_RESOURCE_TEST_AUTH');if ($auth) {

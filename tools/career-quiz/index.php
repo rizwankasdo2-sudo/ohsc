@@ -117,14 +117,14 @@ $pathCards = array(
             </section>
 
             <section class="cq-section">
-                <div class="cq-section-head"><div><h2>Explore career paths</h2><p class="cq-sub">Discover detailed information about a wide range of career options.</p></div><a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/courses'); ?>">View all careers <span aria-hidden="true">→</span></a></div>
+                <div class="cq-section-head"><div><h2>Explore career paths</h2><p class="cq-sub">Discover detailed information about a wide range of career options.</p></div><a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/career-expert/career-guides'); ?>">View all careers <span aria-hidden="true">→</span></a></div>
                 <div class="cq-paths">
                     <?php foreach ($pathCards as $card) {
                         $key = $card[0];
                         $label = $card[1];
                         $img = isset($paths[$key]['image']) ? $paths[$key]['image'] : 'career-office.jpg';
                         ?>
-                    <a class="cq-path" href="<?php echo ohsc_h(rtrim($base_url, '/') . '/courses'); ?>">
+                    <a class="cq-path" href="<?php echo ohsc_h(rtrim($base_url, '/') . ohsc_content_article($db,$label,'/career-expert/career-guides')); ?>">
                         <img src="<?php echo ohsc_h($asset . $img); ?>" alt="">
                         <span><?php echo ohsc_h($label); ?> <i aria-hidden="true">→</i></span>
                     </a>
@@ -133,14 +133,14 @@ $pathCards = array(
             </section>
 
             <section class="cq-section cq-guide-section">
-                <div class="cq-section-head"><div><h2>Career guides</h2><p class="cq-sub">Practical advice to help you make informed career decisions.</p></div><a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/OHSC-Blog'); ?>">View all guides <span aria-hidden="true">→</span></a></div>
+                <div class="cq-section-head"><div><h2>Career guides</h2><p class="cq-sub">Practical advice to help you make informed career decisions.</p></div><a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/career-expert/career-guides'); ?>">View all guides <span aria-hidden="true">→</span></a></div>
             <div class="cq-guides">
                 <article>
                     <img src="<?php echo ohsc_h($asset); ?>career-office.jpg" alt="">
                     <div>
                         <h3>How to Choose a Career Path</h3>
                         <p>Simple steps to compare options and pick a direction that fits you.</p>
-                        <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/OHSC-Blog'); ?>">Read guide →</a>
+                        <a href="<?php echo ohsc_h(rtrim($base_url, '/') . ohsc_content_article($db,'career')); ?>">Read guide →</a>
                     </div>
                 </article>
                 <article>
@@ -148,7 +148,7 @@ $pathCards = array(
                     <div>
                         <h3>How to Develop In-Demand Skills</h3>
                         <p>Build skills that employers look for with short, focused practice.</p>
-                        <a href="<?php echo ohsc_h(rtrim($base_url, '/') . '/courses'); ?>">Explore courses →</a>
+                        <a href="<?php echo ohsc_h(rtrim($base_url, '/') . ohsc_content_article($db,$label,'/career-expert/career-guides')); ?>">Explore courses →</a>
                     </div>
                 </article>
             </div>
@@ -168,7 +168,7 @@ $pathCards = array(
             'imageUrls' => $GLOBALS['ohsc_tool_image_urls'],
             'paths' => $paths,
             'asset' => $asset,
-            'courses' => rtrim($base_url, '/') . '/courses',
+            'courses' => rtrim($base_url, '/') . ohsc_content_article($db,$label,'/career-expert/career-guides'),
         ), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?>;
     </script>
     <script src="<?php echo ohsc_h($asset); ?>career-quiz.js?v=9"></script>

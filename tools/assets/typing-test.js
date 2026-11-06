@@ -57,37 +57,12 @@
     }
 
     function buildParagraph() {
-        var bank = shuffle(passages.slice());
-        if (!bank.length) {
-            return '';
-        }
-        var pieces = [];
-        var guard = 0;
-        while (pieces.join(' ').length < 900 && guard < bank.length) {
-            pieces.push(plainWords(bank[guard]));
-            guard++;
-        }
-        var words = pieces.join(' ').split(' ').filter(Boolean);
-        words = shuffle(words);
-        var line = [];
-        var total = Math.min(words.length, 110);
-        if (total < 40) {
-            while (words.length < 80) {
-                words = words.concat(words);
-            }
-            total = 80;
-        }
-        for (var i = 0; i < total; i++) {
-            var word = words[i % words.length];
-            if (useNumbers && i % 8 === 7) {
-                word = String(100 + Math.floor(Math.random() * 900));
-            } else if (useSymbols && i % 9 === 8) {
-                var marks = [',', '.', '?', '!', ';', ':'];
-                word += marks[i % marks.length];
-            }
-            line.push(word);
-        }
-        return line.join(' ');
+        var bank = shuffle(passages.filter(function (text) { return text.trim().length > 0; }));
+        if (!bank.length) return '';
+        var text = bank[0].trim().replace(/\s+/g, ' ');
+        if (useNumbers) text += ' Reference 123: complete 45 tasks in 60 minutes.';
+        if (useSymbols) text += ' Check @, #, %, & and ! carefully.';
+        return text;
     }
 
     function clock(totalSeconds) {
@@ -138,15 +113,15 @@
         if (!target) {
             var empty = document.createElement('span');
             empty.textContent = 'No typing text is published yet. Add one in the admin panel.';
-            passageEl.insertBefore(empty, inputEl);
+            passageEl.appendChild(empty);
             return;
         }
-        var startAt = Math.max(0, typedChars.length - 160);
-        var endAt = Math.min(target.length, typedChars.length + 200);
+        var startAt = 0;
+        var endAt = target.length;
         var frag = document.createDocumentFragment();
         for (var i = startAt; i < endAt; i++) {
             var span = document.createElement('span');
-            var ch = i < typedChars.length ? typedChars[i] : target.charAt(i);
+            var ch = target.charAt(i);
             span.textContent = ch === ' ' ? ' ' : ch;
             if (i < typedChars.length && typedOk[i]) {
                 span.className = 'is-done';
@@ -157,7 +132,7 @@
             }
             frag.appendChild(span);
         }
-        passageEl.insertBefore(frag, inputEl);
+        passageEl.appendChild(frag);
         var now = passageEl.querySelector('.is-now');
         if (now) {
             var top = now.offsetTop - passageEl.offsetTop;
@@ -178,7 +153,7 @@
         }
         var left = Math.max(0, duration - Math.floor((Date.now() - startedAt) / 1000));
         statTime.textContent = clock(left);
-        statWords.textContent = String(wordsIn(target.slice(0, typedChars.length)));
+        statWords.textContent = String(wordsIn(typedChars.join('')));
         statWpm.textContent = String(wpmNow());
         statAccuracy.textContent = accuracyNow() + '%';
         statErrors.textContent = String(errors);
@@ -206,8 +181,8 @@
         var wpm = wpmNow();
         var accuracy = accuracyNow();
         var taken = Math.min(duration, Math.round((Date.now() - startedAt) / 1000));
-        statTime.textContent = '0:00';
-        statWords.textContent = String(wordsIn(target.slice(0, typedChars.length)));
+        statTime.textContent = clock(Math.max(0,duration-taken));
+        statWords.textContent = String(wordsIn(typedChars.join('')));
         statWpm.textContent = String(wpm);
         statAccuracy.textContent = accuracy + '%';
         statErrors.textContent = String(errors);
@@ -337,56 +312,21 @@
 
     inputEl.addEventListener('paste', function (event) { event.preventDefault(); });
     inputEl.addEventListener('drop', function (event) { event.preventDefault(); });
-    inputEl.addEventListener('keydown', function (event) {
-        if (event.metaKey || event.ctrlKey || event.altKey) {
-            return;
-        }
-        if (finished) {
-            event.preventDefault();
-            return;
-        }
-        if (event.key === 'Backspace') {
-            event.preventDefault();
-            if (!typedChars.length) {
-                return;
-            }
-            var wasOk = typedOk.pop();
-            typedChars.pop();
-            if (wasOk && correct > 0) {
-                correct--;
-            }
-            renderPassage();
-            paintLiveStats();
-            return;
-        }
-        if (event.key.length !== 1) {
-            return;
-        }
-        event.preventDefault();
-        if (!started) {
-            begin();
-        }
-        var expected = target.charAt(typedChars.length);
-        if (!expected) {
-            extendTarget();
-            expected = target.charAt(typedChars.length);
-        }
-        if (!expected) {
-            return;
-        }
-        var ok = event.key === expected;
-        typedChars.push(event.key);
-        typedOk.push(ok);
-        if (ok) {
-            correct++;
-        } else {
-            errors++;
-        }
-        extendTarget();
-        renderPassage();
-        paintLiveStats();
+    inputEl.addEventListener('input', function () {
+        if (finished || !target) { inputEl.value=typedChars.join(''); return; }
+        if (!started) begin();
+        var value=inputEl.value.replace(/\r?\n/g,' ');
+        if (value.length>target.length) value=value.slice(0,target.length);
+        inputEl.value=value;
+        var previous=typedChars.slice();
+        typedChars=Array.from(value);typedOk=[];correct=0;
+        typedChars.forEach(function(ch,i) {
+            var ok=ch===target.charAt(i);typedOk.push(ok);
+            if (ok) correct++;else if (previous[i]!==ch) errors++;
+        });
+        renderPassage();paintLiveStats();
+        if (typedChars.length===target.length) finish();
     });
 
     loadText(false);
-    inputEl.focus();
 })();

@@ -5,11 +5,12 @@ require_once dirname(__FILE__) . '/../includes/functions.php';
 require_once dirname(__FILE__) . '/includes/registry.php';
 $ohsc_tool_meta=ohsc_tool_seo_init($db,'hub',$base_url);$ohsc_resource_meta=true;
 ohsc_tools_ensure($db);
+ohsc_image_start($db,'tools-hub',$base_url);
 $tools = ohsc_tools_active($db);
 $industries = ohsc_iv_industries($db);
 $siteBase = rtrim($base_url, '/');
-$hubSections = require dirname(__FILE__) . '/includes/hub-content.php';
 $asset = rtrim($base_url, '/') . '/tools/assets/';
+$hubSections = require dirname(__FILE__) . '/includes/hub-content.php';
 $toolBase = rtrim($base_url, '/') . '/tools/';
 
 $cardMeta = array(
@@ -57,9 +58,7 @@ foreach ($orderedSlugs as $slug) {
         unset($bySlug[$slug]);
     }
 }
-foreach ($bySlug as $tool) {
-    $cards[] = $tool;
-}
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -67,7 +66,7 @@ foreach ($bySlug as $tool) {
     <meta charset="UTF-8">
     <?php ohsc_tool_seo_head($ohsc_tool_meta); ?>
     <?php include dirname(__FILE__) . '/../includes/header-home-new.php'; ?>
-    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>tools.css?v=10">
+    <link rel="stylesheet" href="<?php echo ohsc_h($asset); ?>tools.css?v=11">
     <main class="ohsc-tool ohsc-career-hub">
         <div class="ohsc-wrap">
             <section class="ohsc-hub-hero">
@@ -104,7 +103,7 @@ foreach ($bySlug as $tool) {
                         <div class="ohsc-card-title"><h2><?php echo ohsc_h($meta['headline']); ?></h2><span class="ohsc-free">FREE</span></div>
                         <p><?php echo ohsc_h($meta['summary']); ?></p>
                     </div>
-                    <a class="ohsc-open" href="<?php echo ohsc_h($toolBase . $tool['slug'] . '/'); ?>"><?php echo ohsc_h($meta['cta']); ?></a>
+                    <a class="ohsc-open" href="<?php echo ohsc_h(ohsc_tool_url($db,$base_url,$tool['slug'])); ?>"><?php echo ohsc_h($meta['cta']); ?></a>
                 </article>
                 <?php } ?>
             </div>
@@ -128,7 +127,7 @@ foreach ($bySlug as $tool) {
                     <div class="ohsc-carousel-track" tabindex="0" role="group" aria-label="<?php echo ohsc_h($section['title']); ?>">
                         <?php foreach ($section['items'] as $item) { ?>
                         <a class="ohsc-story-card" href="<?php echo ohsc_h($item['url']); ?>">
-                            <img src="<?php echo ohsc_h($asset . $item['image']); ?>" alt="" loading="lazy" width="560" height="240">
+                            <img src="<?php echo ohsc_h((isset($item['image_url'])?$item['image_url']:$asset . $item['image'])); ?>" alt="" loading="lazy" width="560" height="240">
                             <span><?php echo ohsc_h($item['title']); ?><span aria-hidden="true">→</span></span>
                         </a>
                         <?php } ?>

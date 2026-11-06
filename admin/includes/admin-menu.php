@@ -26,10 +26,6 @@ $mItem = $pageOn;
               <li><a href="testimonial.php" style="width:190px">Testimonail Manager</a></li>
                <li><a href="faq.php" style="width:190px">FAQ Manager</a></li>
                <li><a href="tools-manager" style="width:190px">Tools Manager</a></li>
-               <li><a href="typing-passages" style="width:190px">Typing Texts</a></li>
-               <li><a href="eq-questions" style="width:190px">EQ Questions</a></li>
-               <li><a href="career-quiz-questions" style="width:190px">Career Quiz Questions</a></li>
-               <li><a href="interview-questions" style="width:190px">Interview Questions</a></li>
                 <li><a href="partner.php" style="width:190px">Partner Manager</a></li>
                 <li><a href="blog.php" style="width:190px">Bolg</a></li>
                <!-- <li><a href="update_policy.php" style="width:190px">Policy Manager</a></li>            

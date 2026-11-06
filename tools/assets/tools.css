@@ -74,3 +74,5 @@
 @media(prefers-reduced-motion:reduce) { .ohsc-career-hub .ohsc-open,.ohsc-story-card img { transition:none; } }
 
 .ohsc-hub-hero > *, .ohsc-hub-card > * { min-width:0; }
+
+.ohsc-carousel-track{overflow-y:hidden;max-width:100%}.ohsc-career-hub .ohsc-wrap{min-width:0}.ohsc-hub-section{min-width:0}

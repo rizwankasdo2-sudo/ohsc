@@ -12,7 +12,7 @@ $db->begin_transaction();try {
     ri_check(strpos(ohsc_resource_image_url($records,'featured-interviews','http://localhost:300'),$filename)===false,'Featured image leaked to another card');
     ri_check(strpos(ohsc_resource_image_url(ohsc_resource_image_records($db,'cv-templates'),'hero','http://localhost:300'),$filename)===false,'Hub image leaked into subpage');
     ohsc_resource_image_store($db,'hub','featured-cv','',1);ri_check(ohsc_resource_image_url(ohsc_resource_image_records($db,'hub'),'featured-cv','http://localhost:300')==='','Delete did not hide image');
-    $db->query("DELETE FROM tbl_resource_page_images WHERE page_key='hub' AND slot='featured-cv'");ri_check(strpos(ohsc_resource_image_url(ohsc_resource_image_records($db,'hub'),'featured-cv','http://localhost:300'),'resources-hero.svg')!==false,'Default not restored');
+    $db->query("DELETE FROM tbl_resource_page_images WHERE page_key='hub' AND slot='featured-cv'");ri_check(strpos(ohsc_resource_image_url(ohsc_resource_image_records($db,'hub'),'featured-cv','http://localhost:300'),'resources-cv.svg')!==false,'Default not restored');
 } finally { $db->rollback();unlink($file); }
 echo "PASS: 8 hub slots, per-page images, independent featured cards, exact dimensions, delete and restore.\n";
 

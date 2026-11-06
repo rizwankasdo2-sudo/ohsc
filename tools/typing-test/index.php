@@ -9,7 +9,7 @@ $passages = ohsc_typing_passages($db);
 $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_icon_alt, tc.slug AS catslug
     FROM tbl_diploma AS td
     INNER JOIN tbl_courses AS tc ON tc.cid = td.cid
-    WHERE td.IStatus = 1 AND tc.IStatus = 1 AND td.type = 2
+    WHERE td.IStatus = 1 AND tc.IStatus = 1 AND td.type = 2 AND (td.name LIKE '%Data Entry%' OR td.name LIKE '%Microsoft%' OR td.name LIKE '%Office%' OR td.name LIKE '%Typing%' OR td.name LIKE '%Customer Service%' OR td.name LIKE '%Administrative%')
     ORDER BY td.ordernumber ASC
     LIMIT 4");
 ?>
@@ -20,7 +20,7 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
     <?php ohsc_tool_seo_head($ohsc_tool_meta); ?>
     <?php include dirname(__FILE__) . '/../../includes/header-home-new.php'; ?>
     <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test.css?v=17">
-    <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test-ui.css?v=1">
+    <link rel="stylesheet" href="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test-ui.css?v=2">
     <main class="ohsc-tool" id="ohsc-typing">
         <div class="ohsc-wrap">
             <section class="ohsc-hero">
@@ -48,8 +48,10 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
                     <button type="button" class="ohsc-mode" id="modeNumbers" aria-pressed="false">123 Numbers</button>
                 </div>
                 <div class="ohsc-passage" id="passage">
-                    <input id="capture" type="text" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Typing input">
+
                 </div>
+                <label class="typing-input-label" for="capture">Type the passage here</label>
+                <textarea id="capture" class="typing-input" placeholder="Start typing here..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-describedby="passage"></textarea>
                 <div class="ohsc-meters">
                     <div class="ohsc-meter"><span>Time Left</span><strong class="time" id="statTime">1:00</strong></div>
                     <div class="ohsc-meter"><span>Words Typed</span><strong id="statWords">–</strong></div>
@@ -140,7 +142,7 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
                         array('Data Entry & Operations', 'job-skills-courses', 'data-entry-certification', 'career-data.jpg', 'A person typing at a desk'),
                     );
                     foreach ($careerCourses as $career) {
-                        $careerUrl = $base_url . '/courses/' . $career[1] . '/' . $career[2];
+                        $careerUrl = $base_url . '/courses/' . $career[1];
                         $careerImg = $base_url . '/tools/assets/' . $career[3];
                     ?>
                     <a class="ohsc-role" href="<?php echo ohsc_h($careerUrl); ?>">
@@ -194,6 +196,6 @@ $courseResult = $db->query("SELECT td.name, td.slug, td.square_icon, td.square_i
     <script>
         window.OHSC_TYPING = <?php echo json_encode(array('passages' => $passages), JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE); ?>;
     </script>
-    <script src="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test.js?v=4"></script>
+    <script src="<?php echo ohsc_h($base_url); ?>/tools/assets/typing-test.js?v=26-4"></script>
     <?php include dirname(__FILE__) . '/../../includes/footer-new.php'; ?>
 </html>

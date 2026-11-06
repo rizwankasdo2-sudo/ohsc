@@ -1,41 +1,88 @@
-# Career resources
+# Career Expert resources and tools
 
-Public hub: `/resources/`. The former `/tools/resources/` URL redirects. The hierarchy contains exactly 30 pages: the hub, seven categories, and the 22 listed subcategories. Download examples remain items, not separate pages. Admin: `/admin/career-resources` → Add resource.
+## Routes and scope
 
-Add title, description, category, career goal, order and optional thumbnail. Upload one or more files and select Publish. A published resource must have at least one file. Existing files can be removed and replacements added when editing. Hide removes both the public listing and download access.
+The canonical tools hub is `/career-expert`. The navbar has a single Tools link.
+The working tools use `/career-expert/cv-builder`, `/career-expert/career-quiz`,
+`/career-expert/typing-speed-test`, `/career-expert/emotional-intelligence-test`
+and `/career-expert/interview-questions`. Existing interview industry collections use
+the workbook's `/interview-questions/industries/...` routes. Customer Service uses
+`/interview-questions/customer-service-interview-questions`.
 
-Allowed downloads: PDF, DOCX, XLSX, PPTX, TXT and ZIP; 10 MB per file, up to five files per save, subject to PHP server limits. Thumbnail: WebP, exactly 640 × 400, maximum 5 MB. Office containers and ZIP contents are validated; macro payloads, scripts, traversal paths and oversized archives are rejected.
+The resource hub is `/career-expert/resources`. Previously agreed category and
+subcategory browsing remains available. Nine real starter resources also have the
+preferred individual URLs and initial keyword sets listed in
+`includes/preferred-resource-pages.json`, using stable workbook IDs.
+CV and cover-letter template/example collections use their preferred
+`/career-expert/cv-and-cover-letters/...` owners. Earlier resource URLs redirect
+to these same records. Existing `/tools/` and `/resources/` addresses redirect. Admin slug edits retain
+aliases. Tool and resource URL collisions are rejected.
 
-Deployment needs PHP fileinfo and zip extensions, writable `tools/resource-files/` and `tools/uploads/`, and the committed Apache rules. Original download files must remain inaccessible directly; only `tools/resources/download.php?id=...` serves published files. The root rewrite denial and resource-files/.htaccess enforce this on Apache. Database tables are created additively on first use. On first use, 24 relevant starter resources are added once, with printable PDFs and editable text companions. The seed ledger preserves later edits, hiding and deletion.
+The workbook's remaining planned topics are not automatically published as empty
+pages. Career Guides, Career Advice and CV/cover-letter directories link to real,
+already-published articles at their original owners.
 
-The Resources menu entry is registered in Tools Manager. Existing visibility/title/order changes are preserved. Tools Manager → Edit Resources also manages the shared hero illustration. Resource-specific thumbnails/files live in the separate Career resources admin section.
+## Admin
 
-Run `php tools/tests/resources.test.php` for validation and database tests. Set `OHSC_RESOURCE_TEST_AUTH` to local staging Basic credentials to include localhost HTTP download checks; credentials are not stored in the test. Temporary rows/files are cleaned up.
+Website Management has one Tools Manager menu entry. Its internal management
+links provide access to tools, metadata, question banks, professions and resources.
 
-## Resource pages and SEO
+`/admin/tool-pages` edits all tools and directory SEO. The hub's edit screen also
+contains direct image upload controls. Individual Tool Edit screens retain their
+inline SEO fields and image uploads.
 
-`/admin/resource-pages` manages every hub/category/subcategory page: custom slug, heading/introduction, meta title, description, keywords and robots. Parent slug changes update descendant URLs; old URLs redirect. The staging site's master noindex and password lock override indexable robots selections until the staging policy is deliberately changed. Resource SEO settings remain stored.
+`/admin/resource-pages` edits headings, introductions, custom slugs, meta title,
+description, keywords and robots, plus independent page/featured images. Create
+resource page associates a new page with an existing downloadable resource;
+duplicate content owners, invalid slugs and URL collisions are rejected.
 
-Assign download items to a category and optional subcategory in the resource editor. FAQs need an answer instead of an attachment. Only the requested 30 page types are seeded; the page manager has no Add page action. Default seed values do not overwrite admin edits.
+`/admin/career-resources` manages resource content/files, publish/hide, soft delete
+and restore. Category and subcategory page editors include their resource CRUD
+controls. Deleted/hidden resources cannot be downloaded. Files remain stored for
+recovery. Custom detail pages show a preview, real format buttons and use instructions.
 
-Run `php tools/tests/resource-pages.test.php` for hierarchy/SEO/alias/FAQ tests; the same optional local test-auth environment variable enables 30-page HTTP checks.
+Profession images are uploaded directly in `/admin/interview-professions`:
+genuine WebP only, exactly 560 x 400 px, maximum 5 MB. Names are compared case
+insensitively across professions; stored filenames are random. The form preserves
+existing images when no replacement is selected.
 
-## Page-level resource management and starters
+Other tool/page image controls show each slot's exact dimensions, preview and 5 MB
+limit. Resources hero/toolkit images are 640 x 440; resource and featured cards are
+640 x 400. Featured slots are independent. Delete/hide and restore-default actions
+remain available for resource images. Course and article imagery also follows its
+existing CMS record; the tools hub supports WebP overrides for displayed images.
 
-Resource pages & SEO → edit any page now includes its resources, Add resource to this page, Update/files and Delete. Category/hub editors include descendant resources. The create form preselects the category/subcategory from that page. Career resources also has Delete and Deleted resources/Restore. Delete unpublishes the item and blocks its downloads; Restore returns a draft. Files remain stored for recovery.
+## Files and deployment
 
-The committed `tools/seed-resources/` manifest contains 24 relevant resources covering all 30 pages through their category hierarchy, including five FAQ guides. Each item includes a printable PDF and editable TXT. A migration ledger imports them once; removed or edited starter items are not recreated on later requests. Source assets and build scripts are denied by Apache. `tools/scripts/build-resource-starters.py` rebuilds the source PDFs/text from editable content definitions.
+Allowed new downloads: PDF, DOCX, XLSX, PPTX and ZIP; 10 MB per file, maximum five
+per save. Genuine formats, archive paths, expanded sizes and executable/macro
+payloads are validated. TXT uploads are no longer offered.
 
-## Tools and profession SEO
+Twenty-four starter resources include printable PDF and editable Word documents.
+The DOCX files are bundled, so published downloads do not require server-side Word
+generation. Only untouched seed-owned TXT database records migrate to their DOCX
+companions; admin-created content, edits, hiding and deletion are preserved.
+The builder in `scripts/build-resource-starters.py` maintains the seed sources.
 
-`/admin/tool-pages` provides custom slug, meta title, description, keywords and robots for the tools hub, the five interactive tools and every interview profession. Tools Manager and profession editors link to these settings. Stable internal tool folder names remain unchanged. Default tool paths stay `/tools/{tool}/`; a custom public slug is resolved by `tools/router.php`. Profession pages have clean URLs under the current interview landing slug. Existing URLs redirect. The resource hierarchy retains its separate SEO manager.
+Use PHP fileinfo and ZIP extensions for validating Office/ZIP uploads, and writable
+`tools/resource-files/` and `tools/uploads/` directories. Deploy committed Apache
+rules. Direct access to original files, seeds and scripts is denied; the public
+publication-aware download endpoint remains `/tools/resources/download.php?id=...`.
+Database changes are additive and run on first use. No credentials are shipped by
+these updates. Preserve the environment's site lock and password configuration.
 
-Run `php tools/tests/tool-pages.test.php` to check starter coverage, migration idempotence, recoverable deletion and all tool SEO records. With the local test-auth environment set, it also tests the live pages and a temporary real tool slug change, restoring the original settings afterwards.
+Meta tags reflect saved admin values. Staging continues to send a site-wide
+X-Robots-Tag noindex header and require its existing login, independently of page
+metadata. Changing metadata alone does not make staging indexable.
 
-## Root URLs and image editing
+## Verification
 
-The canonical hub is `/resources/`, with categories and subcategories below `/resources`. Prior `/career-expert/resources` and `/tools/resources/` links redirect. The default hub shows its featured/navigation/FAQ content without the full download feed; category pages and explicit searches still show matching downloads. Renamed hub roots are resolved by the root resource dispatcher, which preserves the existing generic website-page fallback.
+Run the PHP tests under `tests/`: resources, resource-pages, tool-pages,
+resource-images (GD), update-review, admin-update-render (hub/resource/profession)
+and admin-inline. HTTP tests accept `OHSC_RESOURCE_TEST_AUTH` from the environment;
+credentials are never stored in test source. Fixtures clean up after themselves.
 
-Resources page Edit includes Page images: hero (640 × 440) and default resource-card image (640 × 400). The hub additionally has a toolkit image (640 × 440) and five independent featured-card images (640 × 400). Genuine WebP only, maximum 5 MB. Upload replaces a slot, Delete hides it, Restore default resets it. Resource-specific thumbnails also have hide/default controls in the resource editor. The Resources entry in Tools Manager includes all eight hub image controls directly.
-
-Tool Edit now includes Custom slug, Meta title, Meta description, Meta keywords and Meta robots in the same main form; Save tool & SEO commits both settings together. The dedicated Tool pages & SEO screen remains available for the tools hub and interview profession pages.
+The November update was checked across 60 local routes, legacy redirects, real
+DOCX packages, admin creation/metadata/image controls and 360/390/768/1440 CSS-pixel
+layouts. Normal vertical page scrolling remains; page-wide horizontal overflow
+and nested carousel vertical scrollbars are prevented.

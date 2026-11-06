@@ -14,7 +14,7 @@ try {
     $oldChild=ohsc_resource_page_path($pages,$child);
     pages_check(ohsc_resource_page_save($db,$pages,$key,$input)==='','Page save failed');
     $changed=ohsc_resource_pages($db);pages_check($changed[$key]['meta_title']===$input['meta_title'] && $changed[$key]['meta_keywords']===$input['meta_keywords'],'SEO fields not saved');
-    pages_check(ohsc_resource_page_path($changed,$child)==='/'.$input['slug'].'/child','Child URL did not follow parent slug');
+    pages_check(ohsc_resource_page_path($changed,$child)==='/career-expert/'.$input['slug'].'/child','Child URL did not follow parent slug');
     $stmt=$db->prepare('SELECT page_key FROM tbl_resource_page_aliases WHERE path=?');$stmt->bind_param('s',$oldChild);$stmt->execute();pages_check($stmt->get_result()->fetch_assoc()['page_key']===$child,'Old child URL alias missing');$stmt->close();
     $bad=$input;$bad['slug']='../unsafe';pages_check(ohsc_resource_page_save($db,$changed,$key,$bad)!=='','Unsafe slug accepted');
     $bad=$input;$bad['meta_robots']='unsafe';pages_check(ohsc_resource_page_save($db,$changed,$key,$bad)!=='','Unsafe robots accepted');

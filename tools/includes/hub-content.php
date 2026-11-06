@@ -19,65 +19,44 @@ if (!function_exists('ohsc_hub_icon')) {
 }
 $interviewItems = array();
 foreach ($industries as $industry) {
-    $interviewItems[] = array('title' => $industry['title'], 'image' => basename($industry['image']), 'url' => $siteBase . '/tools/interview-prep/?industry=' . rawurlencode($industry['id']) . '#iv-questions');
+    $interviewItems[] = array('title' => $industry['title'], 'image' => basename($industry['image']), 'image_url'=>ohsc_iv_image_url($siteBase,$industry['image']), 'url' => $siteBase . '/tools/interview-prep/?industry=' . rawurlencode($industry['id']) . '#iv-questions');
 }
 $guideItems = array(
-    array('title' => 'How to Choose a Career Path', 'image' => 'career-service.jpg', 'url' => $siteBase . '/OHSC-Blog'),
-    array('title' => 'How to Develop In-Demand Skills', 'image' => 'career-office.jpg', 'url' => $siteBase . '/OHSC-Blog'),
+    array('title' => 'How to Choose a Career Path', 'image' => 'career-service.jpg', 'url' => $siteBase . '/career-expert/career-guides'),
+    array('title' => 'How to Develop In-Demand Skills', 'image' => 'career-office.jpg', 'url' => $siteBase . '/career-expert/career-guides'),
 );
 $adviceItems = array();
 // Use real published article slugs, so cards follow the site's existing routes.
-$postResult = $db->query("SELECT title, slug FROM blog WHERE status = 1 AND slug <> '' ORDER BY publish_date DESC LIMIT 8");
+$postResult = $db->query("SELECT title, slug, image FROM blog WHERE status = 1 AND slug <> '' AND (title LIKE '%career%' OR title LIKE '%interview%' OR title LIKE '%CV%' OR title LIKE '%job%') ORDER BY publish_date DESC LIMIT 8");
 if ($postResult) {
     while ($post = $postResult->fetch_assoc()) {
-        $adviceItems[] = array('title' => strip_tags($post['title']), 'image' => count($adviceItems) % 2 ? 'career-office.jpg' : 'career-service.jpg', 'url' => $siteBase . '/OHSC-Blog/' . rawurlencode($post['slug']));
+        $adviceItems[] = array('title' => strip_tags($post['title']), 'image' => count($adviceItems) % 2 ? 'career-office.jpg' : 'career-service.jpg', 'image_url'=>$post['image']?$siteBase.'/images/blog/'.rawurlencode(basename($post['image'])):$asset.'career-office.jpg', 'url' => $siteBase . '/OHSC-Blog/' . rawurlencode($post['slug']));
     }
 }
-$guideResult = $db->query("SELECT title, slug FROM blog WHERE status = 1 AND slug <> '' AND (title LIKE '%career%' OR title LIKE '%skills%') ORDER BY publish_date DESC LIMIT 6");
+$guideResult = $db->query("SELECT title, slug, image FROM blog WHERE status = 1 AND slug <> '' AND (title LIKE '%career%' OR title LIKE '%skills%') ORDER BY publish_date DESC LIMIT 6");
 if ($guideResult) {
     $publishedGuides = array();
     while ($post = $guideResult->fetch_assoc()) {
-        $publishedGuides[] = array('title' => strip_tags($post['title']), 'image' => count($publishedGuides) % 2 ? 'career-office.jpg' : 'career-service.jpg', 'url' => $siteBase . '/OHSC-Blog/' . rawurlencode($post['slug']));
+        $publishedGuides[] = array('title' => strip_tags($post['title']), 'image' => count($publishedGuides) % 2 ? 'career-office.jpg' : 'career-service.jpg', 'image_url'=>$post['image']?$siteBase.'/images/blog/'.rawurlencode(basename($post['image'])):$asset.'career-office.jpg', 'url' => $siteBase . '/OHSC-Blog/' . rawurlencode($post['slug']));
     }
     if ($publishedGuides) { $guideItems = $publishedGuides; }
 }
 $courseItems = array();
-// Select each subject separately so neither is crowded out by the other.
-$courseGroups = array();
-foreach (array('project management', 'digital marketing') as $subject) {
-    $group = array();
-    $courseResult = $db->query("SELECT td.name, td.slug, tc.slug AS catslug FROM tbl_diploma td INNER JOIN tbl_courses tc ON tc.cid = td.cid WHERE td.IStatus = 1 AND tc.IStatus = 1 AND td.slug <> '' AND tc.slug <> '' AND td.name LIKE '%" . $subject . "%' ORDER BY td.diplomaid DESC LIMIT 4");
-    if ($courseResult) {
-        while ($course = $courseResult->fetch_assoc()) {
-            $group[] = array('title' => strip_tags($course['name']), 'image' => $subject === 'project management' ? 'career-service.jpg' : 'career-office.jpg', 'url' => $siteBase . '/courses/' . rawurlencode($course['catslug']) . '/' . rawurlencode($course['slug']));
-        }
-    }
-    $courseGroups[] = $group;
-}
-for ($i = 0; $i < 4; $i++) {
-    foreach ($courseGroups as $group) {
-        if (isset($group[$i])) { $courseItems[] = $group[$i]; }
-    }
-}
-if (!$courseItems) {
-    $courseItems = array(
-        array('title' => 'Project Management', 'image' => 'career-service.jpg', 'url' => $siteBase . '/free-online-courses-with-certificates-in-project-management'),
-        array('title' => 'Digital Marketing', 'image' => 'career-office.jpg', 'url' => $siteBase . '/free-digital-marketing-courses'),
-    );
-}
+$courseResult=$db->query("SELECT td.name,td.slug,td.square_icon,tc.slug AS catslug FROM tbl_diploma td JOIN tbl_courses tc ON tc.cid=td.cid WHERE td.IStatus=1 AND tc.IStatus=1 AND td.famous_course=1 AND td.slug<>'' AND tc.slug<>'' ORDER BY td.ordernumber,td.diplomaid LIMIT 12");
+while ($course=$courseResult->fetch_assoc()) { $courseItems[]=array('title'=>strip_tags($course['name']),'image'=>'career-office.jpg','image_url'=>$course['square_icon']?$siteBase.'/images/subject/'.rawurlencode(basename($course['square_icon'])):$asset.'career-office.jpg','url'=>$siteBase.'/courses/'.rawurlencode($course['catslug']).'/'.rawurlencode($course['slug'])); }
 $sections = array();
 if ($interviewItems) {
     $sections[] = array('id' => 'interview-industries', 'title' => 'Interview Questions by Industry', 'summary' => 'Practise real interview questions with sample answers.', 'view' => 'View all industries', 'url' => $siteBase . '/tools/interview-prep/#iv-professions', 'items' => $interviewItems);
 }
-$sections[] = array('id' => 'career-guides', 'title' => 'Career Guides', 'summary' => 'Step-by-step guidance to help you make informed career decisions.', 'view' => 'View all guides', 'url' => $siteBase . '/OHSC-Blog', 'items' => $guideItems);
+$sections[] = array('id' => 'career-guides', 'title' => 'Career Guides', 'summary' => 'Step-by-step guidance to help you make informed career decisions.', 'view' => 'View all guides', 'url' => $siteBase . '/career-expert/career-guides', 'items' => $guideItems);
 $sections[] = array('id' => 'career-resources', 'title' => 'Free Career Resources', 'summary' => 'Download templates, checklists and practical worksheets.', 'view' => 'View all resources', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'hub'), 'items' => array(
-    array('title' => 'CV Templates', 'icon' => 'cv-builder', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'templates')),
-    array('title' => 'Interview Checklists', 'icon' => 'interview-prep', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'checklists')),
+    array('title' => 'CV Templates', 'icon' => 'cv-builder', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'cv-templates')),
+    array('title' => 'Interview Checklists', 'icon' => 'interview-prep', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'interview-checklists')),
     array('title' => 'Career Worksheets', 'icon' => 'career-quiz', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'worksheets')),
     array('title' => 'Career Toolkits', 'icon' => 'eq-test', 'url' => $siteBase . ohsc_resource_page_path($hubResourcePages, 'toolkits')),
 ));
 $sections[] = array('id' => 'featured-courses', 'title' => 'Featured Courses', 'summary' => 'Learn new skills with expert-designed online courses.', 'view' => 'View all courses', 'url' => $siteBase . '/free-online-courses-with-certificates', 'items' => $courseItems);
 if ($adviceItems) {
-    $sections[] = array('id' => 'career-advice', 'title' => 'Latest Career Advice', 'summary' => 'Practical ideas for your next step.', 'view' => 'View all articles', 'url' => $siteBase . '/OHSC-Blog', 'items' => $adviceItems);
+    $sections[] = array('id' => 'career-advice', 'title' => 'Latest Career Advice', 'summary' => 'Practical ideas for your next step.', 'view' => 'View all articles', 'url' => $siteBase . '/career-expert/career-advice', 'items' => $adviceItems);
 }
 return $sections;

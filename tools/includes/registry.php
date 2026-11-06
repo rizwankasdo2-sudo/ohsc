@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/tool-pages.php';
+require_once __DIR__.'/content-links.php';
 require_once __DIR__ . "/tool-images.php";
 require_once dirname(__FILE__) . '/interview-content.php';
 /**
