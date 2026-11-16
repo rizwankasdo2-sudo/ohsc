@@ -3,7 +3,7 @@ if (PHP_SAPI!=='cli') { http_response_code(404);exit; }
 $_SERVER['HTTP_HOST']='localhost:300';$_SERVER['REQUEST_URI']='/resources';
 require __DIR__.'/../../admin/classes/connection.php';require __DIR__.'/../includes/registry.php';require __DIR__.'/../includes/resources.php';
 function ri_check($ok,$why) { if (!$ok) { throw new RuntimeException($why); } }
-ohsc_resources_ensure($db);ohsc_resource_images_table($db);$spec=ohsc_resource_image_specs('hub');ri_check(count($spec)===8,'Missing hub image slots');ri_check(count(ohsc_resource_image_specs('cv-templates'))===2,'Missing subpage image slots');
+ohsc_resources_ensure($db);ohsc_resource_images_table($db);$spec=ohsc_resource_image_specs('hub');ri_check(count($spec)===8,'Missing hub image slots');ri_check(count(ohsc_resource_image_specs('cv-templates'))===3,'Missing subpage image slots');
 $filename=bin2hex(random_bytes(16)).'.webp';$file=__DIR__.'/../uploads/'.$filename;$im=imagecreatetruecolor(640,400);imagewebp($im,$file);imagedestroy($im);
 ri_check(ohsc_image_validate($file,'image.webp',filesize($file),$spec['featured-cv'])==='','Featured WebP rejected');ri_check(ohsc_image_validate($file,'image.webp',filesize($file),$spec['hero'])!=='','Incorrect hero dimensions accepted');
 $db->begin_transaction();try {

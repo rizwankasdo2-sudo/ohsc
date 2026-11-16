@@ -27,6 +27,8 @@ function ohsc_resource_pages_ensure($db) {
     $db->query("CREATE TABLE IF NOT EXISTS tbl_resource_page_aliases (path VARCHAR(255) NOT NULL PRIMARY KEY,page_key VARCHAR(80) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
     $cols=array_column($db->query('SHOW COLUMNS FROM tbl_resource_pages')->fetch_all(MYSQLI_ASSOC),'Field');
     if (!in_array('resource_id',$cols,true)) { try { $db->query('ALTER TABLE tbl_resource_pages ADD resource_id INT UNSIGNED NOT NULL DEFAULT 0'); } catch (mysqli_sql_exception $e) { if ((int)$e->getCode()!==1060) throw $e; } }
+    if (!in_array('url_section',$cols,true)) { try { $db->query("ALTER TABLE tbl_resource_pages ADD url_section VARCHAR(80) NOT NULL DEFAULT 'resources'"); } catch (mysqli_sql_exception $e) { if ((int)$e->getCode()!==1060) throw $e; } }
+    $sectionColumn=$db->query("SHOW COLUMNS FROM tbl_resource_pages LIKE 'url_section'")->fetch_assoc();if ($sectionColumn && $sectionColumn['Type']!=='varchar(80)') $db->query("ALTER TABLE tbl_resource_pages MODIFY url_section VARCHAR(80) NOT NULL DEFAULT 'resources'");
     $stmt=$db->prepare("INSERT IGNORE INTO tbl_resource_pages(page_key,parent_key,slug,title,summary,meta_title,meta_description) VALUES(?,?,?,?,?,?,?)");
     foreach (ohsc_resource_page_seed() as $r) { $meta=$r['title'].' | OHSC Career Expert';$stmt->bind_param('sssssss',$r['page_key'],$r['parent_key'],$r['slug'],$r['title'],$r['summary'],$meta,$r['summary']);$stmt->execute(); }$stmt->close();
 }
@@ -36,6 +38,7 @@ function ohsc_resource_pages($db) {
 function ohsc_resource_page_path($pages,$key) {
     if (!isset($pages[$key])) { return ''; }
     if (in_array($key,array('cv-templates','cv-examples','cover-letter-templates','cover-letter-examples'),true)) { return '/career-expert/cv-and-cover-letters/'.$pages[$key]['slug']; }
+    if (!empty($pages[$key]['resource_id'])) { $section=$pages[$key]['url_section']??'resources';$section=isset(ohsc_resource_url_sections()[$section])&&$section!=='resources'?$section:$pages['hub']['slug'];return '/career-expert/'.$section.'/'.$pages[$key]['slug']; }
     $isHub=$key==='hub';$segments=array();$guard=0;
     while ($key!=='' && isset($pages[$key]) && $guard++<4) { array_unshift($segments,$pages[$key]['slug']);$key=$pages[$key]['parent_key']; }
     return '/career-expert/'.implode('/',$segments);
@@ -51,7 +54,7 @@ function ohsc_resource_page_save($db,$pages,$key,$input,$validateOnly=false,$man
     if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/D',$input['slug']) || $input['title']==='' || $input['meta_title']==='') { return 'Use a lowercase slug with letters, numbers and hyphens, and add a page title and meta title.'; }
     if (!in_array($input['meta_robots'],ohsc_resource_robots_options(),true)) { return 'Choose a valid meta robots option.'; }
     foreach ($pages as $otherKey=>$other) { if ($otherKey!==$key && $other['parent_key']===$pages[$key]['parent_key'] && $other['slug']===$input['slug']) { return 'That slug is already used in this section.'; } }
-    $proposed=$pages;$proposed[$key]=array_merge($pages[$key],$input);
+    $proposed=$pages;$proposed[$key]=array_merge($pages[$key],$input);$seenPaths=array();foreach ($proposed as $candidateKey=>$candidate) { $candidatePath=ohsc_resource_page_path($proposed,$candidateKey);if (isset($seenPaths[$candidatePath])) return 'That public URL is already used. Choose a different slug.';$seenPaths[$candidatePath]=$candidateKey; }
     foreach ($proposed as $pageKey=>$page) { if (strlen(ohsc_resource_page_path($proposed,$pageKey))>240) { return 'The full page URL is too long. Shorten this slug.'; } }
     // An old URL must never be reassigned to another page.
     $aliases=$db->query('SELECT path,page_key FROM tbl_resource_page_aliases')->fetch_all(MYSQLI_ASSOC);
@@ -79,13 +82,13 @@ function ohsc_resource_page_save($db,$pages,$key,$input,$validateOnly=false,$man
 }
 
 function ohsc_resource_page_create($db,$pages,$input,$parent,$resourceId) {
-    if (!isset($pages[$parent]) || !empty($pages[$parent]['resource_id']) || ($parent!=='hub' && $pages[$parent]['parent_key']!=='hub')) { return array('Choose the hub or a category as parent.',null); }
+    if (!isset($pages[$parent]) || !empty($pages[$parent]['resource_id'])) { return array('Choose the hub or a category as parent.',null); }
     $stmt=$db->prepare('SELECT resource_id FROM tbl_career_resources WHERE resource_id=? AND is_deleted=0');$stmt->bind_param('i',$resourceId);$stmt->execute();$valid=$stmt->get_result()->num_rows;$stmt->close();
     if (!$valid) return array('Choose an existing resource for this page. Add the resource and its files first.',null);
-    $key='page-'.bin2hex(random_bytes(12));$next=$pages;$next[$key]=array('page_key'=>$key,'parent_key'=>$parent,'slug'=>$input['slug'],'title'=>$input['title'],'summary'=>$input['summary'],'resource_id'=>$resourceId);
+    $key=!empty($input['owner_id'])?strtolower($input['owner_id']):'page-'.bin2hex(random_bytes(12));if (isset($pages[$key])) return array('This workbook page already exists. Edit it from Resource pages & SEO.',null);$next=$pages;$next[$key]=array('page_key'=>$key,'parent_key'=>$parent,'slug'=>$input['slug'],'title'=>$input['title'],'summary'=>$input['summary'],'resource_id'=>$resourceId,'url_section'=>($input['url_section']??'resources'));
     $error=ohsc_resource_page_save($db,$next,$key,$input,true);if ($error) return array($error,null);
     foreach ($pages as $p) { if (!empty($p['resource_id'])&&(int)$p['resource_id']===$resourceId) return array('This resource already has a page. Edit its existing page instead.',null); }
-    try { $stmt=$db->prepare('INSERT INTO tbl_resource_pages(page_key,parent_key,slug,title,summary,meta_title,meta_description,meta_keywords,meta_robots,resource_id) VALUES(?,?,?,?,?,?,?,?,?,?)');$stmt->bind_param('sssssssssi',$key,$parent,$input['slug'],$input['title'],$input['summary'],$input['meta_title'],$input['meta_description'],$input['meta_keywords'],$input['meta_robots'],$resourceId);$stmt->execute();$stmt->close(); }
+    try { $stmt=$db->prepare('INSERT INTO tbl_resource_pages(page_key,parent_key,slug,title,summary,meta_title,meta_description,meta_keywords,meta_robots,resource_id,url_section) VALUES(?,?,?,?,?,?,?,?,?,?,?)');$section=$input['url_section']??'resources';if (!isset(ohsc_resource_url_sections()[$section])) return array('Choose a valid URL section.',null);$stmt->bind_param('sssssssssis',$key,$parent,$input['slug'],$input['title'],$input['summary'],$input['meta_title'],$input['meta_description'],$input['meta_keywords'],$input['meta_robots'],$resourceId,$section);$stmt->execute();$stmt->close(); }
     catch (mysqli_sql_exception $e) { return array('The page could not be created. Check the slug is unique.',null); }
     return array('',$key);
 }
@@ -110,4 +113,33 @@ function ohsc_resource_owner_migrate($db) {
             foreach (array('/resources/','/career-expert/resources/') as $prefix) { $old=str_replace('/resources/','/'.$pages['hub']['slug'].'/',$prefix).$category.'/'.$p['slug'];$stmt=$db->prepare('INSERT IGNORE INTO tbl_resource_page_aliases(path,page_key) VALUES(?,?)');$stmt->bind_param('ss',$old,$key);$stmt->execute();$stmt->close(); }
         }$db->commit();
     } catch (Throwable $e) { $db->rollback();throw $e; }
+}
+
+function ohsc_career_url_register() {
+    static $rows=null;if ($rows===null) $rows=json_decode(file_get_contents(__DIR__.'/career-url-register.json'),true);return $rows;
+}
+function ohsc_resource_page_input($post,$title,$summary) {
+    $input=array('title'=>$title,'summary'=>$summary);foreach (array('slug','meta_title','meta_description','meta_keywords','meta_robots','url_section') as $f) $input[$f]=isset($post[$f])&&is_string($post[$f])?trim($post[$f]):'';
+    $input['url_section']=$input['url_section']?:'resources';if (!isset(ohsc_resource_url_sections()[$input['url_section']])) return array('Choose a valid URL section.',null);$preferred=isset($post['preferred_owner'])&&is_string($post['preferred_owner'])?$post['preferred_owner']:'';
+    if ($preferred!=='') {
+        $owner=null;foreach (ohsc_career_url_register() as $r) if ($r['id']===$preferred) {$owner=$r;break;}
+        if (!$owner || !preg_match('~^/career-expert/(resources|cv-and-cover-letters(?:/[a-z0-9-]+)?)/([a-z0-9-]+)$~',$owner['path'],$m)) return array('Choose a valid preferred resource URL.',null);
+        if ($input['slug']!==''&&$input['slug']!==$m[2]) return array('The slug must match the selected workbook URL. Choose Custom resource to use another slug.',null);
+        $input['slug']=$m[2];$input['url_section']=$m[1];$input['owner_id']=$owner['id'];if ($input['meta_keywords']==='') $input['meta_keywords']=$owner['keywords'];
+    }
+    if ($input['meta_title']==='') $input['meta_title']=$title.' | OHSC Career Expert';if ($input['meta_description']==='') $input['meta_description']=$summary;
+    return array('',$input);
+}
+
+function ohsc_resource_url_sections() {
+    return array('resources'=>'Career resources','cv-and-cover-letters'=>'CV and cover letters','cv-and-cover-letters/cv-templates'=>'CV templates','cv-and-cover-letters/cv-examples'=>'CV examples','cv-and-cover-letters/cover-letter-templates'=>'Cover letter templates','cv-and-cover-letters/cover-letter-examples'=>'Cover letter examples');
+}
+
+function ohsc_resource_flat_alias_migrate($db) {
+    if ($db->query("SELECT version FROM tbl_career_updates WHERE version='flat-resource-owners-2026-11'")->num_rows) return;
+    $pages=ohsc_resource_pages($db);$db->begin_transaction();try {
+        $db->query("INSERT IGNORE INTO tbl_career_updates VALUES('flat-resource-owners-2026-11')");if (!$db->affected_rows) {$db->rollback();return;}
+        foreach ($pages as $key=>$p) {if (empty($p['resource_id'])||$p['parent_key']==='hub'||($p['url_section']??'resources')!=='resources') continue;$segments=array();$cursor=$key;$guard=0;while($cursor!==''&&isset($pages[$cursor])&&$guard++<5){array_unshift($segments,$pages[$cursor]['slug']);$cursor=$pages[$cursor]['parent_key'];}$old='/career-expert/'.implode('/',$segments);$stmt=$db->prepare('INSERT IGNORE INTO tbl_resource_page_aliases(path,page_key) VALUES(?,?)');$stmt->bind_param('ss',$old,$key);$stmt->execute();$stmt->close();}
+        $db->commit();
+    }catch(Throwable $e){$db->rollback();throw $e;}
 }

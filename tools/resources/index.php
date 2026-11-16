@@ -38,6 +38,9 @@ if (!empty($page['resource_id'])) {
     $resources=array($detailResource);$category=$detailResource['category'];$subcategory=$detailResource['subcategory'];
 }
 
+if (!isset($detailResource) && !$isHub && !isset(ohsc_resource_categories()[$page['page_key']]) && $resources) { $detailResource=$resources[0]; }
+if (isset($detailResource)) { require __DIR__.'/document-page.php';exit; }
+
 $toolkits=ohsc_resources_list($db,'','toolkits','');
 $goals=ohsc_resource_goals();$formats=ohsc_resource_formats();
 $ohsc_resource_meta=true;

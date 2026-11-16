@@ -12,7 +12,7 @@ function ohsc_tool_pages_ensure($db) {
     $industries=$db->query('SELECT industry_id,slug,title,summary FROM tbl_iv_industries')->fetch_all(MYSQLI_ASSOC);
     foreach ($industries as $i) { $seeds[]=array('profession-'.$i['industry_id'],'interview-prep',(int)$i['industry_id'],$i['slug'],$i['title'].' Interview Questions',$i['summary']); }
     $stmt=$db->prepare('INSERT IGNORE INTO tbl_tool_pages(page_key,tool_slug,industry_id,slug,title,meta_title,meta_description) VALUES(?,?,?,?,?,?,?)');
-    foreach ($seeds as $s) { $meta=$s[4].' | OHSC Career Expert';$stmt->bind_param('ssissss',$s[0],$s[1],$s[2],$s[3],$s[4],$meta,$s[5]);$stmt->execute(); }$stmt->close();ohsc_tool_route_migrate($db);ohsc_interview_route_migrate($db);$ready=true;
+    foreach ($seeds as $s) { $meta=$s[4].' | OHSC Career Expert';$stmt->bind_param('ssissss',$s[0],$s[1],$s[2],$s[3],$s[4],$meta,$s[5]);$stmt->execute(); }$stmt->close();ohsc_tool_route_migrate($db);ohsc_interview_route_migrate($db);ohsc_common_questions_route_migrate($db);$ready=true;
 }
 function ohsc_tool_pages($db) { ohsc_tool_pages_ensure($db);return array_column($db->query('SELECT * FROM tbl_tool_pages ORDER BY industry_id,page_key')->fetch_all(MYSQLI_ASSOC),null,'page_key'); }
 function ohsc_tool_page_path($pages,$key) {
@@ -88,4 +88,14 @@ function ohsc_interview_route_migrate($db) {
             $next=$map[$r['slug']];$stmt=$db->prepare('UPDATE tbl_tool_pages SET slug=?,route_group=? WHERE page_key=?');$stmt->bind_param('sss',$next[0],$next[1],$r['page_key']);$stmt->execute();$stmt->close();
         }$db->commit();
     } catch (Throwable $e) { $db->rollback();throw $e; }
+}
+
+function ohsc_common_questions_route_migrate($db) {
+    if ($db->query("SELECT version FROM tbl_career_updates WHERE version='common-question-owner-2026-11'")->num_rows) return;
+    $rows=$db->query("SELECT p.* FROM tbl_tool_pages p JOIN tbl_iv_industries i ON i.industry_id=p.industry_id WHERE i.slug='general' AND p.slug='general'")->fetch_all(MYSQLI_ASSOC);
+    $db->begin_transaction();try {
+        $db->query("INSERT IGNORE INTO tbl_career_updates VALUES('common-question-owner-2026-11')");if (!$db->affected_rows) {$db->rollback();return;}
+        $landing=$db->query("SELECT slug FROM tbl_tool_pages WHERE page_key='interview-prep'")->fetch_assoc();
+        foreach ($rows as $r) { $old='/career-expert/'.$landing['slug'].'/general';$stmt=$db->prepare('INSERT IGNORE INTO tbl_tool_page_aliases(path,page_key) VALUES(?,?)');$stmt->bind_param('ss',$old,$r['page_key']);$stmt->execute();$stmt->close();$stmt=$db->prepare("UPDATE tbl_tool_pages SET slug='common-interview-questions' WHERE page_key=?");$stmt->bind_param('s',$r['page_key']);$stmt->execute();$stmt->close(); }$db->commit();
+    } catch (Throwable $e) {$db->rollback();throw $e;}
 }

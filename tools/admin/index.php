@@ -41,7 +41,7 @@ if (!empty($_GET['msg'])) {
     echo '<p class="tools-note"><strong>' . ohsc_h($_GET['msg']) . '</strong></p>';
 }
 ?>
-<p class="tools-actions"><a href="<?php echo ohsc_h($base_url); ?>/admin/tool-edit">Add tool</a></p>
+<p class="tools-actions"><a href="<?php echo ohsc_h($base_url); ?>/admin/tool-edit">Add tool</a> <a href="<?php echo ohsc_h($base_url); ?>/admin/career-resource?create_page=1">Create resource page</a></p>
 <table class="tools" width="100%" cellspacing="0" cellpadding="0">
     <tr>
         <td><strong>Title</strong></td>

@@ -33,6 +33,7 @@ function ohsc_resources_ensure($db) {
     ohsc_resource_starters($db);
     ohsc_resource_preferred_pages($db);
     ohsc_resource_owner_migrate($db);
+    ohsc_resource_flat_alias_migrate($db);
     $ready=true;
 }
 function ohsc_resource_files($db,$id) {

@@ -7,6 +7,7 @@ function ohsc_resource_featured_items() {
 }
 function ohsc_resource_image_specs($key) {
     $slots=array('hero'=>array('label'=>'Page hero image','width'=>640,'height'=>440),'card-default'=>array('label'=>'Default resource card image','width'=>640,'height'=>400));
+    if ($key!=='hub') { $slots['preview']=array('label'=>'Document preview (portrait)','width'=>900,'height'=>1273); }
     if ($key==='hub') { $slots['toolkit']=array('label'=>'Complete toolkit section image','width'=>640,'height'=>440);foreach (ohsc_resource_featured_items() as $f) { $slots[$f[3]]=array('label'=>'Featured: '.$f[0],'width'=>640,'height'=>400); } }return $slots;
 }
 function ohsc_resource_image_records($db,$key) {

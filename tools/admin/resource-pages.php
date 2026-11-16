@@ -1,5 +1,6 @@
 <?php
 require __DIR__.'/_boot.php';require_once __DIR__.'/../includes/resources.php';ohsc_resources_ensure($db);
+if (isset($_GET['new']) && empty($_GET['attach'])) { header('Location: '.$base_url.'/admin/career-resource?create_page=1');exit; }
 $pages=ohsc_resource_pages($db);$key=isset($_GET['page'])&&is_string($_GET['page'])?$_GET['page']:'';$error='';$saved=false;
 if ($key && !isset($pages[$key])) { http_response_code(404);$error='Resource page not found.';$key=''; }
 $item=$key?$pages[$key]:null;
@@ -20,7 +21,7 @@ if ($error) { echo '<p class="tools-error">'.ohsc_h($error).'</p>'; }
 if (!empty($_GET['resource_msg']) && is_string($_GET['resource_msg'])) { echo '<p role="status">'.ohsc_h($_GET['resource_msg']).'</p>'; }
 if (!empty($_GET['saved'])) { echo '<p role="status">Page and SEO settings saved.</p>'; }
 ?>
-<p>Manage resource pages, metadata and images. <a href="?new=1">Create a resource page</a>. Add its downloadable resource first, then choose it when creating the page.</p>
+<p>Manage resource pages, metadata and images. <a class="save-btn" href="<?php echo ohsc_h($base_url); ?>/admin/career-resource?create_page=1">Create resource page + upload files</a> · <a href="?new=1&amp;attach=1">Use an existing resource</a>.</p>
 <p>Meta robots is stored for each page. The staging website lock and site-wide noindex headers remain in force, even if you choose index/follow here.</p>
 <?php if ($item) { ?>
 <p><a href="<?php echo ohsc_h($base_url); ?>/admin/resource-pages">← All resource pages</a> · <a target="_blank" rel="noopener" href="<?php echo ohsc_h($base_url.ohsc_resource_page_path($pages,$key)); ?>">View page</a></p>

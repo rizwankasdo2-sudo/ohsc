@@ -86,3 +86,36 @@ The November update was checked across 60 local routes, legacy redirects, real
 DOCX packages, admin creation/metadata/image controls and 360/390/768/1440 CSS-pixel
 layouts. Normal vertical page scrolling remains; page-wide horizontal overflow
 and nested carousel vertical scrollbars are prevented.
+
+
+## November 16 resource-page corrections
+
+Resource leaf pages use `resources/document-page.php` and the scoped document
+stylesheet: compact header/footer, title/purpose, portrait preview, direct PDF and
+Word actions, related resources and a back link. Previews are rendered from the
+actual starter PDFs. Replaced PDFs use their current inline preview rather than
+a stale bundled image. Editors can upload a 900 x 1273 WebP portrait preview in
+Resource pages & SEO; the existing 640 x 440 hero and 640 x 400 card controls remain.
+
+Tools Manager and Resource pages & SEO both expose Create resource page. The
+single form at `/admin/career-resource?create_page=1` saves content, uploads and
+SEO together in one transaction. Existing-resource attachment remains available
+at `/admin/resource-pages?new=1&attach=1`. A failed page save rolls back its resource
+and removes files moved by that request. Draft and hidden resources stay private.
+
+`includes/career-url-register.json` contains the 883 exact workbook owners; it
+does not publish placeholder content. The creation form offers applicable preferred
+owners, including nested CV-template URLs such as
+`/career-expert/cv-and-cover-letters/cv-templates/simple`. Their workbook IDs become
+stable page keys. Custom resources use a flat resource URL; logical category
+assignment does not add URL levels. Previously agreed browsing directories remain
+available. The general interview collection now uses CE0583's
+`/career-expert/interview-questions/common-interview-questions`, with its former
+address retained as a redirect.
+
+`tests/resource-pending.test.php` verifies the register, implemented tool/resource
+owners, nested routes and the actual authenticated admin multipart create/upload
+flow when `OHSC_RESOURCE_TEST_AUTH` is supplied. It tests public rendering, exact
+file downloads, inline PDF response headers, Word preview rejection, hidden
+resources and legacy redirects, then removes its test records/files/session.
+The layouts were checked at 360, 390, 768 and 1440 CSS pixels.
